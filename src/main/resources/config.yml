@@ -14,3 +14,6 @@ prefix: "&c&lRocket&e&lPlaceholders &f&l» &r"
 placeholders:
   placeholder1: "server"
   text1: "Ciao raga"
+
+  placeholder2: "ciao"
+  text2: "bye bye"
