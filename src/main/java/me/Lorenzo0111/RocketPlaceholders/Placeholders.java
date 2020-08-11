@@ -15,6 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 public class Placeholders extends JavaPlugin implements Listener {
+    
+    // test
 
     public Integer code = 1111;
 
