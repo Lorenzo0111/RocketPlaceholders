@@ -42,7 +42,7 @@ public class Placeholders extends JavaPlugin implements Listener {
     //  Command(Info and reload)
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("rockedplaceholders")) {
+        if (cmd.getName().equalsIgnoreCase("rocketplaceholders")) {
             if (sender instanceof Player) {
                 if (sender.hasPermission("rocketplaceholders.command")) {
                     if (args.length == 0) {

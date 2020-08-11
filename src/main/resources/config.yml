@@ -12,8 +12,16 @@
 prefix: "&c&lRocket&e&lPlaceholders &f&l» &r"
 
 placeholders:
-  placeholder1: "server"
-  text1: "Ciao raga"
 
-  placeholder2: "ciao"
-  text2: "bye bye"
+  #First placeholder (MAX 10)
+
+
+  1:
+    placeholder: "server"
+    text: "This is a test"
+
+  #Second placeholder (MAX 10)
+
+  2:
+    placeholder: "ciao"
+    text: "bye bye"
