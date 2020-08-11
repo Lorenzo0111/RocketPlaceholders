@@ -27,7 +27,7 @@ public class Placeholders extends JavaPlugin implements Listener {
             }
         });
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            logger.info("Plugin enabled!");
+            logger.info("Plugin enabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
             Bukkit.getPluginManager().registerEvents(this, (Plugin) this);
             new PlaceholderCreator(this).register();
             saveDefaultConfig();
@@ -37,6 +37,10 @@ public class Placeholders extends JavaPlugin implements Listener {
         }
     }
 
+    @Override
+    public void onDisable() {
+        getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
+    }
 
     //  Command(Info and reload)
     @Override

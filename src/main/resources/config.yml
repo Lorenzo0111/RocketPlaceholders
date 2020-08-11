@@ -9,12 +9,11 @@
 #
 #
 
-prefix: "&c&lRocket&e&lPlaceholders &f&l» &r"
+prefix: "&c&lRocket&e&lPlaceholders &f&l»&r"
 
 placeholders:
 
   #First placeholder (MAX 10)
-
 
   1:
     placeholder: "1"
