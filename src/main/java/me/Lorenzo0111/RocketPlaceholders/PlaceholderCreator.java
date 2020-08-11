@@ -41,14 +41,44 @@ public class PlaceholderCreator extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String identifier){
 
         // Placeholder 1
-        if(identifier.equals(plugin.getConfig().getString("placeholders.placeholder1"))){
-            return plugin.getConfig().getString("placeholders.text1");
+        if(identifier.equals(plugin.getConfig().getString("placeholders.1.placeholder"))){
+            return plugin.getConfig().getString("placeholders.1.text");
         }
 
         // Placeholder 2
-        if(identifier.equals(plugin.getConfig().getString("placeholders.placeholder2"))){
-            return plugin.getConfig().getString("placeholders.text2");
+        if(identifier.equals(plugin.getConfig().getString("placeholders.2.placeholder"))){
+            return plugin.getConfig().getString("placeholders.2.text");
         }
+
+        if(identifier.equals(plugin.getConfig().getString("placeholders.3.placeholder"))){
+            return plugin.getConfig().getString("placeholders.3.text");
+        }
+
+        if(identifier.equals(plugin.getConfig().getString("placeholders.4.placeholder"))){
+            return plugin.getConfig().getString("placeholders.4.text");
+        }
+
+        if(identifier.equals(plugin.getConfig().getString("placeholders.5.placeholder"))){
+            return plugin.getConfig().getString("placeholders.5.text");
+        }
+
+        if(identifier.equals(plugin.getConfig().getString("placeholders.6.placeholder"))){
+            return plugin.getConfig().getString("placeholders.6.text");
+        }
+
+        if(identifier.equals(plugin.getConfig().getString("placeholders.7.placeholder"))){
+            return plugin.getConfig().getString("placeholders.7.text");
+        }
+
+        if(identifier.equals(plugin.getConfig().getString("placeholders.8.placeholder"))){
+            return plugin.getConfig().getString("placeholders.8.text");
+        }
+
+        if(identifier.equals(plugin.getConfig().getString("placeholders.9.placeholder"))){
+            return plugin.getConfig().getString("placeholders.9.text");
+        }
+
+
         return null;
     }
 }
