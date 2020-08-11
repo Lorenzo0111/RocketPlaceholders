@@ -1,7 +1,6 @@
 package me.Lorenzo0111.RocketPlaceholders;
 
 import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,8 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 public class Placeholders extends JavaPlugin implements Listener {
-    
-    // test
 
     public Integer code = 1111;
 

@@ -50,35 +50,45 @@ public class PlaceholderCreator extends PlaceholderExpansion {
             return plugin.getConfig().getString("placeholders.2.text");
         }
 
+        // Placeholder 3
         if(identifier.equals(plugin.getConfig().getString("placeholders.3.placeholder"))){
             return plugin.getConfig().getString("placeholders.3.text");
         }
 
+        // Placeholder 4
         if(identifier.equals(plugin.getConfig().getString("placeholders.4.placeholder"))){
             return plugin.getConfig().getString("placeholders.4.text");
         }
 
+        // Placeholder 5
         if(identifier.equals(plugin.getConfig().getString("placeholders.5.placeholder"))){
             return plugin.getConfig().getString("placeholders.5.text");
         }
 
+        // Placeholder 6
         if(identifier.equals(plugin.getConfig().getString("placeholders.6.placeholder"))){
             return plugin.getConfig().getString("placeholders.6.text");
         }
 
+        // Placeholder 7
         if(identifier.equals(plugin.getConfig().getString("placeholders.7.placeholder"))){
             return plugin.getConfig().getString("placeholders.7.text");
         }
 
+        // Placeholder 8
         if(identifier.equals(plugin.getConfig().getString("placeholders.8.placeholder"))){
             return plugin.getConfig().getString("placeholders.8.text");
         }
 
+        // Placeholder 9
         if(identifier.equals(plugin.getConfig().getString("placeholders.9.placeholder"))){
             return plugin.getConfig().getString("placeholders.9.text");
         }
 
-
+        // Placeholder 10
+        if(identifier.equals(plugin.getConfig().getString("placeholders.10.placeholder"))){
+            return plugin.getConfig().getString("placeholders.11.text");
+        }
         return null;
     }
 }
