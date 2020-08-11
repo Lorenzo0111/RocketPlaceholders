@@ -1,0 +1,13 @@
+name: RocketPlaceholders
+author: Lorenzo0111
+main: me.Lorenzo0111.RocketPlaceholders.Placeholders
+version: 1.0
+api-version: 1.14
+softdepend: [PlaceholderAPI]
+commands:
+  rocketplaceholders:
+    description: RocketPlaceholders main command!
+    aliases: [rp, placeholders]
+permissions:
+  rocketplaceholders.command:
+    description: Placeholders command
