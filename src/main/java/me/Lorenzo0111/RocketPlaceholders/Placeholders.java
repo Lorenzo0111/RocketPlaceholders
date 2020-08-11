@@ -101,12 +101,11 @@ public class Placeholders extends JavaPlugin {
         Player p = e.getPlayer();
         if (e.getPlayer().hasPermission("rocketplaceholders.update")) {
             new UpdateChecker(this, 82520).getVersion(version -> {
-                if (!(this.getDescription().getVersion().equalsIgnoreCase(version))) {
+                if (!this.getDescription().getVersion().equalsIgnoreCase(version)) {
                     p.sendMessage("&e&l&m---------------------------------------".replace("&", "§"));
                     p.sendMessage("&c&lRocket&e&lPlaceholders &f&l» &7There is a new update available.".replace("&", "§"));
                     p.sendMessage("&c&lRocket&e&lPlaceholders &f&l» &7Download it from: &ehttps://bit.ly/RocketPlaceholders".replace("&", "§"));
                     p.sendMessage("&e&l&m---------------------------------------".replace("&", "§"));
-                    p.sendMessage("ciao");
                 }
             });
         }
