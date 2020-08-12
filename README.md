@@ -15,7 +15,7 @@
 
 
 # Information 
-[RocketJoin][spigot] is a CustomPlaceholders plugin!
+[RocketPlaceholders][spigot] is a CustomPlaceholders plugin!
 With this plugin you can create custom placeholders based on PlaceholderAPI
 
 
