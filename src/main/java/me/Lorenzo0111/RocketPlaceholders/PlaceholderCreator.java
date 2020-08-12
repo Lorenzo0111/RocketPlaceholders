@@ -46,20 +46,12 @@ public class PlaceholderCreator extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String identifier){
 
+
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("placeholders");
 
-        List<String> changeList = new ArrayList();
-
         for (String key : config.getKeys(false)) {
-            changeList.add(key);
-        }
-
-        for(int i = 0; i < changeList.size(); i++) {
-
-            ConfigurationSection getConfig = plugin.getConfig();
-
-            if(identifier.equals(getConfig.getString("placeholders." + i + ".placeholder"))) {
-                return plugin.getConfig().getString("placeholders." + i + ".text");
+            if(identifier.equals(config.getString(key + ".placeholder"))) {
+                return config.getString(key + ".text");
             }
         }
         return null;
