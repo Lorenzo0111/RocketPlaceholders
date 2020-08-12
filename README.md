@@ -21,7 +21,7 @@ With this plugin you can create custom placeholders based on PlaceholderAPI
 
 ## Usage
 
-You can read the plugin wiki [here](https://app.gitbook.com/@lorenzo0111/s/rocekt-plugins/rocket-placeholders/starting)
+You can read the plugin wiki [here](https://lorenzo0111.gitbook.io/rocekt-plugins/rocketplaceholders/starting)
 
 ## Support
 - [Issue Tracker][issues]
