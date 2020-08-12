@@ -61,7 +61,3 @@ public class PlaceholderCreator extends PlaceholderExpansion {
         return null;
     }
 }
-
-
-
-

@@ -12,10 +12,6 @@
 # RocketPlaceholders prefix
 prefix: "&c&lRocket&e&lPlaceholders &f&l»&r"
 
-# Spigot updater id. [DO NOT CHANGE THIS]
-
-resource-id: 1111
-
 # RocketPlaceholders custom placeholders
 
 placeholders:

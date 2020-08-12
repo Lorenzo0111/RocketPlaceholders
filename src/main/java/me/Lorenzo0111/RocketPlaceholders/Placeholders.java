@@ -22,7 +22,7 @@ public class Placeholders extends JavaPlugin implements Listener {
 
      */
 
-    public Integer code = getConfig().getInt("resource-id");
+    public Integer code = 1111;
 
     public void onEnable() {
         Logger logger = this.getLogger();
