@@ -4,7 +4,7 @@
 [issues]: https://github.com/Lorenzo0111/RocketPlaceholders/issues
 
 [discord]: https://bit.ly/RocketServer_DS
-[spigot]: https://www.spigotmc.org/resources/rocketjoin-custom-join-message.82520/
+[spigot]: https://www.spigotmc.org/resources/rocketplaceholders-custom-placeholders.82678/
 
 [logo]: https://i.ibb.co/LxMjPXR/full.png
 
