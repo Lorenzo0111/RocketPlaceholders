@@ -15,7 +15,14 @@ import java.util.logging.Logger;
 
 public class Placeholders extends JavaPlugin implements Listener {
 
-    public Integer code = 1111;
+    /*
+
+    Plugin by Lorenzo0111
+
+
+     */
+
+    public Integer code = getConfig().getInt("resource-id");
 
     public void onEnable() {
         Logger logger = this.getLogger();

@@ -1,16 +1,20 @@
 package me.Lorenzo0111.RocketPlaceholders;
 
-import org.bukkit.Bukkit;
+
 import org.bukkit.OfflinePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class PlaceholderCreator extends PlaceholderExpansion {
+
+    /*
+
+    Plugin by Lorenzo0111
+
+
+     */
 
     private Placeholders plugin;
 

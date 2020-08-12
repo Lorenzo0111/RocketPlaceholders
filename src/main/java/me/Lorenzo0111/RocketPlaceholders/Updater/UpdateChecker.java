@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 public class UpdateChecker {
 
+    // Do not change this class
+
     private JavaPlugin plugin;
     private int resourceId;
 

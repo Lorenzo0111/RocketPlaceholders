@@ -9,19 +9,21 @@
 #
 #
 
+# RocketPlaceholders prefix
 prefix: "&c&lRocket&e&lPlaceholders &f&l»&r"
+
+# Spigot updater id. [DO NOT CHANGE THIS]
+
+resource-id: 1111
+
+# RocketPlaceholders custom placeholders
 
 placeholders:
 
-
-  1:
-    placeholder: "1"
-    text: "1"
+  1: # Only numbers
+    placeholder: "test" #ex "test" = %rp_test%
+    text: "this is a test" #ex "this is a test" = out: "this is a test"
 
   2:
     placeholder: "2"
     text: "2"
-
-  3:
-    placeholder: "3"
-    text: "3"
