@@ -15,46 +15,16 @@ placeholders:
 
   #First placeholder (MAX 10)
 
-  1:
+  '1':
     placeholder: "1"
-    text: "This is a test"
+    text: "1"
 
   #Second placeholder (MAX 10)
 
-  2:
+  '2':
     placeholder: "2"
-    text: "This is a test"
+    text: "2"
 
-  3:
+  '3':
     placeholder: "3"
-    text: "This is a test"
-
-  4:
-    placeholder: "4"
-    text: "This is a test"
-
-  5:
-    placeholder: "5"
-    text: "This is a test"
-
-  6:
-    placeholder: "6"
-    text: "This is a test"
-
-  7:
-    placeholder: "7"
-    text: "This is a test"
-
-  8:
-    placeholder: "8"
-    text: "This is a test"
-
-  9:
-    placeholder: "9"
-    text: "This is a test"
-
-  10:
-    placeholder: "10"
-    text: "This is a test"
-
-  # end of placeholders
+    text: "3"
