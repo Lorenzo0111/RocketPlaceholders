@@ -23,7 +23,8 @@ public class Placeholders extends JavaPlugin implements Listener {
             if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
                 logger.info("There is not a new update available.");
             } else {
-                logger.info("There is a new update available. Download it from: https://bit.ly/RocketPlaceholders");
+                logger.info("There is a new update available.");
+                logger.info("Download it from: https://bit.ly/RocketPlaceholders");
             }
         });
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -53,15 +54,14 @@ public class Placeholders extends JavaPlugin implements Listener {
                         sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
                     } else if (args.length == 1) {
                         if (args[0].equalsIgnoreCase("reload")) {
-                            final Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("RocketJoin");
-                            plugin.reloadConfig();
+                            reloadConfig();
                             Logger logger = this.getLogger();
                             new UpdateChecker(this, code).getVersion(version -> {
                                 if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
                                     logger.info("There is not a new update available.");
                                 } else {
-                                    logger.info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
-                                }
+                                    logger.info("There is a new update available.");
+                                    logger.info("Download it from: https://bit.ly/RocketPlaceholders");                                }
                             });
                             sender.sendMessage("%prefix%&r &7Plugin reloaded!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
                         } else {
@@ -80,15 +80,14 @@ public class Placeholders extends JavaPlugin implements Listener {
                     sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
                 } else if (args.length == 1) {
                     if (args[0].equalsIgnoreCase("reload")) {
-                        final Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("RocketJoin");
-                        plugin.reloadConfig();
+                        reloadConfig();
                         Logger logger = this.getLogger();
                         new UpdateChecker(this, code).getVersion(version -> {
                             if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
                                 logger.info("There is not a new update available.");
                             } else {
-                                logger.info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
-                            }
+                                logger.info("There is a new update available.");
+                                logger.info("Download it from: https://bit.ly/RocketPlaceholders");                            }
                         });
                         sender.sendMessage("%prefix%&r &7Plugin reloaded!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
                     } else {
