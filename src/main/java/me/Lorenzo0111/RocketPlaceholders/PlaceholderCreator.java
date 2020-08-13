@@ -1,6 +1,7 @@
 package me.Lorenzo0111.RocketPlaceholders;
 
 
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.configuration.ConfigurationSection;
@@ -55,7 +56,7 @@ public class PlaceholderCreator extends PlaceholderExpansion {
 
         for (String key : config.getKeys(false)) {
             if(identifier.equals(config.getString(key + ".placeholder"))) {
-                return config.getString(key + ".text");
+                return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
             }
         }
         return null;
