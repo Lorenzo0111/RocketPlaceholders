@@ -16,10 +16,8 @@ prefix: "&c&lRocket&e&lPlaceholders &f&l»&r"
 
 placeholders:
 
-  1: # Only numbers
+  0: # Only numbers (CHANGE IT, DO NOT USE THE 0 NUMBER)
     placeholder: "test" #ex "test" = %rp_test%
-    text: "this is a test" #ex "this is a test" = out: "this is a test"
-
-  2:
-    placeholder: "2"
-    text: "2"
+    text: "this is a test" #ex "this is a test" = out: "this is a test" (Players without permission)
+    permission: "example.1" #Permission to see the "text_with_permission" string
+    text_with_permission: "this is a secret test!" #Only for players with the permission

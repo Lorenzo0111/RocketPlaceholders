@@ -56,7 +56,17 @@ public class PlaceholderCreator extends PlaceholderExpansion {
 
         for (String key : config.getKeys(false)) {
             if(identifier.equals(config.getString(key + ".placeholder"))) {
-                return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
+                if (config.getString(key + ".permission") == null) {
+                    return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
+                } else if (config.getString(key + ".text_with_permission") == null) {
+                    return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
+                } else {
+                    if (player.getPlayer().hasPermission(config.getString(key + ".permission"))) {
+                        return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text_with_permission"));
+                    } else {
+                        return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
+                    }
+                }
             }
         }
         return null;
