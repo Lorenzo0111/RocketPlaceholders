@@ -2,8 +2,11 @@ package me.Lorenzo0111.RocketPlaceholders;
 
 import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,9 +14,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-public class Placeholders extends JavaPlugin implements Listener {
+public class Placeholders extends JavaPlugin implements Listener, CommandExecutor, TabCompleter {
 
     /*
 
@@ -50,64 +55,6 @@ public class Placeholders extends JavaPlugin implements Listener {
         getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
     }
 
-    //  Command(Info and reload)
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("rocketplaceholders")) {
-            if (sender instanceof Player) {
-                if (sender.hasPermission("rocketplaceholders.command")) {
-                    if (args.length == 0) {
-                        sender.sendMessage("%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                        sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                    } else if (args.length == 1) {
-                        if (args[0].equalsIgnoreCase("reload")) {
-                            reloadConfig();
-                            Logger logger = this.getLogger();
-                            new UpdateChecker(this, code).getVersion(version -> {
-                                if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
-                                    logger.info("There is not a new update available.");
-                                } else {
-                                    logger.info("There is a new update available.");
-                                    logger.info("Download it from: https://bit.ly/RocketPlaceholders");                                }
-                            });
-                            sender.sendMessage("%prefix%&r &7Plugin reloaded!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                        } else {
-                            sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                        }
-                    } else {
-                        sender.sendMessage("%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                        sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                    }
-                } else {
-                    sender.sendMessage(getConfig().getString("prefix").replace("&", "§") + " " + getConfig().getString("no_permission").replace("&", "§"));
-                }
-            } else {
-                if (args.length == 0) {
-                    sender.sendMessage("%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                    sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                } else if (args.length == 1) {
-                    if (args[0].equalsIgnoreCase("reload")) {
-                        reloadConfig();
-                        Logger logger = this.getLogger();
-                        new UpdateChecker(this, code).getVersion(version -> {
-                            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
-                                logger.info("There is not a new update available.");
-                            } else {
-                                logger.info("There is a new update available.");
-                                logger.info("Download it from: https://bit.ly/RocketPlaceholders");                            }
-                        });
-                        sender.sendMessage("%prefix%&r &7Plugin reloaded!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                    } else {
-                        sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                    }
-                } else {
-                    sender.sendMessage("%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                    sender.sendMessage("%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix")).replace("&", "§"));
-                }
-            }
-        } return true;
-    }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
@@ -121,5 +68,62 @@ public class Placeholders extends JavaPlugin implements Listener {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("rocketplaceholders")) {
+            if (sender instanceof Player) {
+                if (sender.hasPermission("rocketplaceholders.command")) {
+                    if (args.length == 0) {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix"))));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix"))));
+                    } else if (args.length == 1) {
+                        if (args[0].equalsIgnoreCase("reload")) {
+                            reloadConfig();
+                            Logger logger = getLogger();
+                            new UpdateChecker(this, code).getVersion(version -> {
+                                if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                                    logger.info("There is not a new update available.");
+                                } else {
+                                    logger.info("There is a new update available.");
+                                    logger.info("Download it from: https://bit.ly/RocketPlaceholders");                                }
+                            });
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Plugin reloaded!".replace("%prefix%", getConfig().getString("prefix"))));
+                        } else {
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix"))));
+                        }
+                    } else {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix"))));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix"))));
+                    }
+                } else {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix").replace("&", "§") + " " + getConfig().getString("no_permission")));
+                }
+            } else {
+                if (args.length == 0) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix"))));
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix"))));
+                } else if (args.length == 1) {
+                    if (args[0].equalsIgnoreCase("reload")) {
+                        reloadConfig();
+                        Logger logger = getLogger();
+                        new UpdateChecker(this, code).getVersion(version -> {
+                            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                                logger.info("There is not a new update available.");
+                            } else {
+                                logger.info("There is a new update available.");
+                                logger.info("Download it from: https://bit.ly/RocketPlaceholders");                            }
+                        });
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Plugin reloaded!".replace("%prefix%", getConfig().getString("prefix"))));
+                    } else {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix"))));
+                    }
+                } else {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Plugin by &eLorenzo0111&7!".replace("%prefix%", getConfig().getString("prefix"))));
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "%prefix%&r &7Use &8/rocketplaceholders reload &7to reload the plugin!".replace("%prefix%", getConfig().getString("prefix"))));
+                }
+            }
+        } return true;
     }
 }
