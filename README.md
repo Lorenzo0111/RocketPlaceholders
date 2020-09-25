@@ -1,6 +1,8 @@
 [relase]: https://img.shields.io/github/v/release/Lorenzo0111/RocketPlaceholders
 [releaselink]: https://github.com/Lorenzo0111/RocketPlaceholders/releases/latest
 
+[downloads]: http://badge.henrya.org/spigotbukkit/downloads?spigot=82520
+
 [issues]: https://github.com/Lorenzo0111/RocketPlaceholders/issues
 
 [discord]: https://bit.ly/RocketServer_DS
@@ -8,10 +10,9 @@
 
 [logo]: https://i.ibb.co/LxMjPXR/full.png
 
-
 [![logo]][spigot]
 
-[![relase]][releaselink]
+[![relase]][releaselink] [![downloads]][spigot]
 
 
 # Information 
