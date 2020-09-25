@@ -59,7 +59,7 @@ public class Placeholders extends JavaPlugin implements Listener, CommandExecuto
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (e.getPlayer().hasPermission("rocketplaceholders.update")) {
-            new UpdateChecker(this, 82520).getVersion(version -> {
+            new UpdateChecker(this, code).getVersion(version -> {
                 if (!this.getDescription().getVersion().equalsIgnoreCase(version)) {
                     p.sendMessage("&e&l&m---------------------------------------".replace("&", "§"));
                     p.sendMessage("&c&lRocket&e&lPlaceholders &f&l» &7There is a new update available.".replace("&", "§"));
