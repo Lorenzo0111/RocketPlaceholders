@@ -11,11 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Placeholders extends JavaPlugin implements Listener, CommandExecutor, TabCompleter {
@@ -41,7 +39,7 @@ public class Placeholders extends JavaPlugin implements Listener, CommandExecuto
         });
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             logger.info("Plugin enabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
-            Bukkit.getPluginManager().registerEvents(this, (Plugin) this);
+            Bukkit.getPluginManager().registerEvents(this, this);
             new PlaceholderCreator(this).register();
             saveDefaultConfig();
         } else {
@@ -59,6 +57,9 @@ public class Placeholders extends JavaPlugin implements Listener, CommandExecuto
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (e.getPlayer().hasPermission("rocketplaceholders.update")) {
+            if (!getConfig().getBoolean("update-message")) {
+                return;
+            }
             new UpdateChecker(this, code).getVersion(version -> {
                 if (!this.getDescription().getVersion().equalsIgnoreCase(version)) {
                     p.sendMessage("&e&l&m---------------------------------------".replace("&", "§"));
@@ -71,7 +72,7 @@ public class Placeholders extends JavaPlugin implements Listener, CommandExecuto
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, Command cmd, @NotNull String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rocketplaceholders")) {
             if (sender instanceof Player) {
                 if (sender.hasPermission("rocketplaceholders.command")) {

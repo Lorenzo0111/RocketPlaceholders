@@ -12,6 +12,9 @@
 # RocketPlaceholders prefix
 prefix: "&c&lRocket&e&lPlaceholders &f&l»&r"
 
+#Enable Update Message on Join. Default: true
+update-message: true
+
 # RocketPlaceholders custom placeholders
 
 placeholders:
