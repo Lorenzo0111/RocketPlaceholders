@@ -4,6 +4,7 @@ import me.Lorenzo0111.RocketPlaceholders.Command.MainCommand;
 import me.Lorenzo0111.RocketPlaceholders.Creator.PlaceholderCreator;
 import me.Lorenzo0111.RocketPlaceholders.Listener.Join;
 import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,6 +31,8 @@ public class Placeholders extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new Join(this), this);
         this.getCommand("rocketplaceholders").setExecutor(new MainCommand(this));
         this.getCommand("rocketplaceholders").setTabCompleter(new MainCommand(this));
+
+        new Metrics(this, 9381);
 
         if (Bukkit.getPluginManager().getPlugin("RocketJoin") != null) {
             getLogger().info("Found RocketJoin, thanks for using RocketPlugins!");

@@ -1,9 +1,10 @@
-package me.Lorenzo0111.RocketPlaceholders;
+package me.Lorenzo0111.RocketPlaceholders.Creator;
 
 
+import me.Lorenzo0111.RocketPlaceholders.Placeholders;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,10 +15,13 @@ public class PlaceholderCreator extends PlaceholderExpansion {
 
     Plugin by Lorenzo0111
 
-
      */
 
-    private Placeholders plugin;
+    private final Placeholders plugin;
+
+    public PlaceholderCreator(Placeholders plugin){
+        this.plugin = plugin;
+    }
 
     @Override
     public @NotNull String getIdentifier() {
@@ -44,12 +48,8 @@ public class PlaceholderCreator extends PlaceholderExpansion {
         return true;
     }
 
-    public PlaceholderCreator(Placeholders plugin){
-        this.plugin = plugin;
-    }
-
     @Override
-    public String onRequest(OfflinePlayer player, String identifier){
+    public String onRequest(OfflinePlayer player, @NotNull String identifier) {
 
 
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("placeholders");
@@ -63,9 +63,9 @@ public class PlaceholderCreator extends PlaceholderExpansion {
                 } else {
                     if (player.getPlayer().hasPermission(config.getString(key + ".permission"))) {
                         return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text_with_permission"));
-                    } else {
-                        return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
                     }
+
+                    return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
                 }
             }
         }
