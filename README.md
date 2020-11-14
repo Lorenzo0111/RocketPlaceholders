@@ -22,7 +22,7 @@ With this plugin you can create custom placeholders based on PlaceholderAPI
 
 ## Usage
 
-You can read the plugin wiki [here](https://lorenzo0111.gitbook.io/rocekt-plugins/rocketplaceholders/starting)
+You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplaceholders/starting)
 
 ## Support
 - [Issue Tracker][issues]
