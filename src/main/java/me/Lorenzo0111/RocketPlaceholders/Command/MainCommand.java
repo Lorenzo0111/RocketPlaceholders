@@ -1,6 +1,6 @@
 package me.Lorenzo0111.RocketPlaceholders.Command;
 
-import me.Lorenzo0111.RocketPlaceholders.Placeholders;
+import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
 import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -21,9 +21,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
      */
 
-    private final Placeholders plugin;
+    private final RocketPlaceholders plugin;
 
-    public MainCommand(Placeholders plugin) {
+    public MainCommand(RocketPlaceholders plugin) {
         this.plugin = plugin;
     }
 

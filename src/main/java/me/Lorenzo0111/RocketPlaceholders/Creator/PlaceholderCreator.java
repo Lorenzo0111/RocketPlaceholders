@@ -1,7 +1,7 @@
 package me.Lorenzo0111.RocketPlaceholders.Creator;
 
 
-import me.Lorenzo0111.RocketPlaceholders.Placeholders;
+import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -17,9 +17,9 @@ public class PlaceholderCreator extends PlaceholderExpansion {
 
      */
 
-    private final Placeholders plugin;
+    private final RocketPlaceholders plugin;
 
-    public PlaceholderCreator(Placeholders plugin){
+    public PlaceholderCreator(RocketPlaceholders plugin) {
         this.plugin = plugin;
     }
 
@@ -39,12 +39,12 @@ public class PlaceholderCreator extends PlaceholderExpansion {
     }
 
     @Override
-    public boolean canRegister(){
+    public boolean canRegister() {
         return true;
     }
 
     @Override
-    public boolean persist(){
+    public boolean persist() {
         return true;
     }
 
@@ -55,7 +55,7 @@ public class PlaceholderCreator extends PlaceholderExpansion {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("placeholders");
 
         for (String key : config.getKeys(false)) {
-            if(identifier.equals(config.getString(key + ".placeholder"))) {
+            if (identifier.equals(config.getString(key + ".placeholder"))) {
                 if (config.getString(key + ".permission") == null) {
                     return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
                 } else if (config.getString(key + ".text_with_permission") == null) {
