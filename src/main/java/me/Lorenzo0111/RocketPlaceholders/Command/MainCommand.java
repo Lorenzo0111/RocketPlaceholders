@@ -1,5 +1,6 @@
 package me.Lorenzo0111.RocketPlaceholders.Command;
 
+import me.Lorenzo0111.RocketPlaceholders.Creator.InternalPlaceholders;
 import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
 import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
 import org.bukkit.ChatColor;
@@ -22,9 +23,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
      */
 
     private final RocketPlaceholders plugin;
+    private final InternalPlaceholders internalPlaceholders;
+    private final UpdateChecker checker;
 
-    public MainCommand(RocketPlaceholders plugin) {
+    public MainCommand(RocketPlaceholders plugin, InternalPlaceholders internalPlaceholders, UpdateChecker checker) {
         this.plugin = plugin;
+        this.internalPlaceholders = internalPlaceholders;
+        this.checker = checker;
     }
 
     @Override
@@ -43,13 +48,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
                     plugin.reloadConfig();
-                    new UpdateChecker(plugin, 82520).getVersion(version -> {
-                        if (plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                            plugin.getLogger().info("There is not a new update available.");
-                        } else {
-                            plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
-                        }
-                    });
+                    checker.senderUpdateCheck(sender);
+                    internalPlaceholders.reloadPlaceholders();
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &7Plugin reloaded!"));
                     return true;
                 }
