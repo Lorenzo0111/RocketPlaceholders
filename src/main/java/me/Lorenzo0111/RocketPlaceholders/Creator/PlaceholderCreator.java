@@ -3,9 +3,8 @@ package me.Lorenzo0111.RocketPlaceholders.Creator;
 
 import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -18,9 +17,11 @@ public class PlaceholderCreator extends PlaceholderExpansion {
      */
 
     private final RocketPlaceholders plugin;
+    private final InternalPlaceholders internalPlaceholders;
 
-    public PlaceholderCreator(RocketPlaceholders plugin) {
+    public PlaceholderCreator(RocketPlaceholders plugin, InternalPlaceholders internalPlaceholders) {
         this.plugin = plugin;
+        this.internalPlaceholders = internalPlaceholders;
     }
 
     @Override
@@ -51,24 +52,31 @@ public class PlaceholderCreator extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
 
-
-        ConfigurationSection config = plugin.getConfig().getConfigurationSection("placeholders");
-
-        for (String key : config.getKeys(false)) {
-            if (identifier.equals(config.getString(key + ".placeholder"))) {
-                if (config.getString(key + ".permission") == null) {
-                    return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
-                } else if (config.getString(key + ".text_with_permission") == null) {
-                    return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
-                } else {
-                    if (player.getPlayer().hasPermission(config.getString(key + ".permission"))) {
-                        return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text_with_permission"));
-                    }
-
-                    return ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"));
-                }
-            }
+        if (player == null) {
+            return null;
         }
-        return null;
+
+        if (!player.isOnline()) {
+            return null;
+        }
+
+        Player onlinePlayer = player.getPlayer();
+
+        Placeholder placeholder = internalPlaceholders.searchInternalPlaceholder(identifier);
+
+        if (placeholder == null) {
+            return "";
+        }
+
+        if (placeholder.getPermission() == null) {
+            return placeholder.getText();
+        }
+
+        if (onlinePlayer.hasPermission(placeholder.getPermission())) {
+            return placeholder.getPermission_text();
+        } else {
+            return placeholder.getText();
+        }
+
     }
 }

@@ -21,26 +21,6 @@ placeholders:
 
   1:
     placeholder: "test"
-    text: "this is a test"
+    text: "This is an example"
     permission: "example.1"
-    text_with_permission: "this is a secret test!"
-  2:
-    placeholders: "author"
-    text: "The author of this plugin is Lorenzo0111"
-    permission: "rocketplaceholders.owner"
-    text_with_permission: "Oh, you are the owner :o"
-  3:
-    placeholders: "hi"
-    text: "Hi, how are you?"
-  4:
-    placeholders: "vip"
-    text: "&7You aren't a &cvip"
-    permission: "server.vip"
-    text_with_permission: "&7You are a &avip"
-
-
-
-
-
-
-    
+    text_with_permission: "This is a secret example!"

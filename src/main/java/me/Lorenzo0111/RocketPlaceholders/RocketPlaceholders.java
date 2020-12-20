@@ -1,5 +1,6 @@
 package me.Lorenzo0111.RocketPlaceholders;
 
+import me.Lorenzo0111.RocketPlaceholders.Creator.InternalPlaceholders;
 import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
 import me.Lorenzo0111.RocketPlaceholders.Utilities.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,15 +15,18 @@ public class RocketPlaceholders extends JavaPlugin {
 
     public void onEnable() {
 
-        PluginLoader loader = new PluginLoader(this);
-        loader.placeholderHook();
-        loader.loadMetrics();
-        loader.registerEvents();
+        saveDefaultConfig();
+
+        InternalPlaceholders placeholders = new InternalPlaceholders(this);
+        placeholders.registerPlaceholders();
 
         UpdateChecker checker = new UpdateChecker(this, 82678);
         checker.updateCheck();
 
-        saveDefaultConfig();
+        PluginLoader loader = new PluginLoader(this, placeholders, checker);
+        loader.placeholderHook();
+        loader.loadMetrics();
+        loader.registerEvents();
 
     }
 
