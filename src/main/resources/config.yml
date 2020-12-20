@@ -19,8 +19,28 @@ update-message: true
 
 placeholders:
 
-  0: # Only numbers (CHANGE IT, DO NOT USE THE 0 NUMBER)
-    placeholder: "test" #ex "test" = %rp_test%
-    text: "this is a test" #ex "this is a test" = out: "this is a test" (Players without permission)
-    permission: "example.1" #Permission to see the "text_with_permission" string
-    text_with_permission: "this is a secret test!" #Only for players with the permission
+  1:
+    placeholder: "test"
+    text: "this is a test"
+    permission: "example.1"
+    text_with_permission: "this is a secret test!"
+  2:
+    placeholders: "author"
+    text: "The author of this plugin is Lorenzo0111"
+    permission: "rocketplaceholders.owner"
+    text_with_permission: "Oh, you are the owner :o"
+  3:
+    placeholders: "hi"
+    text: "Hi, how are you?"
+  4:
+    placeholders: "vip"
+    text: "&7You aren't a &cvip"
+    permission: "server.vip"
+    text_with_permission: "&7You are a &avip"
+
+
+
+
+
+
+    
