@@ -1,7 +1,7 @@
 [relase]: https://img.shields.io/github/v/release/Lorenzo0111/RocketPlaceholders
 [releaselink]: https://github.com/Lorenzo0111/RocketPlaceholders/releases/latest
 
-[downloads]: http://badge.henrya.org/spigotbukkit/downloads?spigot=82520
+[downloads]: http://badge.henrya.org/spigotbukkit/downloads?spigot=82678
 
 [issues]: https://github.com/Lorenzo0111/RocketPlaceholders/issues
 
@@ -22,7 +22,7 @@ With this plugin you can create custom placeholders based on PlaceholderAPI
 
 ## Usage
 
-You can read the plugin wiki [here](https://lorenzo0111.gitbook.io/rocekt-plugins/rocketplaceholders/starting)
+You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplaceholders/starting)
 
 ## Support
 - [Issue Tracker][issues]
