@@ -3,6 +3,7 @@ package me.Lorenzo0111.RocketPlaceholders.Command;
 import me.Lorenzo0111.RocketPlaceholders.Creator.InternalPlaceholders;
 import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
 import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
+import me.Lorenzo0111.RocketPlaceholders.Utilities.Debugger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,11 +26,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     private final RocketPlaceholders plugin;
     private final InternalPlaceholders internalPlaceholders;
     private final UpdateChecker checker;
+    private final Debugger debugger;
 
     public MainCommand(RocketPlaceholders plugin, InternalPlaceholders internalPlaceholders, UpdateChecker checker) {
         this.plugin = plugin;
         this.internalPlaceholders = internalPlaceholders;
         this.checker = checker;
+        this.debugger = new Debugger(plugin);
     }
 
     @Override
@@ -58,6 +61,11 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders reload » &7Reload the plugin!"));
                     return true;
                 }
+                if (args[0].equalsIgnoreCase("debug")) {
+                    debugger.debug();
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &7Debug informations printed in the console."));
+                    return true;
+                }
             }
 
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &7Command not found, use &8/rocketplaceholders help&7 for a command list"));
@@ -73,6 +81,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         strings.add("reload");
         strings.add("help");
+        strings.add("debug");
 
         return strings;
     }
