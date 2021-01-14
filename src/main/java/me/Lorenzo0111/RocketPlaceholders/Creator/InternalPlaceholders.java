@@ -4,7 +4,9 @@ import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InternalPlaceholders {
 
@@ -19,20 +21,29 @@ public class InternalPlaceholders {
         return internalPlaceholders;
     }
 
-    public Placeholder searchInternalPlaceholder(String identififer) {
-        return internalPlaceholders.get(identififer);
+    public Placeholder searchInternalPlaceholder(String identifier) {
+        return internalPlaceholders.get(identifier);
     }
 
     public void registerPlaceholders() {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("placeholders");
 
         for (String key : config.getKeys(false)) {
-            if (config.getString(key + ".permission") == null) {
-                internalPlaceholders.put(config.getString(key + ".placeholder"), new Placeholder(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"))));
-            } else if (config.getString(key + ".text_with_permission") == null) {
+            ConfigurationSection nodesSection = config.getConfigurationSection(key).getConfigurationSection("permissions");
+
+            if (nodesSection == null) {
                 internalPlaceholders.put(config.getString(key + ".placeholder"), new Placeholder(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"))));
             } else {
-                internalPlaceholders.put(config.getString(key + ".placeholder"), new Placeholder(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text")), config.getString(key + ".permission"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text_with_permission"))));
+
+                List<PermissionNode> nodes = new ArrayList<>();
+                for (String nodeKey : nodesSection.getKeys(false)) {
+                    if (nodesSection.getString(nodeKey + ".permission") != null && nodesSection.getString(nodeKey + ".text") != null) {
+                        PermissionNode node = new PermissionNode(nodesSection.getString(nodeKey + ".permission"), nodesSection.getString(nodeKey + ".text"));
+                        nodes.add(node);
+                    }
+                }
+                Placeholder placeholder = new Placeholder(config.getString(key + ".placeholder"),config.getString(key + ".text"),nodes);
+                internalPlaceholders.put(config.getString(key + ".placeholder"), placeholder);
             }
         }
 
@@ -44,12 +55,21 @@ public class InternalPlaceholders {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("placeholders");
 
         for (String key : config.getKeys(false)) {
-            if (config.getString(key + ".permission") == null) {
-                internalPlaceholders.put(config.getString(key + ".placeholder"), new Placeholder(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"))));
-            } else if (config.getString(key + ".text_with_permission") == null) {
+            ConfigurationSection nodesSection = config.getConfigurationSection(key).getConfigurationSection("permissions");
+
+            if (nodesSection == null) {
                 internalPlaceholders.put(config.getString(key + ".placeholder"), new Placeholder(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text"))));
             } else {
-                internalPlaceholders.put(config.getString(key + ".placeholder"), new Placeholder(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text")), config.getString(key + ".permission"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text_with_permission"))));
+
+                List<PermissionNode> nodes = new ArrayList<>();
+                for (String nodeKey : nodesSection.getKeys(false)) {
+                    if (nodesSection.getString(nodeKey + ".permission") != null && nodesSection.getString(nodeKey + ".text") != null) {
+                        PermissionNode node = new PermissionNode(nodesSection.getString(nodeKey + ".permission"), nodesSection.getString(nodeKey + ".text"));
+                        nodes.add(node);
+                    }
+                }
+                Placeholder placeholder = new Placeholder(config.getString(key + ".placeholder"),config.getString(key + ".text"),nodes);
+                internalPlaceholders.put(config.getString(key + ".placeholder"), placeholder);
             }
         }
 

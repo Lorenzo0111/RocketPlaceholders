@@ -9,8 +9,11 @@
 #
 #
 
+# RocketPlaceholders Wiki: https://docs.rocketplugins.space/rocketplaceholders
+
 # RocketPlaceholders prefix
 prefix: "&c&lRocket&e&lPlaceholders &f&l»&r"
+no_permission: "&cYou do not have permission to use this command!"
 
 #Enable Update Message on Join. Default: true
 update-message: true
@@ -22,5 +25,7 @@ placeholders:
   1:
     placeholder: "test"
     text: "This is an example"
-    permission: "example.1"
-    text_with_permission: "This is a secret example!"
+    permissions:
+      1:
+        permission: "example.1"
+        text: "This is a secret example"

@@ -1,7 +1,7 @@
 name: RocketPlaceholders
 author: Lorenzo0111
 main: me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders
-version: 1.4
+version: 1.5
 softdepend: [PlaceholderAPI]
 description: Create custom placeholders with PlaceholderAPI
 commands:

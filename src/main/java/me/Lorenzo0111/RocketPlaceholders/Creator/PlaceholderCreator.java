@@ -62,21 +62,27 @@ public class PlaceholderCreator extends PlaceholderExpansion {
 
         Player onlinePlayer = player.getPlayer();
 
+        if (onlinePlayer == null) {
+            return null;
+        }
+
         Placeholder placeholder = internalPlaceholders.searchInternalPlaceholder(identifier);
 
         if (placeholder == null) {
-            return "";
+            return null;
         }
 
-        if (placeholder.getPermission() == null) {
+        if (!placeholder.hasPermissionNodes()) {
             return placeholder.getText();
         }
 
-        if (onlinePlayer.hasPermission(placeholder.getPermission())) {
-            return placeholder.getPermission_text();
-        } else {
-            return placeholder.getText();
+        for (PermissionNode node : placeholder.getPermissionNodes()) {
+            if (onlinePlayer.hasPermission(node.getPermission())) {
+                return node.getText();
+            }
         }
+
+        return placeholder.getText();
 
     }
 }
