@@ -1,9 +1,9 @@
-package me.Lorenzo0111.RocketPlaceholders.Command;
+package me.lorenzo0111.rocketplaceholders.command;
 
-import me.Lorenzo0111.RocketPlaceholders.Creator.InternalPlaceholders;
-import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
-import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
-import me.Lorenzo0111.RocketPlaceholders.Utilities.Debugger;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.InternalPlaceholders;
+import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
+import me.lorenzo0111.rocketplaceholders.utilities.Debugger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -51,7 +51,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
                     plugin.reloadConfig();
-                    checker.senderUpdateCheck(sender);
+                    checker.sendUpdateCheck(sender);
                     internalPlaceholders.reloadPlaceholders();
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &7Plugin reloaded!"));
                     return true;

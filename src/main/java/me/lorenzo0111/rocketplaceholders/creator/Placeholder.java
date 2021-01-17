@@ -1,27 +1,27 @@
-package me.Lorenzo0111.RocketPlaceholders.Creator;
+package me.lorenzo0111.rocketplaceholders.creator;
 
 import java.util.List;
 
 public class Placeholder {
 
-    private final String identififer;
+    private final String identifier;
     private final String text;
     private List<PermissionNode> permissionNodes;
 
     public Placeholder(String identifier, String text, List<PermissionNode> permissionNodes) {
-        this.identififer = identifier;
+        this.identifier = identifier;
         this.text = text;
         this.permissionNodes = permissionNodes;
     }
 
     public Placeholder(String identifier, String text) {
-        this.identififer = identifier;
+        this.identifier = identifier;
         this.text = text;
     }
 
 
     public String getIdentifier() {
-        return identififer;
+        return identifier;
     }
 
     public String getText() {

@@ -1,4 +1,4 @@
-package me.Lorenzo0111.RocketPlaceholders.Creator;
+package me.lorenzo0111.rocketplaceholders.creator;
 
 public class PermissionNode {
     private final String permission;

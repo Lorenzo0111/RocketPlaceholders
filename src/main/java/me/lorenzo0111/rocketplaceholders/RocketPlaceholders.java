@@ -1,8 +1,8 @@
-package me.Lorenzo0111.RocketPlaceholders;
+package me.lorenzo0111.rocketplaceholders;
 
-import me.Lorenzo0111.RocketPlaceholders.Creator.InternalPlaceholders;
-import me.Lorenzo0111.RocketPlaceholders.Updater.UpdateChecker;
-import me.Lorenzo0111.RocketPlaceholders.Utilities.PluginLoader;
+import me.lorenzo0111.rocketplaceholders.creator.InternalPlaceholders;
+import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
+import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RocketPlaceholders extends JavaPlugin {

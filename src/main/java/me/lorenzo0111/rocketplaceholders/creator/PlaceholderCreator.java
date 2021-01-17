@@ -1,8 +1,8 @@
-package me.Lorenzo0111.RocketPlaceholders.Creator;
+package me.lorenzo0111.rocketplaceholders.creator;
 
 
-import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

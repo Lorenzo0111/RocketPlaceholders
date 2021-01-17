@@ -1,6 +1,6 @@
-package me.Lorenzo0111.RocketPlaceholders.Utilities;
+package me.lorenzo0111.rocketplaceholders.utilities;
 
-import me.Lorenzo0111.RocketPlaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;
