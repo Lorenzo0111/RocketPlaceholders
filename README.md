@@ -32,3 +32,5 @@ You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplace
 
 
 Icons made by [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect) from [Flaticon](https://www.flaticon.com/)
+
+> :warning: **I recently have cleared the commit history for an issue, sorry**
