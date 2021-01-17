@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "5.2.0"
+}
+
+apply from: 'https://cdn.rocketplugins.space/spigot'
+
+group = 'me.Lorenzo0111'
+version = '1.5'
+description = 'RocketPlaceholders'
