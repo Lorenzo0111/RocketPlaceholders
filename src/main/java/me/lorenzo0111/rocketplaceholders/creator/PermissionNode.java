@@ -17,4 +17,12 @@ public class PermissionNode {
         return permission;
     }
 
+    @Override
+    public String toString() {
+        return "PermissionNode{" +
+                "permission='" + permission + '\'' +
+                ", text='" + text + '\'' +
+                '}';
+    }
+
 }

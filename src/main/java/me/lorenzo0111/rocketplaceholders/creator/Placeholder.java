@@ -8,6 +8,15 @@ public class Placeholder {
     private final String text;
     private List<PermissionNode> permissionNodes;
 
+    @Override
+    public String toString() {
+        return "Placeholder{" +
+                "identifier='" + identifier + '\'' +
+                ", text='" + text + '\'' +
+                ", permissionNodes=" + permissionNodes +
+                '}';
+    }
+
     public Placeholder(String identifier, String text, List<PermissionNode> permissionNodes) {
         this.identifier = identifier;
         this.text = text;
