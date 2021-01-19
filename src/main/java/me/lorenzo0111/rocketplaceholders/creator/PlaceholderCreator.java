@@ -3,6 +3,7 @@ package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,11 +18,11 @@ public class PlaceholderCreator extends PlaceholderExpansion {
      */
 
     private final RocketPlaceholders plugin;
-    private final InternalPlaceholders internalPlaceholders;
+    private final PlaceholdersManager placeholdersManager;
 
-    public PlaceholderCreator(RocketPlaceholders plugin, InternalPlaceholders internalPlaceholders) {
+    public PlaceholderCreator(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
         this.plugin = plugin;
-        this.internalPlaceholders = internalPlaceholders;
+        this.placeholdersManager = placeholdersManager;
     }
 
     @Override
@@ -66,7 +67,7 @@ public class PlaceholderCreator extends PlaceholderExpansion {
             return null;
         }
 
-        Placeholder placeholder = internalPlaceholders.searchInternalPlaceholder(identifier);
+        Placeholder placeholder = placeholdersManager.searchPlaceholder(identifier);
 
         if (placeholder == null) {
             return null;

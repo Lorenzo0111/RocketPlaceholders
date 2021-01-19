@@ -1,26 +1,24 @@
-package me.lorenzo0111.rocketplaceholders.creator;
+package me.lorenzo0111.rocketplaceholders.creator.placeholders;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
+import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("unused")
 public class InternalPlaceholders {
 
     private final RocketPlaceholders plugin;
-    private final StorageManager storageManager = new StorageManager();
+    private final StorageManager storageManager;
 
     public InternalPlaceholders(RocketPlaceholders plugin) {
         this.plugin = plugin;
-    }
-
-    public Placeholder searchInternalPlaceholder(String identifier) {
-        return storageManager.get(identifier);
+        this.storageManager = plugin.getStorageManager();
     }
 
     public void registerPlaceholders() {
@@ -35,7 +33,7 @@ public class InternalPlaceholders {
             ConfigurationSection nodesSection = config.getConfigurationSection(key).getConfigurationSection("permissions");
 
             if (nodesSection == null) {
-                storageManager.build(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text")));
+                storageManager.getInternalPlaceholders().build(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text")));
             } else {
 
                 List<PermissionNode> nodes = new ArrayList<>();
@@ -46,15 +44,15 @@ public class InternalPlaceholders {
                     }
                 }
                 Placeholder placeholder = new Placeholder(config.getString(key + ".placeholder"),config.getString(key + ".text"),nodes);
-                storageManager.add(config.getString(key + ".placeholder"), placeholder);
+                storageManager.getInternalPlaceholders().add(config.getString(key + ".placeholder"), placeholder);
             }
         }
 
-        plugin.getLogger().info("Loaded " + storageManager.getHashMap().size() + " placeholders!");
+        plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getHashMap().size() + " placeholders!");
     }
 
     public void reloadPlaceholders() {
-        storageManager.clear();
+        storageManager.getInternalPlaceholders().clear();
 
         registerPlaceholders();
     }

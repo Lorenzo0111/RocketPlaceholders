@@ -1,35 +1,26 @@
 package me.lorenzo0111.rocketplaceholders.storage;
 
-import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
-
-import java.util.HashMap;
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 public class StorageManager {
-    private final HashMap<String, Placeholder> hashMap = new HashMap<>();
+    private final Storage internalPlaceholders = new Storage();
+    private final Storage externalPlaceholders = new Storage();
 
-    public void add(String identifier, Placeholder placeholder) {
-        hashMap.put(identifier, placeholder);
+    public Storage getInternalPlaceholders() {
+        return internalPlaceholders;
     }
 
-    public void build(String identifier, String text) {
-        hashMap.put(identifier, new Placeholder(identifier, text));
+    public Storage getExternalPlaceholders() {
+        return externalPlaceholders;
     }
 
-    public void build(String identifier, String text, List<PermissionNode> permissionNodes) {
-        hashMap.put(identifier, new Placeholder(identifier, text, permissionNodes));
-    }
-
-    public void clear() {
-        hashMap.clear();
-    }
-
+    @Nullable
     public Placeholder get(String identifier) {
-        return hashMap.get(identifier);
-    }
+        if (internalPlaceholders.getHashMap().containsKey(identifier)) {
+            return internalPlaceholders.get(identifier);
+        }
 
-    public HashMap<String, Placeholder> getHashMap() {
-        return hashMap;
+        return externalPlaceholders.get(identifier);
     }
 }

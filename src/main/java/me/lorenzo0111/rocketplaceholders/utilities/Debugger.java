@@ -19,14 +19,14 @@ public class Debugger {
     public void debug() {
         log("-----------[ RocketPlugins Debugger ]-----------");
 
-        log("Server Informations:");
+        log("Server Information:");
         logData("Server Version", Bukkit.getServer().getBukkitVersion());
         logData("Server Software", Bukkit.getServer().getVersion());
         logData("Server Plugins", Arrays.toString(Bukkit.getServer().getPluginManager().getPlugins()));
 
         log("");
 
-        log("Plugin Informations");
+        log("Plugin Information");
         logData("Plugin Name", plugin.getDescription().getName());
         logData("Plugin Version", plugin.getDescription().getVersion());
 

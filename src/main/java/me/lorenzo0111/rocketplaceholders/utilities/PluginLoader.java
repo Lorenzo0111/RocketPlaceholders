@@ -2,7 +2,7 @@ package me.lorenzo0111.rocketplaceholders.utilities;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.MainCommand;
-import me.lorenzo0111.rocketplaceholders.creator.InternalPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholderCreator;
 import me.lorenzo0111.rocketplaceholders.listener.JoinListener;
 import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
@@ -13,12 +13,12 @@ import org.bukkit.command.PluginCommand;
 public class PluginLoader {
 
     private final RocketPlaceholders plugin;
-    private final InternalPlaceholders internalPlaceholders;
+    private final PlaceholdersManager placeholdersManager;
     private final UpdateChecker updateChecker;
 
-    public PluginLoader(RocketPlaceholders plugin, InternalPlaceholders internalPlaceholders, UpdateChecker updateChecker) {
+    public PluginLoader(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager, UpdateChecker updateChecker) {
         this.plugin = plugin;
-        this.internalPlaceholders = internalPlaceholders;
+        this.placeholdersManager = placeholdersManager;
         this.updateChecker = updateChecker;
     }
 
@@ -36,15 +36,15 @@ public class PluginLoader {
             return;
         }
 
-        command.setExecutor(new MainCommand(plugin,internalPlaceholders, updateChecker));
-        command.setTabCompleter(new MainCommand(plugin,internalPlaceholders, updateChecker));
+        command.setExecutor(new MainCommand(plugin,placeholdersManager, updateChecker));
+        command.setTabCompleter(new MainCommand(plugin,placeholdersManager, updateChecker));
     }
 
     public void placeholderHook() {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             plugin.getLogger().info("PlaceholderAPI hooked!");
             plugin.getLogger().info(plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " by Lorenzo0111 is now enabled!");
-            new PlaceholderCreator(plugin, internalPlaceholders).register();
+            new PlaceholderCreator(plugin, placeholdersManager).register();
             return;
         }
 
