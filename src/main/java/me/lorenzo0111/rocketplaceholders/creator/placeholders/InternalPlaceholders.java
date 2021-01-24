@@ -54,7 +54,9 @@ public class InternalPlaceholders {
     public void reloadPlaceholders() {
         storageManager.getInternalPlaceholders().clear();
 
-        registerPlaceholders();
+        if (plugin.getLoader().getDatabaseManager() == null || !plugin.getLoader().getDatabaseManager().isMain()) {
+            registerPlaceholders();
+        }
     }
 
     public StorageManager getStorageManager() {

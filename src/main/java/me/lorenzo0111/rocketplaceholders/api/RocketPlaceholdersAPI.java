@@ -1,7 +1,7 @@
 package me.lorenzo0111.rocketplaceholders.api;
 
-import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")

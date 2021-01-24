@@ -2,7 +2,6 @@ package me.lorenzo0111.rocketplaceholders.command;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
-import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
 import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.utilities.Debugger;
 import org.bukkit.ChatColor;
@@ -47,10 +46,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders help » &7Show this message!"));
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders reload » &7Reload the plugin!"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders debug » &7Print debug message!"));
                 return true;
             }
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
+                    plugin.saveConfig();
                     plugin.reloadConfig();
                     checker.sendUpdateCheck(sender);
                     placeholdersManager.reload();
@@ -60,6 +61,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 if (args[0].equalsIgnoreCase("help")) {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders help » &7Show this message!"));
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders reload » &7Reload the plugin!"));
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders debug » &7Print debug message!"));
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("debug")) {

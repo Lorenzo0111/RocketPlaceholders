@@ -1,5 +1,6 @@
 package me.lorenzo0111.rocketplaceholders;
 
+import lombok.Getter;
 import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
@@ -11,7 +12,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RocketPlaceholders extends JavaPlugin {
 
     private static RocketPlaceholdersAPI api;
+
+    @Getter
     private StorageManager storageManager;
+
+    @Getter
+    private PluginLoader loader;
 
     /*
 
@@ -27,20 +33,21 @@ public class RocketPlaceholders extends JavaPlugin {
 
         InternalPlaceholders placeholders = new InternalPlaceholders(this);
 
-        PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders);
-
-        placeholders.registerPlaceholders();
+        PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders, this);
 
         api = new RocketPlaceholdersAPI(placeholdersManager);
+
+        placeholders.registerPlaceholders();
 
         UpdateChecker checker = new UpdateChecker(this, 82678);
         checker.updateCheck();
 
-        PluginLoader loader = new PluginLoader(this, placeholdersManager, checker);
-        loader.placeholderHook();
+        loader = new PluginLoader(this, placeholdersManager, checker);
+        loader.loadDatabase();
+
         loader.loadMetrics();
         loader.registerEvents();
-
+        loader.placeholderHook();
     }
 
     @Override
@@ -51,9 +58,5 @@ public class RocketPlaceholders extends JavaPlugin {
     @SuppressWarnings("unused")
     public static RocketPlaceholdersAPI getApi() {
         return api;
-    }
-
-    public StorageManager getStorageManager() {
-        return storageManager;
     }
 }

@@ -6,5 +6,5 @@ plugins {
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
 group = 'me.Lorenzo0111'
-version = '1.5'
+version = '1.6'
 description = 'RocketPlaceholders'

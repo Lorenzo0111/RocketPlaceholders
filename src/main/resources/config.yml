@@ -18,6 +18,19 @@ no_permission: "&cYou do not have permission to use this command!"
 #Enable Update Message on Join. Default: true
 update-message: true
 
+mysql:
+  # If this is not enabled will be used local placeholders
+  enabled: false
+  # The main server is the server from the placeholders are copied
+  main: false
+  # Database information
+  ip: 0.0.0.0
+  port: 3306
+  username: ""
+  password: ""
+  database: ""
+
+
 # RocketPlaceholders custom placeholders
 
 placeholders:

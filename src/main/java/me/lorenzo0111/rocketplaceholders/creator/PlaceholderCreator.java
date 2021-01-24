@@ -3,7 +3,6 @@ package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
