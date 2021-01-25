@@ -51,7 +51,6 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             }
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
-                    plugin.saveConfig();
                     plugin.reloadConfig();
                     checker.sendUpdateCheck(sender);
                     placeholdersManager.reload();
