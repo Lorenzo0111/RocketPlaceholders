@@ -10,18 +10,18 @@ public class PermissionNode {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public String getPermission() {
-        return permission;
+        return this.permission;
     }
 
     @Override
     public String toString() {
         return "PermissionNode{" +
-                "permission='" + permission + '\'' +
-                ", text='" + text + '\'' +
+                "permission='" + this.permission + '\'' +
+                ", text='" + this.text + '\'' +
                 '}';
     }
 

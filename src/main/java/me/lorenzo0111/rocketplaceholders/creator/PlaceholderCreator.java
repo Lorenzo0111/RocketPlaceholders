@@ -60,13 +60,13 @@ public class PlaceholderCreator extends PlaceholderExpansion {
             return null;
         }
 
-        Player onlinePlayer = player.getPlayer();
+        final Player onlinePlayer = player.getPlayer();
 
         if (onlinePlayer == null) {
             return null;
         }
 
-        Placeholder placeholder = placeholdersManager.searchPlaceholder(identifier);
+        final Placeholder placeholder = placeholdersManager.searchPlaceholder(identifier);
 
         if (placeholder == null) {
             return null;

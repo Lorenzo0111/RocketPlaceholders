@@ -25,7 +25,7 @@ public class DatabaseManager {
         this.mysqlSection = this.plugin.getConfig().getConfigurationSection("mysql");
 
         if (mysqlSection == null) {
-            plugin.getLogger().severe("MySQL configuration section not found. Please add it.");
+            this.plugin.getLogger().severe("MySQL configuration section not found. Please add it.");
             return;
         }
 
@@ -33,7 +33,7 @@ public class DatabaseManager {
             Class.forName("com.mysql.jdbc.Driver");
             this.connection = DriverManager.getConnection("jdbc:mysql://" + mysqlSection.getString("ip") + ":" + mysqlSection.getInt("port") + "/" + mysqlSection.getString("database"), mysqlSection.getString("username"), mysqlSection.getString("password"));
         } catch (ClassNotFoundException | SQLException e) {
-            plugin.getLogger().severe("MySQL driver is not installed, please install it to use the mysql function");
+            this.plugin.getLogger().severe("MySQL driver is not installed, please install it to use the mysql function");
         }
     }
 

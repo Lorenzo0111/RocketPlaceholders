@@ -34,14 +34,14 @@ public class UpdateChecker {
                     consumer.accept(scanner.next());
                 }
             } catch (IOException exception) {
-                plugin.getLogger().info("Cannot look for updates: " + exception.getMessage());
+                this.plugin.getLogger().info("Cannot look for updates: " + exception.getMessage());
             }
         });
     }
 
     public void sendUpdateCheck(CommandSender player) {
-        new UpdateChecker(plugin, resourceId).getVersion(version -> {
-            if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
+        this.getVersion(version -> {
+            if (!this.plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l&m---------------------------------------"));
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7There is a new update available."));
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7Download it from: &ehttps://bit.ly/RocketPlaceholders"));
@@ -52,10 +52,8 @@ public class UpdateChecker {
 
     public void updateCheck() {
         this.getVersion(version -> {
-            if (plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                plugin.getLogger().info("There is not a new update available.");
-            } else {
-                plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
+            if (!this.plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
+                this.plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
             }
         });
     }

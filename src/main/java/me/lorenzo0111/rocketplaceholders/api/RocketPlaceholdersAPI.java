@@ -13,15 +13,15 @@ public class RocketPlaceholdersAPI {
     }
 
     public void addPlaceholder(Placeholder placeholder) {
-        placeholdersManager.getStorageManager().getExternalPlaceholders().add(placeholder.getIdentifier(), placeholder);
+        this.placeholdersManager.getStorageManager().getExternalPlaceholders().add(placeholder.getIdentifier(), placeholder);
     }
 
     @Nullable
     public Placeholder getPlaceholder(String identifier) {
-       return placeholdersManager.searchPlaceholder(identifier);
+       return this.placeholdersManager.searchPlaceholder(identifier);
     }
 
     public PlaceholdersManager getInternalPlaceholders() {
-        return placeholdersManager;
+        return this.placeholdersManager;
     }
 }

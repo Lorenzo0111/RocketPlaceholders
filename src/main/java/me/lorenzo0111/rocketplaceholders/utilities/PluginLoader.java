@@ -1,7 +1,7 @@
 package me.lorenzo0111.rocketplaceholders.utilities;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.command.MainCommand;
+import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholderCreator;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
@@ -35,54 +35,54 @@ public class PluginLoader {
     public void registerEvents() {
         Bukkit.getServer().getPluginManager().registerEvents(new JoinListener(plugin), plugin);
 
-        PluginCommand command = plugin.getCommand("rocketplaceholders");
+        final PluginCommand command = plugin.getCommand("rocketplaceholders");
 
         if (command == null) {
             plugin.getLogger().severe("An error has occurred, please open an issue on GitHub");
             return;
         }
 
-        command.setExecutor(new MainCommand(plugin,placeholdersManager, updateChecker));
-        command.setTabCompleter(new MainCommand(plugin,placeholdersManager, updateChecker));
+        command.setExecutor(new RocketPlaceholdersCommand(plugin,placeholdersManager, updateChecker));
+        command.setTabCompleter(new RocketPlaceholdersCommand(plugin,placeholdersManager, updateChecker));
     }
 
     public void placeholderHook() {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            plugin.getLogger().info("PlaceholderAPI hooked!");
-            plugin.getLogger().info(plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " by Lorenzo0111 is now enabled!");
+            this.plugin.getLogger().info("PlaceholderAPI hooked!");
+            this.plugin.getLogger().info(this.plugin.getDescription().getName() + " v" + this.plugin.getDescription().getVersion() + " by Lorenzo0111 is now enabled!");
             new PlaceholderCreator(plugin, placeholdersManager).register();
             return;
         }
 
-        plugin.getLogger().severe("Could not find PlaceholderAPI! This plugin is required.");
+        this.plugin.getLogger().severe("Could not find PlaceholderAPI! This plugin is required.");
         Bukkit.getPluginManager().disablePlugin(plugin);
     }
 
     public void loadDatabase() {
-        ConfigurationSection mysqlSection = plugin.getConfig().getConfigurationSection("mysql");
+        final ConfigurationSection mysqlSection = plugin.getConfig().getConfigurationSection("mysql");
 
         if (mysqlSection != null && mysqlSection.getBoolean("enabled")) {
-            if (databaseManager == null) {
+            if (this.databaseManager == null) {
                 this.loadDatabaseManager();
 
-                databaseManager.createTables();
+                this.databaseManager.createTables();
 
                 if (databaseManager.isMain()) {
-                    plugin.getLogger().info("Adding placeholders to the database..");
+                    this.plugin.getLogger().info("Adding placeholders to the database..");
 
                     databaseManager.removeAll().thenAccept(success -> {
                         if (success) {
-                            databaseManager.sync();
+                            this.databaseManager.sync();
                         } else {
-                            plugin.getLogger().severe("An error has occurred while adding placeholders to the database, please try again or open an issue on github.");
+                            this.plugin.getLogger().severe("An error has occurred while adding placeholders to the database, please try again or open an issue on github.");
                         }
                     });
                 } else {
-                    plugin.getLogger().info("Retrieving placeholders from the database..");
+                    this.plugin.getLogger().info("Retrieving placeholders from the database..");
 
-                    databaseManager.getFromDatabase().thenAccept(placeholders -> {
-                        plugin.getStorageManager().getInternalPlaceholders().getHashMap().putAll(placeholders);
-                        plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
+                    this.databaseManager.getFromDatabase().thenAccept(placeholders -> {
+                        this.plugin.getStorageManager().getInternalPlaceholders().getHashMap().putAll(placeholders);
+                        this.plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
                     });
                 }
             }

@@ -17,24 +17,24 @@ public class Debugger {
     }
 
     public void debug() {
-        log("-----------[ RocketPlugins Debugger ]-----------");
+        this.log("-----------[ RocketPlugins Debugger ]-----------");
 
-        log("Server Information:");
-        logData("Server Version", Bukkit.getServer().getBukkitVersion());
-        logData("Server Software", Bukkit.getServer().getVersion());
-        logData("Server Plugins", Arrays.toString(Bukkit.getServer().getPluginManager().getPlugins()));
+        this.log("Server Information:");
+        this.logData("Server Version", Bukkit.getServer().getBukkitVersion());
+        this.logData("Server Software", Bukkit.getServer().getVersion());
+        this.logData("Server Plugins", Arrays.toString(Bukkit.getServer().getPluginManager().getPlugins()));
 
-        log("");
+        this.log("");
 
-        log("Plugin Information");
-        logData("Plugin Name", plugin.getDescription().getName());
-        logData("Plugin Version", plugin.getDescription().getVersion());
+        this.log("Plugin Information");
+        this.logData("Plugin Name", plugin.getDescription().getName());
+        this.logData("Plugin Version", plugin.getDescription().getVersion());
 
-        log("-----------[ RocketPlugins Debugger ]-----------");
+        this.log("-----------[ RocketPlugins Debugger ]-----------");
     }
 
     private void logData(String prefix, String message) {
-        log(prefix + ": " + message);
+        this.log(prefix + ": " + message);
     }
 
     private void log(String message) {

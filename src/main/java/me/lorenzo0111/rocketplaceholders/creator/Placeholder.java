@@ -1,5 +1,7 @@
 package me.lorenzo0111.rocketplaceholders.creator;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class Placeholder {
@@ -17,31 +19,31 @@ public class Placeholder {
                 '}';
     }
 
-    public Placeholder(String identifier, String text, List<PermissionNode> permissionNodes) {
+    public Placeholder(@NotNull String identifier, @NotNull String text, List<PermissionNode> permissionNodes) {
         this.identifier = identifier;
         this.text = text;
         this.permissionNodes = permissionNodes;
     }
 
-    public Placeholder(String identifier, String text) {
+    public Placeholder(@NotNull String identifier, @NotNull String text) {
         this.identifier = identifier;
         this.text = text;
     }
 
 
     public String getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public List<PermissionNode> getPermissionNodes() {
-        return permissionNodes;
+        return this.permissionNodes;
     }
 
     public boolean hasPermissionNodes() {
-        return permissionNodes != null;
+        return this.permissionNodes != null;
     }
 }

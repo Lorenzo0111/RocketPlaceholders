@@ -20,29 +20,30 @@ public class RocketPlaceholders extends JavaPlugin {
 
      */
 
+    @Override
     public void onEnable() {
 
         saveDefaultConfig();
 
         this.storageManager = new StorageManager();
 
-        InternalPlaceholders placeholders = new InternalPlaceholders(this);
+        final InternalPlaceholders placeholders = new InternalPlaceholders(this);
 
-        PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders, this);
+        final PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders, this);
 
         api = new RocketPlaceholdersAPI(placeholdersManager);
 
         placeholders.registerPlaceholders();
 
-        UpdateChecker checker = new UpdateChecker(this, 82678);
+        final UpdateChecker checker = new UpdateChecker(this, 82678);
         checker.updateCheck();
 
-        loader = new PluginLoader(this, placeholdersManager, checker);
-        loader.loadDatabase();
+        this.loader = new PluginLoader(this, placeholdersManager, checker);
+        this.loader.loadDatabase();
 
-        loader.loadMetrics();
-        loader.registerEvents();
-        loader.placeholderHook();
+        this.loader.loadMetrics();
+        this.loader.registerEvents();
+        this.loader.placeholderHook();
     }
 
     @Override

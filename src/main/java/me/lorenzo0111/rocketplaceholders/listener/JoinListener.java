@@ -25,8 +25,8 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         if (event.getPlayer().hasPermission("rocketplaceholders.update")) {
-            if (!plugin.getConfig().getBoolean("update-message")) {
-                updateChecker.sendUpdateCheck(event.getPlayer());
+            if (!this.plugin.getConfig().getBoolean("update-message")) {
+                this.updateChecker.sendUpdateCheck(event.getPlayer());
             }
         }
 

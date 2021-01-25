@@ -8,19 +8,19 @@ public class StorageManager {
     private final Storage externalPlaceholders = new Storage();
 
     public Storage getInternalPlaceholders() {
-        return internalPlaceholders;
+        return this.internalPlaceholders;
     }
 
     public Storage getExternalPlaceholders() {
-        return externalPlaceholders;
+        return this.externalPlaceholders;
     }
 
     @Nullable
     public Placeholder get(String identifier) {
-        if (internalPlaceholders.getHashMap().containsKey(identifier)) {
-            return internalPlaceholders.get(identifier);
+        if (this.internalPlaceholders.getHashMap().containsKey(identifier)) {
+            return this.internalPlaceholders.get(identifier);
         }
 
-        return externalPlaceholders.get(identifier);
+        return this.externalPlaceholders.get(identifier);
     }
 }
