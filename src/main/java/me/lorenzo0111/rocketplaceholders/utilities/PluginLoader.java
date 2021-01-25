@@ -1,7 +1,5 @@
 package me.lorenzo0111.rocketplaceholders.utilities;
 
-import lombok.Getter;
-import lombok.Setter;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.MainCommand;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholderCreator;
@@ -22,8 +20,6 @@ public class PluginLoader {
     private final UpdateChecker updateChecker;
 
     @Nullable
-    @Setter
-    @Getter
     private DatabaseManager databaseManager;
 
     public PluginLoader(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager, UpdateChecker updateChecker) {
@@ -97,4 +93,11 @@ public class PluginLoader {
         databaseManager = new DatabaseManager(plugin);
     }
 
+    public @Nullable DatabaseManager getDatabaseManager() {
+        return this.databaseManager;
+    }
+
+    public void setDatabaseManager(@Nullable DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
+    }
 }

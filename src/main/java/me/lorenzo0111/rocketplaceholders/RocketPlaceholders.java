@@ -1,6 +1,5 @@
 package me.lorenzo0111.rocketplaceholders;
 
-import lombok.Getter;
 import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
@@ -12,11 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RocketPlaceholders extends JavaPlugin {
 
     private static RocketPlaceholdersAPI api;
-
-    @Getter
     private StorageManager storageManager;
-
-    @Getter
     private PluginLoader loader;
 
     /*
@@ -58,5 +53,13 @@ public class RocketPlaceholders extends JavaPlugin {
     @SuppressWarnings("unused")
     public static RocketPlaceholdersAPI getApi() {
         return api;
+    }
+
+    public StorageManager getStorageManager() {
+        return this.storageManager;
+    }
+
+    public PluginLoader getLoader() {
+        return this.loader;
     }
 }

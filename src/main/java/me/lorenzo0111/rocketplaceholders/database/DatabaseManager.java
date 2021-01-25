@@ -2,7 +2,6 @@ package me.lorenzo0111.rocketplaceholders.database;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import lombok.Setter;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
@@ -18,10 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
     private final RocketPlaceholders plugin;
-
-    @Setter
     private ConfigurationSection mysqlSection;
-
     private Connection connection;
 
     public DatabaseManager(RocketPlaceholders plugin) {
@@ -206,5 +202,9 @@ public class DatabaseManager {
             plugin.getStorageManager().getInternalPlaceholders().getHashMap().putAll(placeholders);
             plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
         });
+    }
+
+    public void setMysqlSection(ConfigurationSection mysqlSection) {
+        this.mysqlSection = mysqlSection;
     }
 }
