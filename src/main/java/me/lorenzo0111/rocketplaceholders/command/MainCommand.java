@@ -2,6 +2,7 @@ package me.lorenzo0111.rocketplaceholders.command;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
 import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.utilities.Debugger;
 import org.bukkit.ChatColor;
@@ -9,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,6 +55,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 if (args[0].equalsIgnoreCase("reload")) {
                     plugin.reloadConfig();
                     checker.sendUpdateCheck(sender);
+
+                    plugin.getLoader().loadDatabaseManager();
+
+                    if (plugin.getLoader().getDatabaseManager() != null && !plugin.getConfig().getBoolean("mysql.enabled")) {
+                        plugin.getLoader().setDatabaseManager(null);
+                    }
+
                     placeholdersManager.reload();
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &7Plugin reloaded!"));
                     return true;

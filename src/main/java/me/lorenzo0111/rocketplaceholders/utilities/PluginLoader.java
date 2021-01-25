@@ -1,6 +1,7 @@
 package me.lorenzo0111.rocketplaceholders.utilities;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.MainCommand;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholderCreator;
@@ -12,12 +13,16 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 public class PluginLoader {
 
     private final RocketPlaceholders plugin;
     private final PlaceholdersManager placeholdersManager;
     private final UpdateChecker updateChecker;
+
+    @Nullable
+    @Setter
     @Getter
     private DatabaseManager databaseManager;
 
@@ -62,7 +67,7 @@ public class PluginLoader {
 
         if (mysqlSection != null && mysqlSection.getBoolean("enabled")) {
             if (databaseManager == null) {
-                databaseManager = new DatabaseManager(plugin);
+                this.loadDatabaseManager();
 
                 databaseManager.createTables();
 
@@ -86,6 +91,10 @@ public class PluginLoader {
                 }
             }
         }
+    }
+
+    public void loadDatabaseManager() {
+        databaseManager = new DatabaseManager(plugin);
     }
 
 }
