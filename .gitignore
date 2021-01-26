@@ -109,6 +109,9 @@ gradle/
 gradlew
 gradlew.bat
 
+# Testing server
+server/
+
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties

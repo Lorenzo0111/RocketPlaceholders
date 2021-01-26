@@ -1,16 +1,17 @@
 package me.lorenzo0111.rocketplaceholders;
 
 import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPI;
+import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPIManager;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RocketPlaceholders extends JavaPlugin {
 
-    private static RocketPlaceholdersAPI api;
     private StorageManager storageManager;
     private PluginLoader loader;
 
@@ -31,7 +32,9 @@ public class RocketPlaceholders extends JavaPlugin {
 
         final PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders, this);
 
-        api = new RocketPlaceholdersAPI(placeholdersManager);
+        final RocketPlaceholdersAPI api = new RocketPlaceholdersAPIManager(placeholdersManager);
+
+        this.getServer().getServicesManager().register(RocketPlaceholdersAPI.class, api, this, ServicePriority.Normal);
 
         placeholders.registerPlaceholders();
 
@@ -49,11 +52,6 @@ public class RocketPlaceholders extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
-    }
-
-    @SuppressWarnings("unused")
-    public static RocketPlaceholdersAPI getApi() {
-        return api;
     }
 
     public StorageManager getStorageManager() {

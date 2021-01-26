@@ -4,24 +4,12 @@ import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("unused")
-public class RocketPlaceholdersAPI {
-    public final PlaceholdersManager placeholdersManager;
+public interface RocketPlaceholdersAPI {
 
-    public RocketPlaceholdersAPI(PlaceholdersManager placeholdersManager) {
-        this.placeholdersManager = placeholdersManager;
-    }
-
-    public void addPlaceholder(Placeholder placeholder) {
-        this.placeholdersManager.getStorageManager().getExternalPlaceholders().add(placeholder.getIdentifier(), placeholder);
-    }
+    void addPlaceholder(Placeholder placeholder);
 
     @Nullable
-    public Placeholder getPlaceholder(String identifier) {
-       return this.placeholdersManager.searchPlaceholder(identifier);
-    }
+    Placeholder getPlaceholder(String identifier);
 
-    public PlaceholdersManager getInternalPlaceholders() {
-        return this.placeholdersManager;
-    }
+    PlaceholdersManager getInternalPlaceholders();
 }
