@@ -6,6 +6,7 @@ import me.lorenzo0111.rocketplaceholders.creator.PlaceholderCreator;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
 import me.lorenzo0111.rocketplaceholders.listener.JoinListener;
+import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -18,8 +19,6 @@ public class PluginLoader {
     private final RocketPlaceholders plugin;
     private final PlaceholdersManager placeholdersManager;
     private final UpdateChecker updateChecker;
-
-    @Nullable
     private DatabaseManager databaseManager;
 
     public PluginLoader(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager, UpdateChecker updateChecker) {
@@ -81,7 +80,13 @@ public class PluginLoader {
                     this.plugin.getLogger().info("Retrieving placeholders from the database..");
 
                     this.databaseManager.getFromDatabase().thenAccept(placeholders -> {
-                        this.plugin.getStorageManager().getInternalPlaceholders().getHashMap().putAll(placeholders);
+                        final StorageManager storageManager = plugin.getStorageManager();
+
+                        if (storageManager == null) {
+                            throw new NullPointerException("StorageManager cannot be null.");
+                        }
+
+                        storageManager.getInternalPlaceholders().getMap().putAll(placeholders);
                         this.plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
                     });
                 }
@@ -93,7 +98,8 @@ public class PluginLoader {
         databaseManager = new DatabaseManager(plugin);
     }
 
-    public @Nullable DatabaseManager getDatabaseManager() {
+    @Nullable
+    public DatabaseManager getDatabaseManager() {
         return this.databaseManager;
     }
 

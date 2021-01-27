@@ -28,6 +28,7 @@ public class PlaceholdersManager {
 
     public void reload() {
         final PluginLoader loader = this.plugin.getLoader();
+
         final DatabaseManager databaseManager = loader.getDatabaseManager();
 
         if (databaseManager != null) {
@@ -44,9 +45,10 @@ public class PlaceholdersManager {
                 databaseManager.reload(internalPlaceholders);
             }
 
-        } else {
-            this.internalPlaceholders.reloadPlaceholders();
+            return;
         }
+
+        this.internalPlaceholders.reloadPlaceholders();
 
     }
 

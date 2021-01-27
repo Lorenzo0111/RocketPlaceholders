@@ -44,12 +44,17 @@ public class InternalPlaceholders {
                     }
                 }
 
-                final Placeholder placeholder = new Placeholder(config.getString(key + ".placeholder"),config.getString(key + ".text"),nodes);
-                storageManager.getInternalPlaceholders().add(config.getString(key + ".placeholder"), placeholder);
+                final String identifier = config.getString(key + ".placeholder");
+                final String text = config.getString(key + ".text");
+
+                if (identifier != null && text != null) {
+                    final Placeholder placeholder = new Placeholder(identifier,text,nodes);
+                    storageManager.getInternalPlaceholders().add(identifier, placeholder);
+                }
             }
         }
 
-        plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getHashMap().size() + " placeholders!");
+        plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
     }
 
     public void reloadPlaceholders() {

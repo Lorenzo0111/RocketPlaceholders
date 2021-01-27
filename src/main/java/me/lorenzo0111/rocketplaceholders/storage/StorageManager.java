@@ -17,7 +17,7 @@ public class StorageManager {
 
     @Nullable
     public Placeholder get(String identifier) {
-        if (this.internalPlaceholders.getHashMap().containsKey(identifier)) {
+        if (this.internalPlaceholders.getMap().containsKey(identifier)) {
             return this.internalPlaceholders.get(identifier);
         }
 

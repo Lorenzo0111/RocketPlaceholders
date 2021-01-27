@@ -48,6 +48,7 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
                     return true;
                 }
             }
+
         } else {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders help » &7Show this message!"));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders reload » &7Reload the plugin!"));

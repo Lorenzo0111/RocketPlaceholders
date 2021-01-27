@@ -9,8 +9,9 @@ import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
-public class RocketPlaceholders extends JavaPlugin {
+public final class RocketPlaceholders extends JavaPlugin {
 
     private StorageManager storageManager;
     private PluginLoader loader;
@@ -54,6 +55,7 @@ public class RocketPlaceholders extends JavaPlugin {
         getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
     }
 
+    @Nullable
     public StorageManager getStorageManager() {
         return this.storageManager;
     }

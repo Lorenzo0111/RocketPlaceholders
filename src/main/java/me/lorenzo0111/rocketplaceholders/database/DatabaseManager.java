@@ -7,17 +7,19 @@ import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
+import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
     private final RocketPlaceholders plugin;
-    private ConfigurationSection mysqlSection;
+    private final ConfigurationSection mysqlSection;
     private Connection connection;
 
     public DatabaseManager(RocketPlaceholders plugin) {
@@ -68,9 +70,10 @@ public class DatabaseManager {
         new BukkitRunnable() {
 
             @Override
-            public void run() { 
-                final Storage internalPlaceholders = plugin.getStorageManager().getInternalPlaceholders();
-                final HashMap<String, Placeholder> hashMap = internalPlaceholders.getHashMap();
+            public void run() {
+                final Storage internalPlaceholders = getStorageManager().getInternalPlaceholders();
+
+                final Map<String, Placeholder> hashMap = internalPlaceholders.getMap();
 
                 try {
                     final PreparedStatement statement = connection.prepareStatement("insert into rp_placeholders (`identifier`, `text`) VALUES (?,?);");
@@ -138,8 +141,8 @@ public class DatabaseManager {
         return completableFuture;
     }
 
-    public CompletableFuture<HashMap<String, Placeholder>> getFromDatabase() {
-        CompletableFuture<HashMap<String, Placeholder>> completableFuture = new CompletableFuture<>();
+    public CompletableFuture<Map<String, Placeholder>> getFromDatabase() {
+        CompletableFuture<Map<String, Placeholder>> completableFuture = new CompletableFuture<>();
 
         getNodes().thenAccept(nodes -> new BukkitRunnable() {
 
@@ -149,7 +152,7 @@ public class DatabaseManager {
                     PreparedStatement statement = connection.prepareStatement("SELECT * FROM rp_placeholders;");
                     ResultSet resultSet = statement.executeQuery();
 
-                    HashMap<String, Placeholder> hashMap = new HashMap<>();
+                    Map<String, Placeholder> hashMap = new HashMap<>();
 
                     while (resultSet.next()) {
                         hashMap.put(resultSet.getString("identifier"), new Placeholder(resultSet.getString("identifier"), resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier")))));
@@ -199,12 +202,18 @@ public class DatabaseManager {
     public void reload(InternalPlaceholders internalPlaceholders) {
         this.getFromDatabase().thenAccept(placeholders -> {
             internalPlaceholders.reloadPlaceholders();
-            plugin.getStorageManager().getInternalPlaceholders().getHashMap().putAll(placeholders);
+            this.getStorageManager().getInternalPlaceholders().getMap().putAll(placeholders);
             plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
         });
     }
 
-    public void setMysqlSection(ConfigurationSection mysqlSection) {
-        this.mysqlSection = mysqlSection;
+    public StorageManager getStorageManager() {
+        final StorageManager storageManager = plugin.getStorageManager();
+
+        if (storageManager == null) {
+            throw new NullPointerException("StorageManager cannot be null.");
+        }
+
+        return storageManager;
     }
 }
