@@ -21,8 +21,8 @@ publishing {
         maven {
             url repoUrl
             credentials {
-                username repoName
-                password repoPassword
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
             }
         }
     }
