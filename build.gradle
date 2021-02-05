@@ -19,7 +19,7 @@ publishing {
 
     repositories {
         maven {
-            url = https://repo.repsy.io/mvn/lorenzo0111/public/
+            url "https://repo.repsy.io/mvn/lorenzo0111/public/"
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")
