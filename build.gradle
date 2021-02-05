@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "5.2.0"
+    id 'maven-publish'
 }
 
 apply from: 'https://cdn.rocketplugins.space/spigot'
@@ -8,3 +9,21 @@ apply from: 'https://cdn.rocketplugins.space/spigot'
 group = 'me.Lorenzo0111'
 version = '1.6'
 description = 'RocketPlaceholders'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url repoUrl
+            credentials {
+                username repoName
+                password repoPassword
+            }
+        }
+    }
+}
