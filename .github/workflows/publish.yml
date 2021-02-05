@@ -1,31 +1,19 @@
-name: Gradle Publish
-
+name: Publish package to the Maven Central Repository
 on:
   push:
     branches:
       - master
-    
 jobs:
-  build:
-
+  publish:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - uses: actions/checkout@v2
-    - name: Set up Gradle Repository
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-        server-id: GRADLE_URL
-        server-username: GRADLE_USERNAME
-        server-password: GRADLE_PASSWORD
-    - name: Publish package
-      run: gradle publish
-      env:
-        MAVEN_USERNAME: ${{ secrets.GRADLE_USERNAME }}
-        MAVEN_PASSWORD: ${{ secrets.GRADLE_PASSWORD }}
+      - uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Publish package
+        run: gradle publish
+        env:
+          MAVEN_USERNAME: ${{ secrets.GRADLE_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.GRADLE_PASSWORD }}
