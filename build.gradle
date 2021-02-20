@@ -33,34 +33,3 @@ apply from: 'https://cdn.rocketplugins.space/spigot'
 group = 'me.Lorenzo0111'
 version = '1.6'
 description = 'RocketPlaceholders'
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId = group
-            artifactId = description
-            version = project.version
-
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            def snapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
-            def releaseUrl = "https://repo.codemc.io/repository/maven-releases/"
-
-            url = project.version.endsWith("SNAPSHOT") ? snapshotUrl : releaseUrl
-
-            def mavenUsername = System.getenv("NEXUS_USERNAME") ? System.getenv("NEXUS_USERNAME") : null
-            def mavenPassword = System.getenv("NEXUS_PASSWORD") ? System.getenv("NEXUS_PASSWORD") : null
-
-            if(mavenUsername != null && mavenPassword != null) {
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
-                }
-            }
-        }
-    }
-}

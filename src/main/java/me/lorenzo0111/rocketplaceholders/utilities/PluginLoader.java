@@ -130,4 +130,8 @@ public class PluginLoader {
     public void setDatabaseManager(@Nullable DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
+
+    public UpdateChecker getUpdater() {
+        return updateChecker;
+    }
 }

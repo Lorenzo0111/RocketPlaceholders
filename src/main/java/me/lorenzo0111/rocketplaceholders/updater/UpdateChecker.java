@@ -28,7 +28,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Consumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,19 +42,24 @@ public class UpdateChecker {
 
      */
 
+    private boolean updateAvailable;
     private final JavaPlugin plugin;
     private final int resourceId;
 
     public UpdateChecker(JavaPlugin plugin, int resourceId) {
         this.plugin = plugin;
         this.resourceId = resourceId;
+
+        this.fetch();
     }
 
-    public void getVersion(final Consumer<String> consumer) {
+    private void fetch() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId).openStream(); Scanner scanner = new Scanner(inputStream)) {
                 if (scanner.hasNext()) {
-                    consumer.accept(scanner.next());
+                    String version = scanner.next();
+
+                    this.updateAvailable = !this.plugin.getDescription().getVersion().equalsIgnoreCase(version);
                 }
             } catch (IOException exception) {
                 this.plugin.getLogger().info("Cannot look for updates: " + exception.getMessage());
@@ -64,21 +68,17 @@ public class UpdateChecker {
     }
 
     public void sendUpdateCheck(CommandSender player) {
-        this.getVersion(version -> {
-            if (!this.plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l&m---------------------------------------"));
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7There is a new update available."));
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7Download it from: &ehttps://bit.ly/RocketPlaceholders"));
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l&m---------------------------------------"));
-            }
-        });
+        if (updateAvailable) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l&m---------------------------------------"));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7There is a new update available."));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7Download it from: &ehttps://bit.ly/RocketPlaceholders"));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l&m---------------------------------------"));
+        }
     }
 
     public void updateCheck() {
-        this.getVersion(version -> {
-            if (!this.plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                this.plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
-            }
-        });
+        if (updateAvailable) {
+            this.plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
+        }
     }
 }
