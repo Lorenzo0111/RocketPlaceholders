@@ -31,9 +31,8 @@ plugins {
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
 group = 'me.Lorenzo0111'
-version = '1.6'
+version = '1.7'
 description = 'RocketPlaceholders'
-
 
 publishing {
     publications {

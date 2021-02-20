@@ -57,10 +57,17 @@ public class DatabaseManager {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            this.connection = DriverManager.getConnection("jdbc:mysql://" + mysqlSection.getString("ip") + ":" + mysqlSection.getInt("port") + "/" + mysqlSection.getString("database"), mysqlSection.getString("username"), mysqlSection.getString("password"));
-        } catch (ClassNotFoundException | SQLException e) {
-            this.plugin.getLogger().severe("MySQL driver is not installed, please install it to use the mysql function");
+        } catch (ClassNotFoundException e) {
+            this.plugin.getLogger().info("MySQL driver is not installed, please install it to use the mysql function");
+            return;
         }
+
+        try {
+            this.connection = DriverManager.getConnection("jdbc:mysql://" + mysqlSection.getString("ip") + ":" + mysqlSection.getInt("port") + "/" + mysqlSection.getString("database"), mysqlSection.getString("username"), mysqlSection.getString("password"));
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
     }
 
     public void createTables() {

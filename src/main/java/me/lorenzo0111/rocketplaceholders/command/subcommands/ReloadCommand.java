@@ -40,7 +40,7 @@ public class ReloadCommand extends SubCommand {
         this.getCommand().getPlugin().reloadConfig();
         this.getCommand().getChecker().sendUpdateCheck(sender);
 
-        this.getCommand().getPlugin().getLoader().loadDatabaseManager();
+        this.getCommand().getPlugin().getLoader().loadDatabase();
 
         if (this.getCommand().getPlugin().getLoader().getDatabaseManager() != null && !this.getCommand().getPlugin().getConfig().getBoolean("mysql.enabled")) {
             this.getCommand().getPlugin().getLoader().setDatabaseManager(null);
