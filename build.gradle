@@ -52,8 +52,8 @@ publishing {
 
             url = project.version.endsWith("SNAPSHOT") ? snapshotUrl : releaseUrl
 
-            def mavenUsername = System.getenv("ORG_GRADLE_PROJECT_mavenUsername") ? System.getenv("ORG_GRADLE_PROJECT_mavenUsername") : null
-            def mavenPassword = System.getenv("ORG_GRADLE_PROJECT_mavenPassword") ? System.getenv("ORG_GRADLE_PROJECT_mavenPassword") : null
+            def mavenUsername = System.getenv("NEXUS_USERNAME") ? System.getenv("NEXUS_USERNAME") : null
+            def mavenPassword = System.getenv("NEXUS_USERNAME") ? System.getenv("NEXUS_USERNAME") : null
 
             if(mavenUsername != null && mavenPassword != null) {
                 credentials {
