@@ -96,6 +96,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Maven and gradle
 target/
 
 pom.xml.tag
@@ -105,6 +106,8 @@ pom.xml.next
 
 build/
 .gradle/
+
+!gradle/wrapper/gradle-wrapper.jar
 
 # Testing server
 server/
