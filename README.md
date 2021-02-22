@@ -12,7 +12,8 @@
 
 [![logo]][spigot]
 
-[![relase]][releaselink] [![downloads]][spigot]
+[![relase]][releaselink] [![downloads]][spigot] 
+[![Build Status](https://ci.codemc.org/buildStatus/icon?job=Lorenzo0111/RocketPlaceholders)](https://ci.codemc.org/view/Author/job/Lorenzo0111/job/RocketPlaceholders/)
 
 
 # Information 
