@@ -34,6 +34,16 @@ group = 'me.Lorenzo0111'
 version = '1.7'
 description = 'RocketPlaceholders'
 
+dependencies {
+    implementation 'mysql:mysql-connector-java:8.0.11'
+}
+
+shadowJar {
+    relocate('google.protobuf', 'me.Lorenzo0111.lib.protobuf')
+    relocate('com.mysql', 'me.Lorenzo0111.lib.mysql')
+    relocate('com.google.protobuf', 'me.Lorenzo0111.lib.google.protobuf')
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
