@@ -37,16 +37,16 @@ public class RocketPlaceholdersAPIManager implements RocketPlaceholdersAPI {
 
     @Override
     public void addPlaceholder(Placeholder placeholder) {
-        this.getInternalPlaceholders().getStorageManager().getExternalPlaceholders().add(placeholder.getIdentifier(), placeholder);
+        this.getPlaceholdersManager().getStorageManager().getExternalPlaceholders().add(placeholder.getIdentifier(), placeholder);
     }
 
     @Override
     public @Nullable Placeholder getPlaceholder(String identifier) {
-        return this.getInternalPlaceholders().searchPlaceholder(identifier);
+        return this.getPlaceholdersManager().searchPlaceholder(identifier);
     }
 
     @Override
-    public PlaceholdersManager getInternalPlaceholders() {
+    public PlaceholdersManager getPlaceholdersManager() {
         return placeholdersManager;
     }
 }

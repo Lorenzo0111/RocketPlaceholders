@@ -35,5 +35,5 @@ public interface RocketPlaceholdersAPI {
     @Nullable
     Placeholder getPlaceholder(String identifier);
 
-    PlaceholdersManager getInternalPlaceholders();
+    PlaceholdersManager getPlaceholdersManager();
 }
