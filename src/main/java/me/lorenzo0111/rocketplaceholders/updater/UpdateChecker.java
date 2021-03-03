@@ -78,7 +78,7 @@ public class UpdateChecker {
 
     public void updateCheck() {
         if (updateAvailable) {
-            this.plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketJoin");
+            this.plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketPlaceholders");
         }
     }
 }
