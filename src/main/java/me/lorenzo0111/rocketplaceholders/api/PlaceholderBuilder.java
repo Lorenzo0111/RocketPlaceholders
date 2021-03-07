@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.api;
 
 import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,13 @@ import java.util.List;
 public class PlaceholderBuilder {
     private final String identifier;
     private final String text;
+    private final JavaPlugin owner;
     private final List<PermissionNode> permissionNodes = new ArrayList<>();
 
-    public PlaceholderBuilder(String identifier, String text) {
+    public PlaceholderBuilder(String identifier, JavaPlugin owner, String text) {
         this.identifier = identifier;
         this.text = text;
+        this.owner = owner;
     }
 
     public PlaceholderBuilder createPermissionNode(String permission, String text) {
@@ -48,6 +51,6 @@ public class PlaceholderBuilder {
     }
 
     public Placeholder build() {
-        return new Placeholder(identifier, text, permissionNodes);
+        return new Placeholder(identifier, owner, text, permissionNodes);
     }
 }

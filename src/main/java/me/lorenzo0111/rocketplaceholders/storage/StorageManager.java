@@ -25,11 +25,17 @@
 package me.lorenzo0111.rocketplaceholders.storage;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 public class StorageManager {
-    private final Storage internalPlaceholders = new Storage();
-    private final Storage externalPlaceholders = new Storage();
+    private final Storage internalPlaceholders;
+    private final Storage externalPlaceholders;
+
+    public StorageManager(JavaPlugin plugin) {
+        this.internalPlaceholders = new Storage(plugin);
+        this.externalPlaceholders = new Storage(plugin);
+    }
 
     public Storage getInternalPlaceholders() {
         return this.internalPlaceholders;

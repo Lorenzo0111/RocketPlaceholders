@@ -24,11 +24,16 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
+import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand extends SubCommand {
+
+    public ReloadCommand(RocketPlaceholdersCommand command) {
+        super(command);
+    }
 
     @Override
     public String getName() {

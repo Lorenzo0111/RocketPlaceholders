@@ -31,7 +31,7 @@ plugins {
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
 group = 'me.Lorenzo0111'
-version = '1.7-SNAPSHOT'
+version = '1.7.1'
 description = 'RocketPlaceholders'
 
 dependencies {

@@ -24,15 +24,31 @@
 
 package me.lorenzo0111.rocketplaceholders.creator;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Placeholder {
 
     private final String identifier;
     private final String text;
     private List<PermissionNode> permissionNodes;
+    private final JavaPlugin owner;
+
+    @Override
+    public boolean equals(Object target) {
+        if (this == target) return true;
+        if (target == null || getClass() != target.getClass()) return false;
+        Placeholder that = (Placeholder) target;
+        return Objects.equals(identifier, that.identifier) && Objects.equals(text, that.text) && Objects.equals(permissionNodes, that.permissionNodes) && Objects.equals(owner, that.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, text, permissionNodes, owner);
+    }
 
     @Override
     public String toString() {
@@ -40,18 +56,21 @@ public class Placeholder {
                 "identifier='" + identifier + '\'' +
                 ", text='" + text + '\'' +
                 ", permissionNodes=" + permissionNodes +
+                ", owner=" + owner +
                 '}';
     }
 
-    public Placeholder(@NotNull String identifier, @NotNull String text, List<PermissionNode> permissionNodes) {
+    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, List<PermissionNode> permissionNodes) {
         this.identifier = identifier;
         this.text = text;
         this.permissionNodes = permissionNodes;
+        this.owner = owner;
     }
 
-    public Placeholder(@NotNull String identifier, @NotNull String text) {
+    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
         this.identifier = identifier;
         this.text = text;
+        this.owner = owner;
     }
 
 
@@ -61,6 +80,10 @@ public class Placeholder {
 
     public String getText() {
         return this.text;
+    }
+
+    public JavaPlugin getOwner() {
+        return owner;
     }
 
     public List<PermissionNode> getPermissionNodes() {

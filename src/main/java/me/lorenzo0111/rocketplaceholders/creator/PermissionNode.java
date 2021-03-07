@@ -24,6 +24,8 @@
 
 package me.lorenzo0111.rocketplaceholders.creator;
 
+import java.util.Objects;
+
 public class PermissionNode {
     private final String permission;
     private final String text;
@@ -39,6 +41,19 @@ public class PermissionNode {
 
     public String getPermission() {
         return this.permission;
+    }
+
+    @Override
+    public boolean equals(Object target) {
+        if (this == target) return true;
+        if (target == null || getClass() != target.getClass()) return false;
+        PermissionNode that = (PermissionNode) target;
+        return Objects.equals(permission, that.permission) && Objects.equals(text, that.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(permission, text);
     }
 
     @Override

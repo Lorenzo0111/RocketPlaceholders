@@ -30,9 +30,8 @@ public abstract class SubCommand {
 
     protected RocketPlaceholdersCommand command;
 
-    public SubCommand create(RocketPlaceholdersCommand command) {
+    public SubCommand(RocketPlaceholdersCommand command) {
         this.command = command;
-        return this;
     }
 
     public abstract String getName();

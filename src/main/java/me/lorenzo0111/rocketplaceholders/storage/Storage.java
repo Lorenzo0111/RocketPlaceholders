@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.storage;
 
 import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,17 +36,22 @@ import java.util.Map;
 
 public class Storage {
     private final Map<String, Placeholder> placeholders = new HashMap<>();
+    private final JavaPlugin plugin;
+
+    public Storage(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public void add(@NotNull String identifier, @NotNull Placeholder placeholder) {
         this.placeholders.put(identifier, placeholder);
     }
 
     public void build(@NotNull String identifier, @NotNull String text) {
-        this.placeholders.put(identifier, new Placeholder(identifier, text));
+        this.placeholders.put(identifier, new Placeholder(identifier, plugin, text));
     }
 
     public void build(@NotNull String identifier, @NotNull String text, List<PermissionNode> permissionNodes) {
-        this.placeholders.put(identifier, new Placeholder(identifier, text, permissionNodes));
+        this.placeholders.put(identifier, new Placeholder(identifier, plugin, text, permissionNodes));
     }
 
     public void clear() {

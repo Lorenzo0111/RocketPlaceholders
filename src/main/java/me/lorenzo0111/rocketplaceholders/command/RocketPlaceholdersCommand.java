@@ -25,9 +25,7 @@
 package me.lorenzo0111.rocketplaceholders.command;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.command.subcommands.DebugCommand;
-import me.lorenzo0111.rocketplaceholders.command.subcommands.HelpCommand;
-import me.lorenzo0111.rocketplaceholders.command.subcommands.ReloadCommand;
+import me.lorenzo0111.rocketplaceholders.command.subcommands.*;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.utilities.Debugger;
@@ -56,9 +54,11 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
         this.checker = checker;
         this.debugger = new Debugger(plugin);
 
-        subcommands.add(new ReloadCommand().create(this));
-        subcommands.add(new DebugCommand().create(this));
-        subcommands.add(new HelpCommand().create(this));
+        subcommands.add(new ReloadCommand(this));
+        subcommands.add(new DebugCommand(this));
+        subcommands.add(new HelpCommand(this));
+        subcommands.add(new ListCommand(this));
+        subcommands.add(new InfoCommand(this));
     }
 
     @Override
@@ -79,9 +79,7 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
             }
 
         } else {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders help » &7Show this message!"));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders reload » &7Reload the plugin!"));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &8/rocketplaceholders debug » &7Print debug message!"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &7Use &8/rocketplaceholders help&7 for a command list"));
             return true;
         }
 

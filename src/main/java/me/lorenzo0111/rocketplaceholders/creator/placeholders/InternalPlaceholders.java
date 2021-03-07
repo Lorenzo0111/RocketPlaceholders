@@ -72,7 +72,7 @@ public class InternalPlaceholders {
                 final String text = config.getString(key + ".text");
 
                 if (identifier != null && text != null) {
-                    final Placeholder placeholder = new Placeholder(identifier,text,nodes);
+                    final Placeholder placeholder = new Placeholder(identifier,plugin,text,nodes);
                     storageManager.getInternalPlaceholders().add(identifier, placeholder);
                 }
             }
