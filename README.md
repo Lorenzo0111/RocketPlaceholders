@@ -8,7 +8,7 @@
 [discord]: https://bit.ly/RocketServer_DS
 [spigot]: https://www.spigotmc.org/resources/rocketplaceholders-custom-placeholders.82678/
 
-[logo]: https://i.ibb.co/LxMjPXR/full.png
+[logo]: https://i.ibb.co/kqTB43K/Rocket-Placeholders-Banner.png
 
 [![logo]][spigot]
 
