@@ -30,26 +30,46 @@ import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * PlaceholdersManager used to handle all placeholders
+ */
 public class PlaceholdersManager {
     private final StorageManager storageManager;
     private final InternalPlaceholders internalPlaceholders;
     private final RocketPlaceholders plugin;
 
+    /**
+     * @param storageManager Storage manager that contains all placeholders
+     * @param internalPlaceholders Internal placeholders handler
+     * @param plugin JavaPlugin
+     */
     public PlaceholdersManager(StorageManager storageManager, InternalPlaceholders internalPlaceholders, RocketPlaceholders plugin) {
         this.storageManager = storageManager;
         this.internalPlaceholders = internalPlaceholders;
         this.plugin = plugin;
     }
 
+    /**
+     * Search a placeholder inside the storage manager
+     * @param identifier Identifier of the placeholder
+     * @return A {@link me.lorenzo0111.rocketplaceholders.creator.Placeholder} or null if not found
+     */
     @Nullable
     public Placeholder searchPlaceholder(String identifier) {
         return this.storageManager.get(identifier);
     }
 
+    /**
+     * Add a placeholder to the storage manager
+     * @param placeholder Placeholder to add
+     */
     public void addPlaceholder(Placeholder placeholder) {
         this.storageManager.getInternalPlaceholders().add(placeholder.getIdentifier(), placeholder);
     }
 
+    /**
+     * Reload the plugin
+     */
     public void reload() {
         final PluginLoader loader = this.plugin.getLoader();
 
@@ -76,6 +96,9 @@ public class PlaceholdersManager {
 
     }
 
+    /**
+     * @return Storage manager that contains all placeholders
+     */
     public StorageManager getStorageManager() {
         return storageManager;
     }

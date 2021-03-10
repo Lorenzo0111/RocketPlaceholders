@@ -31,6 +31,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * PlaceholderBuilder to build a placeholder
+ */
 @SuppressWarnings("unused")
 public class PlaceholderBuilder {
     private final String identifier;
@@ -38,18 +41,33 @@ public class PlaceholderBuilder {
     private final JavaPlugin owner;
     private final List<PermissionNode> permissionNodes = new ArrayList<>();
 
+    /**
+     * @param identifier Identifier of the placeholder
+     * @param owner Plugin that created the placeholder
+     * @param text Main text of the placeholder
+     * @see me.lorenzo0111.rocketplaceholders.creator.Placeholder
+     */
     public PlaceholderBuilder(String identifier, JavaPlugin owner, String text) {
         this.identifier = identifier;
         this.text = text;
         this.owner = owner;
     }
 
+    /**
+     * @param permission Permission to view the text
+     * @param text Text that can be seen if the player has the permission
+     * @return the same builder
+     * @see me.lorenzo0111.rocketplaceholders.creator.PermissionNode
+     */
     public PlaceholderBuilder createPermissionNode(String permission, String text) {
         permissionNodes.add(new PermissionNode(permission, text));
 
         return this;
     }
 
+    /**
+     * @return Built placeholder
+     */
     public Placeholder build() {
         return new Placeholder(identifier, owner, text, permissionNodes);
     }

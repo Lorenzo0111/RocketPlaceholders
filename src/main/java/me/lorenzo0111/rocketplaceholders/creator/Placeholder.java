@@ -26,10 +26,14 @@ package me.lorenzo0111.rocketplaceholders.creator;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A placeholder
+ */
 public class Placeholder {
 
     private final String identifier;
@@ -60,6 +64,12 @@ public class Placeholder {
                 '}';
     }
 
+    /**
+     * @param identifier Identifier of the placeholder
+     * @param owner Plugin that created the placeholder
+     * @param text Main text of the placeholder
+     * @param permissionNodes PermissionNodes of the placeholder
+     */
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, List<PermissionNode> permissionNodes) {
         this.identifier = identifier;
         this.text = text;
@@ -67,6 +77,11 @@ public class Placeholder {
         this.owner = owner;
     }
 
+    /**
+     * @param identifier Identifier of the placeholder
+     * @param owner Plugin that created the placeholder
+     * @param text Text of the placeholder
+     */
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
         this.identifier = identifier;
         this.text = text;
@@ -74,22 +89,38 @@ public class Placeholder {
     }
 
 
+    /**
+     * @return Identifier of the placeholder
+     */
     public String getIdentifier() {
         return this.identifier;
     }
 
+    /**
+     * @return Text of the placeholder
+     */
     public String getText() {
         return this.text;
     }
 
+    /**
+     * @return Plugin that created the placeholder
+     */
     public JavaPlugin getOwner() {
         return owner;
     }
 
+    /**
+     * @return All permission nodes or null
+     */
+    @Nullable
     public List<PermissionNode> getPermissionNodes() {
         return this.permissionNodes;
     }
 
+    /**
+     * @return True if the plugin has any permission node
+     */
     public boolean hasPermissionNodes() {
         return this.permissionNodes != null;
     }

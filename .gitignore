@@ -104,6 +104,8 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 
+*.html
+javadocs/
 build/
 .gradle/
 

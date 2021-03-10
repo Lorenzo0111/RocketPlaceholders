@@ -35,6 +35,9 @@ public class Debugger {
     private final RocketPlaceholders plugin;
     private final Logger logger;
 
+    /**
+     * @param plugin Debug
+     */
     public Debugger(RocketPlaceholders plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();

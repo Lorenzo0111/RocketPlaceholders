@@ -28,12 +28,29 @@ import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * API of RocketPlaceholders
+ */
+@SuppressWarnings("unusde")
 public interface RocketPlaceholdersAPI {
 
+    /**
+     * Add a placeholder via api
+     * @param placeholder Placeholder to add
+     */
     void addPlaceholder(Placeholder placeholder);
 
+    /**
+     * Get a placeholder from the storage
+     * @param identifier Identifier of the placeholder
+     * @return Placeholder that has that identifier or null
+     */
     @Nullable
     Placeholder getPlaceholder(String identifier);
 
+    /**
+     * Get the placeholder manager
+     * @return PlaceholdersManager
+     */
     PlaceholdersManager getPlaceholdersManager();
 }

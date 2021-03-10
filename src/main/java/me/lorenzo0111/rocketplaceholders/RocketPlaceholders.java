@@ -33,7 +33,6 @@ import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
 public final class RocketPlaceholders extends JavaPlugin {
 
@@ -79,7 +78,9 @@ public final class RocketPlaceholders extends JavaPlugin {
         getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
     }
 
-    @Nullable
+    /**
+     * @return Storage manager with internal and external placeholders
+     */
     public StorageManager getStorageManager() {
         return this.storageManager;
     }

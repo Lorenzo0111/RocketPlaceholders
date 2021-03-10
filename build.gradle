@@ -44,6 +44,20 @@ shadowJar {
     relocate('com.google.protobuf', 'me.Lorenzo0111.lib.google.protobuf')
 }
 
+javadoc {
+    options.links(
+            'https://javadoc.io/static/org.jetbrains/annotations/20.1.0/',
+            'https://docs.oracle.com/javase/8/docs/api/',
+            'https://papermc.io/javadocs/paper/1.16/'
+    )
+    source = sourceSets.main.allJava
+    include("**/api/*.java")
+    include("**/creator/*.java")
+    exclude("**/creator/PlaceholderCreator.java")
+    exclude("**/api/RocketPlaceholdersAPIManager.java")
+    destinationDir = new File("javadocs")
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
