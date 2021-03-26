@@ -43,9 +43,10 @@ placeholders:
       permissionExample:
         type: PERMISSION # LIST: https://jd.rocketplugins.space/rocketplaceholders/me/lorenzo0111/rocketplaceholders/creator/conditions/RequirementType.html
         value: "rocketplaceholder.example"
-        priority: 1
+        text: "Example text with a permission condition"
       itemExample:
         type: ITEM
         material: STONE
+        colors: true # Translate color codes
         name: "&cExample"
-        priority: 2
+        text: "Example text with a item condition"
