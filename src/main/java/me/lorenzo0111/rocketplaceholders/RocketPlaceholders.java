@@ -68,9 +68,11 @@ public final class RocketPlaceholders extends JavaPlugin {
         this.loader = new PluginLoader(this, placeholdersManager, checker);
         this.loader.loadDatabase();
 
+        this.loader.setupHooks();
         this.loader.loadMetrics();
         this.loader.registerEvents();
         this.loader.placeholderHook();
+
     }
 
     @Override
@@ -87,5 +89,11 @@ public final class RocketPlaceholders extends JavaPlugin {
 
     public PluginLoader getLoader() {
         return this.loader;
+    }
+
+    public void debug(String text) {
+        if (this.getConfig().getBoolean("debug")) {
+            this.getLogger().info("Debug: " + text);
+        }
     }
 }

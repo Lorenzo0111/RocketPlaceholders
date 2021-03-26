@@ -27,9 +27,14 @@ package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Objects;
 
 
 public class PlaceholderCreator extends PlaceholderExpansion {
@@ -96,12 +101,14 @@ public class PlaceholderCreator extends PlaceholderExpansion {
             return null;
         }
 
-        if (!placeholder.hasPermissionNodes()) {
+        if (!placeholder.hasConditionNodes()) {
             return placeholder.getText();
         }
 
-        for (PermissionNode node : placeholder.getPermissionNodes()) {
-            if (onlinePlayer.hasPermission(node.getPermission())) {
+        List<ConditionNode> conditionNodes = Objects.requireNonNull(placeholder.getConditionNodes());
+        for (ConditionNode node : conditionNodes) {
+            if (((Requirement) node.getCondition()).apply(onlinePlayer)) {
+                plugin.debug("Applied: " + node.getRequirement());
                 return node.getText();
             }
         }

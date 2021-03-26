@@ -24,8 +24,9 @@
 
 package me.lorenzo0111.rocketplaceholders.api;
 
-import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class PlaceholderBuilder {
     private final String identifier;
     private final String text;
     private final JavaPlugin owner;
-    private final List<PermissionNode> permissionNodes = new ArrayList<>();
+    private final List<ConditionNode> nodes = new ArrayList<>();
 
     /**
      * @param identifier Identifier of the placeholder
@@ -53,22 +54,17 @@ public class PlaceholderBuilder {
         this.owner = owner;
     }
 
-    /**
-     * @param permission Permission to view the text
-     * @param text Text that can be seen if the player has the permission
-     * @return the same builder
-     * @see me.lorenzo0111.rocketplaceholders.creator.PermissionNode
-     */
-    public PlaceholderBuilder createPermissionNode(String permission, String text) {
-        permissionNodes.add(new PermissionNode(permission, text));
+    public PlaceholderBuilder createConditionNode(Requirement requirement, String text) {
+        nodes.add(new ConditionNode(requirement, text));
 
         return this;
     }
+
 
     /**
      * @return Built placeholder
      */
     public Placeholder build() {
-        return new Placeholder(identifier, owner, text, permissionNodes);
+        return new Placeholder(identifier, owner, text, nodes);
     }
 }

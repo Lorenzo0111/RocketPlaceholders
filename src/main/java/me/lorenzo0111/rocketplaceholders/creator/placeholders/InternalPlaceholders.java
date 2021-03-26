@@ -25,14 +25,17 @@
 package me.lorenzo0111.rocketplaceholders.creator.placeholders;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.creator.PermissionNode;
-import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements;
+import me.lorenzo0111.rocketplaceholders.legacy.PermissionNode;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class InternalPlaceholders {
@@ -45,37 +48,45 @@ public class InternalPlaceholders {
         this.storageManager = plugin.getStorageManager();
     }
 
+    @SuppressWarnings("deprecation")
     public void registerPlaceholders() {
-        final ConfigurationSection config = plugin.getConfig().getConfigurationSection("placeholders");
-
-        if (config == null) {
-            plugin.getLogger().severe("An error has occurred, configuration error, please contact me on discord (ds.rocketplugins.space)");
-            return;
-        }
+        final ConfigurationSection config = Objects.requireNonNull(plugin.getConfig().getConfigurationSection("placeholders"), "An error has occurred, configuration error, please contact me on discord (ds.rocketplugins.space)");
 
         for (String key : config.getKeys(false)) {
-            final ConfigurationSection nodesSection = config.getConfigurationSection(key).getConfigurationSection("permissions");
+            final ConfigurationSection nodesSection = Objects.requireNonNull(config.getConfigurationSection(key)).getConfigurationSection("permissions");
+            final ConfigurationSection conditionsSection = Objects.requireNonNull(config.getConfigurationSection(key)).getConfigurationSection("conditions");
 
-            if (nodesSection == null) {
-                storageManager.getInternalPlaceholders().build(config.getString(key + ".placeholder"), ChatColor.translateAlternateColorCodes('&', config.getString(key + ".text")));
-            } else {
-
-                final List<PermissionNode> nodes = new ArrayList<>();
-                for (String nodeKey : nodesSection.getKeys(false)) {
-                    if (nodesSection.getString(nodeKey + ".permission") != null && nodesSection.getString(nodeKey + ".text") != null) {
-                        final PermissionNode node = new PermissionNode(nodesSection.getString(nodeKey + ".permission"), ChatColor.translateAlternateColorCodes('&', nodesSection.getString(nodeKey + ".text")));
-                        nodes.add(node);
-                    }
-                }
-
-                final String identifier = config.getString(key + ".placeholder");
-                final String text = config.getString(key + ".text");
-
-                if (identifier != null && text != null) {
-                    final Placeholder placeholder = new Placeholder(identifier,plugin,text,nodes);
-                    storageManager.getInternalPlaceholders().add(identifier, placeholder);
-                }
+            if (conditionsSection == null && nodesSection == null) {
+                storageManager.getInternalPlaceholders().build(Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))));
             }
+
+            final List<ConditionNode> nodes = new ArrayList<>();
+
+            if (nodesSection != null) {
+                nodes.addAll(PermissionNode.createPermissionNodes(plugin, nodesSection));
+            }
+
+            if (conditionsSection != null) {
+                Requirements requirements = new Requirements(plugin);
+                for (String condition : conditionsSection.getKeys(false)) {
+                    ConfigurationSection conditionSection = conditionsSection.getConfigurationSection(condition);
+
+                    if (conditionSection !=  null) {
+                        Requirement requirement = requirements.parseRequirement(conditionSection);
+                        if (requirement != null) {
+                            nodes.add(new ConditionNode(requirement,conditionSection.getString("text")));
+                        }
+                    }
+
+                }
+
+                storageManager.getInternalPlaceholders().build(Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),nodes);
+            }
+
+            if (nodes.isEmpty()) {
+                storageManager.getInternalPlaceholders().build(Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))));
+            }
+
         }
 
         plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");

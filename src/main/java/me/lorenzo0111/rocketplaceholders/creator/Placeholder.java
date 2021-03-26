@@ -24,6 +24,7 @@
 
 package me.lorenzo0111.rocketplaceholders.creator;
 
+import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ public class Placeholder {
 
     private final String identifier;
     private final String text;
-    private List<PermissionNode> permissionNodes;
+    private List<ConditionNode> conditionNodes;
     private final JavaPlugin owner;
 
     @Override
@@ -46,12 +47,12 @@ public class Placeholder {
         if (this == target) return true;
         if (target == null || getClass() != target.getClass()) return false;
         Placeholder that = (Placeholder) target;
-        return Objects.equals(identifier, that.identifier) && Objects.equals(text, that.text) && Objects.equals(permissionNodes, that.permissionNodes) && Objects.equals(owner, that.owner);
+        return Objects.equals(identifier, that.identifier) && Objects.equals(text, that.text) && Objects.equals(conditionNodes, that.conditionNodes) && Objects.equals(owner, that.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, text, permissionNodes, owner);
+        return Objects.hash(identifier, text, conditionNodes, owner);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class Placeholder {
         return "Placeholder{" +
                 "identifier='" + identifier + '\'' +
                 ", text='" + text + '\'' +
-                ", permissionNodes=" + permissionNodes +
+                ", conditionNodes=" + conditionNodes +
                 ", owner=" + owner +
                 '}';
     }
@@ -68,12 +69,14 @@ public class Placeholder {
      * @param identifier Identifier of the placeholder
      * @param owner Plugin that created the placeholder
      * @param text Main text of the placeholder
-     * @param permissionNodes PermissionNodes of the placeholder
+     * @param nodes ConditionNodes of the placeholder
      */
-    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, List<PermissionNode> permissionNodes) {
+    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, List<ConditionNode> nodes) {
         this.identifier = identifier;
         this.text = text;
-        this.permissionNodes = permissionNodes;
+
+        this.conditionNodes = nodes;
+
         this.owner = owner;
     }
 
@@ -111,17 +114,17 @@ public class Placeholder {
     }
 
     /**
-     * @return All permission nodes or null
+     * @return All condition nodes or null
      */
     @Nullable
-    public List<PermissionNode> getPermissionNodes() {
-        return this.permissionNodes;
+    public List<ConditionNode> getConditionNodes() {
+        return this.conditionNodes;
     }
 
     /**
-     * @return True if the plugin has any permission node
+     * @return True if the plugin has any condition node
      */
-    public boolean hasPermissionNodes() {
-        return this.permissionNodes != null;
+    public boolean hasConditionNodes() {
+        return this.conditionNodes != null;
     }
 }

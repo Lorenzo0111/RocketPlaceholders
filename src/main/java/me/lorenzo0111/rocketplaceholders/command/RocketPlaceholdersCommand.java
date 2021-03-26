@@ -35,7 +35,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +58,7 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
         subcommands.add(new HelpCommand(this));
         subcommands.add(new ListCommand(this));
         subcommands.add(new InfoCommand(this));
+        subcommands.add(new TestCommand(this));
     }
 
     @Override
@@ -89,14 +89,12 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
         final List<String> strings = new ArrayList<>();
 
         for (int i = 0; i < getSubcommands().size(); i++){
-            if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())){
-                strings.add(getSubcommands().get(i).getName());
-            }
+            strings.add(getSubcommands().get(i).getName());
         }
 
         return strings;

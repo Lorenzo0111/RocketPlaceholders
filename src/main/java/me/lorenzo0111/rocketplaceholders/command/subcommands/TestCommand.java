@@ -24,29 +24,39 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-public class HelpCommand extends SubCommand {
+public class TestCommand extends SubCommand {
 
-    public HelpCommand(RocketPlaceholdersCommand command) {
+    public TestCommand(RocketPlaceholdersCommand command) {
         super(command);
     }
 
     @Override
     public String getName() {
-        return "help";
+        return "test";
     }
 
     @Override
     public void perform(CommandSender sender, String[] args) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders help » &7Show this message!"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders reload » &7Reload the plugin!"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders list » &7List all placeholders!"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders info (Placeholder) » &7Get informations about a placeholder!"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders debug » &7Print debug message!"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders test (Placeholder Name) » &7Try a placeholder!"));
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cThis command can only be performed by players."));
+            return;
+        }
+
+        if (args.length != 2) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cTry to use /rp test (Placeholder Name)"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cExample: /rp test example"));
+            return;
+        }
+
+        String placeholder = PlaceholderAPI.setPlaceholders((Player) sender,"%rp_" + args[1] + "%");
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Parse result: &e" + placeholder));
+
     }
 }

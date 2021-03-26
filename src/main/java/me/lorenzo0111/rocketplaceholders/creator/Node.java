@@ -24,21 +24,16 @@
 
 package me.lorenzo0111.rocketplaceholders.creator;
 
-import java.util.Objects;
-
-/**
- * Permission node that contains permission conditions
- */
-public class PermissionNode {
-    private final String permission;
+public abstract class Node {
+    private final Object condition;
     private final String text;
 
     /**
-     * @param permission Permission to view the text
-     * @param text Text that can be seen if the player has the permission
+     * @param condition Condition to view the text
+     * @param text Text that can be seen if the player respects the condition
      */
-    public PermissionNode(String permission, String text) {
-        this.permission = permission;
+    public Node(Object condition, String text) {
+        this.condition = condition;
         this.text = text;
     }
 
@@ -52,29 +47,7 @@ public class PermissionNode {
     /**
      * @return Permission to view the text
      */
-    public String getPermission() {
-        return this.permission;
+    public Object getCondition() {
+        return this.condition;
     }
-
-    @Override
-    public boolean equals(Object target) {
-        if (this == target) return true;
-        if (target == null || getClass() != target.getClass()) return false;
-        PermissionNode that = (PermissionNode) target;
-        return Objects.equals(permission, that.permission) && Objects.equals(text, that.text);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(permission, text);
-    }
-
-    @Override
-    public String toString() {
-        return "PermissionNode{" +
-                "permission='" + this.permission + '\'' +
-                ", text='" + this.text + '\'' +
-                '}';
-    }
-
 }
