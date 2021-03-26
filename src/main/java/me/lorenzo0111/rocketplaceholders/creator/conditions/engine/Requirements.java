@@ -99,9 +99,9 @@ public class Requirements {
                 }
 
                 return new HasPermissionCondition(plugin,permission);
+            default:
+                return null;
         }
-
-        return null;
     }
 
     @Nullable
