@@ -61,12 +61,15 @@ public class InfoCommand extends SubCommand {
 
         sender.sendMessage("");
 
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &ePermission nodes:"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &eCondition nodes:"));
 
-        placeholder.getPermissionNodes().forEach(node -> {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &ePermission: &7" + node.getPermission()));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &eText: &7" + node.getText()));
-            sender.sendMessage("");
-        });
+        if (placeholder.hasConditionNodes() && placeholder.getConditionNodes() != null) {
+            placeholder.getConditionNodes().forEach(node -> {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &eRequirement: &7" + node.getRequirement()));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &eText: &7" + node.getText()));
+                sender.sendMessage("");
+            });
+        }
+
     }
 }

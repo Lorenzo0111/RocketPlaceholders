@@ -22,36 +22,35 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.listener;
+package me.lorenzo0111.rocketplaceholders.creator.conditions;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.entity.Player;
 
-public class JoinListener implements Listener {
+public abstract class Requirement {
+    protected final RocketPlaceholders plugin;
 
-    /*
-
-    Plugin by Lorenzo0111 - https://github.com/Lorenzo0111
-
+    /**
+     * @param plugin Plugin
      */
-
-    private final RocketPlaceholders plugin;
-    private final UpdateChecker updateChecker;
-
-    public JoinListener(RocketPlaceholders plugin) {
+    public Requirement(RocketPlaceholders plugin) {
         this.plugin = plugin;
-        this.updateChecker = plugin.getLoader().getUpdater();
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission("rocketplaceholders.update") && this.plugin.getConfig().getBoolean("update-message")) {
-            this.updateChecker.sendUpdateCheck(event.getPlayer());
-        }
+    /**
+     * @return Condition result
+     */
+    abstract public boolean apply(Player player);
 
+    /**
+     * @return Type of condition
+     */
+    abstract public RequirementType getType();
+
+    @Override
+    public String toString() {
+        return "{" +
+                "type=" + this.getType() +
+                '}';
     }
 }

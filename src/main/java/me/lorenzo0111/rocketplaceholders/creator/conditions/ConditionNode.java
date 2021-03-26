@@ -22,36 +22,46 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.listener;
+package me.lorenzo0111.rocketplaceholders.creator.conditions;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import me.lorenzo0111.rocketplaceholders.creator.Node;
 
-public class JoinListener implements Listener {
+import java.util.Objects;
 
-    /*
+public class ConditionNode extends Node {
 
-    Plugin by Lorenzo0111 - https://github.com/Lorenzo0111
-
+    /**
+     * @param requirement Requirement to view the text
+     * @param text Text that can be seen if the player respects the requirement
      */
-
-    private final RocketPlaceholders plugin;
-    private final UpdateChecker updateChecker;
-
-    public JoinListener(RocketPlaceholders plugin) {
-        this.plugin = plugin;
-        this.updateChecker = plugin.getLoader().getUpdater();
+    public ConditionNode(Requirement requirement, String text) {
+        super(requirement,text);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission("rocketplaceholders.update") && this.plugin.getConfig().getBoolean("update-message")) {
-            this.updateChecker.sendUpdateCheck(event.getPlayer());
-        }
+    /**
+     * @return Requirement to view the text
+     */
+    public Requirement getRequirement() {
+        return (Requirement) this.getCondition();
+    }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "requirement=" + this.getRequirement() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConditionNode that = (ConditionNode) o;
+        return Objects.equals(getRequirement(), that.getRequirement()) && Objects.equals(getText(), that.getText());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRequirement(), getText());
     }
 }

@@ -57,6 +57,18 @@ public class Debugger {
         this.logData("Plugin Name", plugin.getDescription().getName());
         this.logData("Plugin Version", plugin.getDescription().getVersion());
 
+        this.log("");
+
+        this.log("Hooks");
+
+        this.logData("Vault", plugin.getLoader().getEconomy() != null ? "true" : "false");
+
+        /*
+        *
+        * Do you want to add an hook? Open an issue on github or make a pull request
+        *
+        */
+
         this.log("-----------[ RocketPlugins Debugger ]-----------");
     }
 

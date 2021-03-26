@@ -32,17 +32,22 @@ import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
 import me.lorenzo0111.rocketplaceholders.listener.JoinListener;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
+import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class PluginLoader {
 
     private final RocketPlaceholders plugin;
     private final PlaceholdersManager placeholdersManager;
     private final UpdateChecker updateChecker;
+    private Economy economy = null;
     private DatabaseManager databaseManager;
 
     public PluginLoader(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager, UpdateChecker updateChecker) {
@@ -58,12 +63,7 @@ public class PluginLoader {
     public void registerEvents() {
         Bukkit.getServer().getPluginManager().registerEvents(new JoinListener(plugin), plugin);
 
-        final PluginCommand command = plugin.getCommand("rocketplaceholders");
-
-        if (command == null) {
-            plugin.getLogger().severe("An error has occurred, please open an issue on GitHub");
-            return;
-        }
+        final PluginCommand command = Objects.requireNonNull(plugin.getCommand("rocketplaceholders"), "Command cannot be null");
 
         command.setExecutor(new RocketPlaceholdersCommand(plugin,placeholdersManager, updateChecker));
         command.setTabCompleter(new RocketPlaceholdersCommand(plugin,placeholdersManager, updateChecker));
@@ -81,39 +81,43 @@ public class PluginLoader {
         Bukkit.getPluginManager().disablePlugin(plugin);
     }
 
+    public void setupHooks() {
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
+            if (rsp != null) {
+                this.economy = rsp.getProvider();
+                this.plugin.getLogger().info("Hooked with Vault.");
+            }
+        }
+    }
+
     public void loadDatabase() {
         final ConfigurationSection mysqlSection = plugin.getConfig().getConfigurationSection("mysql");
 
-        if (mysqlSection != null && mysqlSection.getBoolean("enabled")) {
-            if (this.databaseManager == null) {
-                this.loadDatabaseManager();
+        if (mysqlSection != null && mysqlSection.getBoolean("enabled") && this.databaseManager == null) {
+            this.loadDatabaseManager();
 
-                this.databaseManager.createTables();
+            this.databaseManager.createTables();
 
-                if (databaseManager.isMain()) {
-                    this.plugin.getLogger().info("Adding placeholders to the database..");
+            if (databaseManager.isMain()) {
+                this.plugin.getLogger().info("Adding placeholders to the database..");
 
-                    databaseManager.removeAll().thenAccept(success -> {
-                        if (success) {
-                            this.databaseManager.sync();
-                        } else {
-                            this.plugin.getLogger().severe("An error has occurred while adding placeholders to the database, please try again or open an issue on github.");
-                        }
-                    });
-                } else {
-                    this.plugin.getLogger().info("Retrieving placeholders from the database..");
+                databaseManager.removeAll().thenAccept(success -> {
+                    if (success) {
+                        this.databaseManager.sync();
+                    } else {
+                        this.plugin.getLogger().severe("An error has occurred while adding placeholders to the database, please try again or open an issue on github.");
+                    }
+                });
+            } else {
+                this.plugin.getLogger().info("Retrieving placeholders from the database..");
 
-                    this.databaseManager.getFromDatabase().thenAccept(placeholders -> {
-                        final StorageManager storageManager = plugin.getStorageManager();
+                this.databaseManager.getFromDatabase().thenAccept(placeholders -> {
+                    final StorageManager storageManager = Objects.requireNonNull(plugin.getStorageManager(),"StorageManager cannot be null");
 
-                        if (storageManager == null) {
-                            throw new NullPointerException("StorageManager cannot be null.");
-                        }
-
-                        storageManager.getInternalPlaceholders().getMap().putAll(placeholders);
-                        this.plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
-                    });
-                }
+                    storageManager.getInternalPlaceholders().getMap().putAll(placeholders);
+                    this.plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
+                });
             }
         }
     }
@@ -133,5 +137,10 @@ public class PluginLoader {
 
     public UpdateChecker getUpdater() {
         return updateChecker;
+    }
+
+    @Nullable
+    public Economy getEconomy() {
+        return economy;
     }
 }
