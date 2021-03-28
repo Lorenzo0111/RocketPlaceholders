@@ -1,7 +1,7 @@
 [![logo]][spigot]
 
 [![release]][releaseLink] [![downloads]][spigot] 
-[![Build Status](https://ci.codemc.org/buildStatus/icon?job=Lorenzo0111/RocketPlaceholders)](https://ci.codemc.org/view/Author/job/Lorenzo0111/job/RocketPlaceholders/) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/04553ed658934db0b2fb0831f8ad5bea)](https://www.codacy.com/gh/Lorenzo0111/RocketPlaceholders/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Lorenzo0111/RocketPlaceholders&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.codemc.io%2Fjob%2FLorenzo0111%2Fjob%2FRocketPlaceholders%2F&style=for-the-badge)](https://ci.codemc.org/view/Author/job/Lorenzo0111/job/RocketPlaceholders/) [![Codacy Badge](https://img.shields.io/codacy/grade/04553ed658934db0b2fb0831f8ad5bea?style=for-the-badge)](https://www.codacy.com/gh/Lorenzo0111/RocketPlaceholders/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Lorenzo0111/RocketPlaceholders&amp;utm_campaign=Badge_Grade)
 
 # Information 
 [RocketPlaceholders][spigot] is a CustomPlaceholders plugin!
@@ -15,10 +15,10 @@ You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplace
 - [Issue Tracker][issues]
 - [Discord][discord]
 
-[release]: https://img.shields.io/github/v/release/Lorenzo0111/RocketPlaceholders
+[release]: https://img.shields.io/github/v/release/Lorenzo0111/RocketPlaceholders?style=for-the-badge&logo=appveyor
 [releaseLink]: https://github.com/Lorenzo0111/RocketPlaceholders/releases/latest
 
-[downloads]: http://badge.henrya.org/spigotbukkit/downloads?spigot=82678
+[downloads]: https://img.shields.io/spiget/downloads/82678?style=for-the-badge
 
 [issues]: https://github.com/Lorenzo0111/RocketPlaceholders/issues
 
