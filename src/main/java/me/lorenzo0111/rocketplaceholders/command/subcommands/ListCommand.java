@@ -46,6 +46,12 @@ public class ListCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("rocketplaceholders.command.list")) {
+            this.sendPermissionsError(sender);
+            return;
+        }
+
+
         new BukkitRunnable() {
             @Override
             public void run() {

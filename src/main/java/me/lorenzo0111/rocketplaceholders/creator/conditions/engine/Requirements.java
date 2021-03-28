@@ -84,18 +84,22 @@ public class Requirements {
             case JAVASCRIPT:
                 String expression = section.getString("value");
                 if (expression == null) {
-                    throw new InvalidConditionException("Expression cannot be null");
+                    throw new InvalidConditionException("Expression cannot be null, try to set a correct value in the config");
                 }
 
                 return new JSCondition(plugin,expression);
             case MONEY:
+                if (!section.contains("value")) {
+                    throw new InvalidConditionException("Value cannot be null. Please insert a valid number as value in the config.");
+                }
+
                 long amount = section.getLong("value");
 
                 return new HasMoneyCondition(plugin,amount);
             case PERMISSION:
                 String permission = section.getString("value");
                 if (permission == null) {
-                    throw new InvalidConditionException("Expression cannot be null");
+                    throw new InvalidConditionException("Permission cannot be null. Please try to set a valid permission as value in the config.");
                 }
 
                 return new HasPermissionCondition(plugin,permission);

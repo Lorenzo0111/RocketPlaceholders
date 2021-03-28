@@ -31,7 +31,7 @@ plugins {
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
 group = 'me.Lorenzo0111'
-version = '1.8'
+version = '1.8-SNAPSHOT'
 description = 'RocketPlaceholders'
 
 repositories {
@@ -58,10 +58,7 @@ javadoc {
     source = sourceSets.main.allJava
     include("**/api/*.java")
     include("**/creator/*.java")
-    include("**/creator/placeholders/*.java")
     include("**/creator/conditions/*.java")
-    include("**/storage/StorageManager.java")
-    include("**/RocketPlaceholders.java")
     exclude("**/creator/PlaceholderCreator.java")
     exclude("**/api/RocketPlaceholdersAPIManager.java")
     destinationDir = new File("javadocs/rocketplaceholders")

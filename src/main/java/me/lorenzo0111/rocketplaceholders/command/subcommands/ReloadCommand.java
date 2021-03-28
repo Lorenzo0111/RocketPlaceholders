@@ -42,6 +42,12 @@ public class ReloadCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("rocketplaceholders.command.reload")) {
+            this.sendPermissionsError(sender);
+            return;
+        }
+
+
         this.getCommand().getPlugin().reloadConfig();
         this.getCommand().getChecker().sendUpdateCheck(sender);
 

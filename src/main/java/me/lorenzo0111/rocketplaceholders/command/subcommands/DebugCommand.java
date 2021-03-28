@@ -42,6 +42,11 @@ public class DebugCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("rocketplaceholders.command.debug")) {
+            this.sendPermissionsError(sender);
+            return;
+        }
+
         this.getCommand().getDebugger().debug();
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Debug informations printed in the console."));
 

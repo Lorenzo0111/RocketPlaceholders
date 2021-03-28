@@ -43,6 +43,12 @@ public class InfoCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("rocketplaceholders.command.info")) {
+            this.sendPermissionsError(sender);
+            return;
+        }
+
+
         if (args.length != 2) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Try to use &8/rocketplaceholders info (Placeholder)!"));
             return;

@@ -44,6 +44,12 @@ public class TestCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("rocketplaceholders.command.test")) {
+            this.sendPermissionsError(sender);
+            return;
+        }
+
+
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cThis command can only be performed by players."));
             return;

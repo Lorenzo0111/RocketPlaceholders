@@ -24,6 +24,7 @@
 
 package me.lorenzo0111.rocketplaceholders.command;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public abstract class SubCommand {
@@ -41,5 +42,9 @@ public abstract class SubCommand {
     }
 
     public abstract void perform(CommandSender sender, String[] args);
+
+    public void sendPermissionsError(CommandSender sender) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&cYou don't have the permission to execute this command."));
+    }
 
 }
