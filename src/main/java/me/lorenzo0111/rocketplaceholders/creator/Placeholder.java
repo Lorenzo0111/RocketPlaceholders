@@ -25,6 +25,7 @@
 package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,7 +74,12 @@ public class Placeholder {
      */
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, List<ConditionNode> nodes) {
         this.identifier = identifier;
-        this.text = text;
+
+        if (text.contains("%rp_")) {
+            this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
+        } else {
+            this.text = ChatColor.translateAlternateColorCodes('&', text);
+        }
 
         this.conditionNodes = nodes;
 
@@ -87,7 +93,11 @@ public class Placeholder {
      */
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
         this.identifier = identifier;
-        this.text = text;
+        if (text.contains("%rp_")) {
+            this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
+        } else {
+            this.text = ChatColor.translateAlternateColorCodes('&', text);
+        }
         this.owner = owner;
     }
 

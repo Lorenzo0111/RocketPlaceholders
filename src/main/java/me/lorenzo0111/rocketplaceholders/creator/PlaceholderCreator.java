@@ -25,6 +25,7 @@
 package me.lorenzo0111.rocketplaceholders.creator;
 
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
@@ -102,18 +103,18 @@ public class PlaceholderCreator extends PlaceholderExpansion {
         }
 
         if (!placeholder.hasConditionNodes()) {
-            return placeholder.getText();
+            return PlaceholderAPI.setPlaceholders(player,placeholder.getText());
         }
 
         List<ConditionNode> conditionNodes = Objects.requireNonNull(placeholder.getConditionNodes());
         for (ConditionNode node : conditionNodes) {
             if (((Requirement) node.getCondition()).apply(onlinePlayer)) {
                 plugin.debug("Applied: " + node.getRequirement());
-                return node.getText();
+                return PlaceholderAPI.setPlaceholders(player,node.getText());
             }
         }
 
-        return placeholder.getText();
+        return PlaceholderAPI.setPlaceholders(player,placeholder.getText());
 
     }
 }
