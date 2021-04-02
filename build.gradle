@@ -31,15 +31,19 @@ plugins {
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
 group = 'me.Lorenzo0111'
-version = '1.8.1'
+version = '1.9'
 description = 'RocketPlaceholders'
 
 repositories {
     maven { url 'https://jitpack.io' }
+    maven { url 'http://repo.mvdw-software.be/content/groups/public/' }
 }
 
 dependencies {
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly ('be.maximvdw:MVdWPlaceholderAPI:2.1.1-SNAPSHOT') {
+        exclude module: 'spigot'
+    }
     implementation 'mysql:mysql-connector-java:8.0.23'
 }
 
