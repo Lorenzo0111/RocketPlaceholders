@@ -44,7 +44,7 @@ public class MVdWPlaceholderAPICreator {
     }
 
     public void reload() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> placeholdersManager.getStorageManager().getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, s, (event) -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> placeholdersManager.getStorageManager().getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, String.format("rp_%s",s), (event) -> {
             if (!event.isOnline()) return null;
 
             if (!placeholder.hasConditionNodes()) {

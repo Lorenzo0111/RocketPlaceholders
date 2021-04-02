@@ -50,6 +50,7 @@ public class PluginLoader {
     private final UpdateChecker updateChecker;
     private Economy economy = null;
     private DatabaseManager databaseManager;
+    private HookType hookType = HookType.NULL;
 
     public PluginLoader(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager, UpdateChecker updateChecker) {
         this.plugin = plugin;
@@ -73,15 +74,17 @@ public class PluginLoader {
     public void placeholderHook() {
         boolean hook = false;
 
+        if (Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI") != null) {
+            new MVdWPlaceholderAPICreator(plugin, placeholdersManager);
+            this.hookType = HookType.MVDW;
+            hook = true;
+        }
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             this.plugin.getLogger().info("PlaceholderAPI hooked!");
             this.plugin.getLogger().info(this.plugin.getDescription().getName() + " v" + this.plugin.getDescription().getVersion() + " by Lorenzo0111 is now enabled!");
             new PlaceholderAPICreator(plugin, placeholdersManager).register();
-            hook = true;
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI") != null) {
-            new MVdWPlaceholderAPICreator(plugin, placeholdersManager);
+            this.hookType = HookType.PLACEHOLDERAPI;
             hook = true;
         }
 
@@ -153,5 +156,9 @@ public class PluginLoader {
     @Nullable
     public Economy getEconomy() {
         return economy;
+    }
+
+    public HookType getHookType() {
+        return hookType;
     }
 }
