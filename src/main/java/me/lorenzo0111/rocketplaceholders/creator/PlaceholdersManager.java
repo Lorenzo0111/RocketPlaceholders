@@ -37,6 +37,7 @@ public class PlaceholdersManager {
     private final StorageManager storageManager;
     private final InternalPlaceholders internalPlaceholders;
     private final RocketPlaceholders plugin;
+    private MVdWPlaceholderAPICreator mVdWPlaceholderAPICreator;
 
     /**
      * @param storageManager Storage manager that contains all placeholders
@@ -94,6 +95,17 @@ public class PlaceholdersManager {
 
         this.internalPlaceholders.reloadPlaceholders();
 
+        if (this.mVdWPlaceholderAPICreator != null) {
+            this.mVdWPlaceholderAPICreator.reload();
+        }
+    }
+
+    /**
+     * Hook with MVdWPlaceholderAPI
+     */
+    public PlaceholdersManager hook(MVdWPlaceholderAPICreator mVdWPlaceholderAPICreator) {
+        this.mVdWPlaceholderAPICreator = mVdWPlaceholderAPICreator;
+        return this;
     }
 
     /**

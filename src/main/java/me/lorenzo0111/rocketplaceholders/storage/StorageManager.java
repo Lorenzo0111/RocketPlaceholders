@@ -28,6 +28,9 @@ import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StorageManager {
     private final Storage internalPlaceholders;
     private final Storage externalPlaceholders;
@@ -52,5 +55,14 @@ public class StorageManager {
         }
 
         return this.externalPlaceholders.get(identifier);
+    }
+
+    public Map<String, Placeholder> getAll() {
+        final Map<String, Placeholder> all = new HashMap<>();
+
+        all.putAll(this.internalPlaceholders.getMap());
+        all.putAll(this.externalPlaceholders.getMap());
+
+        return all;
     }
 }

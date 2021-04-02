@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class PlaceholderCreator extends PlaceholderExpansion {
+public class PlaceholderAPICreator extends PlaceholderExpansion {
 
     /*
 
@@ -49,7 +49,7 @@ public class PlaceholderCreator extends PlaceholderExpansion {
     private final RocketPlaceholders plugin;
     private final PlaceholdersManager placeholdersManager;
 
-    public PlaceholderCreator(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
+    public PlaceholderAPICreator(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
         this.plugin = plugin;
         this.placeholdersManager = placeholdersManager;
     }

@@ -27,6 +27,7 @@ package me.lorenzo0111.rocketplaceholders.command.subcommands;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
+import me.lorenzo0111.rocketplaceholders.utilities.HookType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,7 +50,6 @@ public class TestCommand extends SubCommand {
             return;
         }
 
-
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cThis command can only be performed by players."));
             return;
@@ -61,7 +61,15 @@ public class TestCommand extends SubCommand {
             return;
         }
 
-        String placeholder = PlaceholderAPI.setPlaceholders((Player) sender,"%rp_" + args[1] + "%");
+        String placeholder = "%rp_" + args[1];
+        final HookType hookType = this.getCommand().getPlugin().getLoader().getHookType();
+
+        if (hookType.equals(HookType.PLACEHOLDERAPI)) {
+            placeholder = PlaceholderAPI.setPlaceholders((Player) sender,placeholder);
+        } else if (hookType.equals(HookType.MVDW)) {
+            placeholder = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders((Player) sender,"{rp_" + args[1] + "}");
+        }
+
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Parse result: &e" + placeholder));
 
     }
