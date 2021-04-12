@@ -26,13 +26,12 @@ package me.lorenzo0111.rocketplaceholders.utilities;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
-import me.lorenzo0111.rocketplaceholders.creator.MVdWPlaceholderAPICreator;
-import me.lorenzo0111.rocketplaceholders.creator.PlaceholderAPICreator;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import me.lorenzo0111.rocketplaceholders.creator.providers.MVdWPlaceholderAPICreator;
+import me.lorenzo0111.rocketplaceholders.creator.providers.PlaceholderAPICreator;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
 import me.lorenzo0111.rocketplaceholders.listener.JoinListener;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
-import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;

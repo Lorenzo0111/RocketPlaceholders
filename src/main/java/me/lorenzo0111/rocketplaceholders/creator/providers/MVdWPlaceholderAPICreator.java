@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator;
+package me.lorenzo0111.rocketplaceholders.creator.providers;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import org.bukkit.Bukkit;

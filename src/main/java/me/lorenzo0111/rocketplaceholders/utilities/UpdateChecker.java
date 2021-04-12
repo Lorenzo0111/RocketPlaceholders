@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.updater;
+package me.lorenzo0111.rocketplaceholders.utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

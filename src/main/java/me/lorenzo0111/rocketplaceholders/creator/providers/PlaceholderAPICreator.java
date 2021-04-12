@@ -22,12 +22,14 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator;
+package me.lorenzo0111.rocketplaceholders.creator.providers;
 
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import org.bukkit.OfflinePlayer;
@@ -39,13 +41,6 @@ import java.util.Objects;
 
 
 public class PlaceholderAPICreator extends PlaceholderExpansion {
-
-    /*
-
-    Plugin by Lorenzo0111
-
-     */
-
     private final RocketPlaceholders plugin;
     private final PlaceholdersManager placeholdersManager;
 

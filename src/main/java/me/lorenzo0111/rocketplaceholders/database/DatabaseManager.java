@@ -26,7 +26,7 @@ package me.lorenzo0111.rocketplaceholders.database;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
-import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
+import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.configuration.ConfigurationSection;
@@ -174,9 +174,9 @@ public class DatabaseManager {
         return completableFuture;
     }
 
-    public void reload(InternalPlaceholders internalPlaceholders) {
+    public void reload(ConfigManager configManager) {
         this.getFromDatabase().thenAccept(placeholders -> {
-            internalPlaceholders.reloadPlaceholders();
+            configManager.reloadPlaceholders();
             this.getStorageManager().getInternalPlaceholders().getMap().putAll(placeholders);
             plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
         });

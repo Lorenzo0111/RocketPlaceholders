@@ -23,9 +23,11 @@
  */
 
 package me.lorenzo0111.rocketplaceholders.creator;
+
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.providers.MVdWPlaceholderAPICreator;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
+import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import org.jetbrains.annotations.Nullable;
@@ -35,18 +37,18 @@ import org.jetbrains.annotations.Nullable;
  */
 public class PlaceholdersManager {
     private final StorageManager storageManager;
-    private final InternalPlaceholders internalPlaceholders;
+    private final ConfigManager configManager;
     private final RocketPlaceholders plugin;
     private MVdWPlaceholderAPICreator mVdWPlaceholderAPICreator;
 
     /**
      * @param storageManager Storage manager that contains all placeholders
-     * @param internalPlaceholders Internal placeholders handler
+     * @param configManager Internal placeholders handler
      * @param plugin JavaPlugin
      */
-    public PlaceholdersManager(StorageManager storageManager, InternalPlaceholders internalPlaceholders, RocketPlaceholders plugin) {
+    public PlaceholdersManager(StorageManager storageManager, ConfigManager configManager, RocketPlaceholders plugin) {
         this.storageManager = storageManager;
-        this.internalPlaceholders = internalPlaceholders;
+        this.configManager = configManager;
         this.plugin = plugin;
     }
 
@@ -64,6 +66,7 @@ public class PlaceholdersManager {
      * Add a placeholder to the storage manager
      * @param placeholder Placeholder to add
      */
+    @Deprecated
     public void addPlaceholder(Placeholder placeholder) {
         this.storageManager.getInternalPlaceholders().add(placeholder.getIdentifier(), placeholder);
     }
@@ -84,16 +87,16 @@ public class PlaceholdersManager {
                         databaseManager.sync();
                     }
 
-                    databaseManager.reload(internalPlaceholders);
+                    databaseManager.reload(configManager);
                 });
             } else {
-                databaseManager.reload(internalPlaceholders);
+                databaseManager.reload(configManager);
             }
 
             return;
         }
 
-        this.internalPlaceholders.reloadPlaceholders();
+        this.configManager.reloadPlaceholders();
 
         if (this.mVdWPlaceholderAPICreator != null) {
             this.mVdWPlaceholderAPICreator.reload();

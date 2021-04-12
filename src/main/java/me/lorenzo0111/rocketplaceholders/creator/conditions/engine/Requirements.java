@@ -49,6 +49,62 @@ public class Requirements {
         this.plugin = plugin;
     }
 
+    /**
+     * @param type Type of the requirement
+     * @param value <b>Optional</b> Value of the requirement, used for JAVASCRIPT,MONEY AND PERMISSION
+     * @param material <b>Optional</b> Material of the item, used for ITEM
+     * @param itemName <b>Optional</b> Name of the item, used for ITEM
+     * @param itemLore <b>Optional</b> Lore of the item, used for ITEM
+     * @return A requirement
+     */
+    @Nullable
+    public Requirement createRequirement(RequirementType type, @Nullable String value, @Nullable Material material, @Nullable String itemName,@Nullable List<String> itemLore) {
+        switch (type) {
+            case ITEM:
+                if (material == null) {
+                    throw new InvalidConditionException("Material cannot be null");
+                }
+
+                ItemStack item = new ItemStack(material);
+                ItemMeta meta = item.getItemMeta();
+
+                if (meta != null) {
+                    meta.setDisplayName(translateColors(itemName));
+                    meta.setLore(translateColors(itemLore));
+                    item.setItemMeta(meta);
+                }
+
+                return new HasItemCondition(item,plugin);
+            case JAVASCRIPT:
+                if (value == null) {
+                    throw new InvalidConditionException("Expression cannot be null, try to set a correct value in the config");
+                }
+
+                return new JSCondition(plugin,value);
+            case MONEY:
+                if (value == null) {
+                    throw new InvalidConditionException("Value cannot be null. Please insert a valid number as value in the config.");
+                }
+
+                long amount = Long.parseLong(value);
+
+                return new HasMoneyCondition(plugin,amount);
+            case PERMISSION:
+                if (value == null) {
+                    throw new InvalidConditionException("Permission cannot be null. Please try to set a valid permission as value in the config.");
+                }
+
+                return new HasPermissionCondition(plugin,value);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Generate a condition from a ConfigurationSection
+     * @param section ConfigurationSection that contains a condition
+     * @return A requirement
+     */
     @Nullable
     public Requirement parseRequirement(ConfigurationSection section) {
         RequirementType type;
@@ -108,6 +164,10 @@ public class Requirements {
         }
     }
 
+    /**
+     * @param text Text to colorize
+     * @return Colorized text
+     */
     @Nullable
     private String translateColors(String text) {
         if (text == null) {
@@ -117,6 +177,10 @@ public class Requirements {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
+    /**
+     * @param text List of texts to translate
+     * @return List of colorized texts
+     */
     @Nullable
     private List<String> translateColors(List<String> text) {
         if (text == null) {

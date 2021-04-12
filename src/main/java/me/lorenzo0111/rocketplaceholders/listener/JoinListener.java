@@ -25,7 +25,7 @@
 package me.lorenzo0111.rocketplaceholders.listener;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
+import me.lorenzo0111.rocketplaceholders.utilities.UpdateChecker;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

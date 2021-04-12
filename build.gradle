@@ -63,7 +63,7 @@ javadoc {
     include("**/api/*.java")
     include("**/creator/*.java")
     include("**/creator/conditions/*.java")
-    exclude("**/creator/PlaceholderCreator.java")
+    include("**/creator/conditions/engine/Requirements.java")
     exclude("**/api/RocketPlaceholdersAPIManager.java")
     destinationDir = new File("javadocs/rocketplaceholders")
 }

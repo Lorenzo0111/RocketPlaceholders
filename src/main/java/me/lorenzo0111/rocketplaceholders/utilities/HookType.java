@@ -25,5 +25,17 @@
 package me.lorenzo0111.rocketplaceholders.utilities;
 
 public enum HookType {
-    PLACEHOLDERAPI,MVDW,NULL
+    PLACEHOLDERAPI("PlaceholderAPI"),
+    MVDW("MVdWPlaceholderAPI"),
+    NULL("null");
+
+    private final String plugin;
+
+    HookType(String plugin) {
+        this.plugin = plugin;
+    }
+
+    public String getPlugin() {
+        return plugin;
+    }
 }

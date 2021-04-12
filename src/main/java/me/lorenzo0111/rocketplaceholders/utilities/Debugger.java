@@ -56,6 +56,7 @@ public class Debugger {
         this.log("Plugin Information");
         this.logData("Plugin Name", plugin.getDescription().getName());
         this.logData("Plugin Version", plugin.getDescription().getVersion());
+        this.logData("Placeholders Provider:", plugin.getLoader().getHookType().getPlugin());
 
         this.log("");
 

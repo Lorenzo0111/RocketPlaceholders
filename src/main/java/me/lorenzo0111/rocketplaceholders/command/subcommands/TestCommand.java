@@ -61,7 +61,7 @@ public class TestCommand extends SubCommand {
             return;
         }
 
-        String placeholder = "%rp_" + args[1];
+        String placeholder = "%rp_" + args[1] + "%";
         final HookType hookType = this.getCommand().getPlugin().getLoader().getHookType();
 
         if (hookType.equals(HookType.PLACEHOLDERAPI)) {

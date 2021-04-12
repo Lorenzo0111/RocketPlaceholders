@@ -54,6 +54,11 @@ public class PlaceholderBuilder {
         this.owner = owner;
     }
 
+    /**
+     * @param requirement Requirement to view the text
+     * @see me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements
+     * @return The same instance
+     */
     public PlaceholderBuilder createConditionNode(Requirement requirement, String text) {
         nodes.add(new ConditionNode(requirement, text));
 

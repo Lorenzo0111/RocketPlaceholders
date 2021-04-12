@@ -22,14 +22,13 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.placeholders;
+package me.lorenzo0111.rocketplaceholders.storage;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements;
 import me.lorenzo0111.rocketplaceholders.legacy.PermissionNode;
-import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -38,12 +37,12 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
-public class InternalPlaceholders {
+public class ConfigManager {
 
     private final RocketPlaceholders plugin;
     private final StorageManager storageManager;
 
-    public InternalPlaceholders(RocketPlaceholders plugin) {
+    public ConfigManager(RocketPlaceholders plugin) {
         this.plugin = plugin;
         this.storageManager = plugin.getStorageManager();
     }

@@ -27,10 +27,10 @@ package me.lorenzo0111.rocketplaceholders;
 import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPIManager;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
-import me.lorenzo0111.rocketplaceholders.creator.placeholders.InternalPlaceholders;
+import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
-import me.lorenzo0111.rocketplaceholders.updater.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
+import me.lorenzo0111.rocketplaceholders.utilities.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,7 +53,7 @@ public final class RocketPlaceholders extends JavaPlugin {
 
         this.storageManager = new StorageManager(this);
 
-        final InternalPlaceholders placeholders = new InternalPlaceholders(this);
+        final ConfigManager placeholders = new ConfigManager(this);
         final PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders, this);
         final RocketPlaceholdersAPI api = new RocketPlaceholdersAPIManager(placeholdersManager);
 
