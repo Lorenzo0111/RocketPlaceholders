@@ -36,7 +36,10 @@ description = 'RocketPlaceholders'
 
 repositories {
     maven { url 'https://jitpack.io' }
-    maven { url 'http://repo.mvdw-software.be/content/groups/public/' }
+    maven {
+        url = 'http://repo.mvdw-software.be/content/groups/public/'
+        allowInsecureProtocol = true
+    }
 }
 
 dependencies {
