@@ -34,6 +34,7 @@ import me.lorenzo0111.rocketplaceholders.listener.JoinListener;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,7 +59,9 @@ public class PluginLoader {
     }
 
     public void loadMetrics() {
-        new Metrics(plugin, 9381);
+        final Metrics metrics = new Metrics(plugin, 9381);
+        metrics.addCustomChart(new SimplePie("placeholders", () -> String.valueOf(this.placeholdersManager.getStorageManager().getAll().size())));
+        metrics.addCustomChart(new SimplePie("hook", () -> this.hookType.getPlugin()));
     }
 
     public void registerEvents() {

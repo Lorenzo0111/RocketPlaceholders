@@ -67,10 +67,9 @@ public final class RocketPlaceholders extends JavaPlugin {
         this.loader = new PluginLoader(this, placeholdersManager, checker);
         this.loader.loadDatabase();
         this.loader.setupHooks();
-        this.loader.loadMetrics();
         this.loader.registerEvents();
         this.loader.placeholderHook();
-
+        this.loader.loadMetrics();
     }
 
     @Override
