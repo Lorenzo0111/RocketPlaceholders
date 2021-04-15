@@ -28,10 +28,8 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasItemCondition;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasMoneyCondition;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasPermissionCondition;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.JSCondition;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.types.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -77,13 +75,13 @@ public class Requirements {
                 return new HasItemCondition(item,plugin);
             case JAVASCRIPT:
                 if (value == null) {
-                    throw new InvalidConditionException("Expression cannot be null, try to set a correct value in the config");
+                    throw new InvalidConditionException("Expression cannot be null, try to set a correct 'value' in the config");
                 }
 
                 return new JSCondition(plugin,value);
             case MONEY:
                 if (value == null) {
-                    throw new InvalidConditionException("Value cannot be null. Please insert a valid number as value in the config.");
+                    throw new InvalidConditionException("Value cannot be null. Please insert a valid number as 'value' in the config.");
                 }
 
                 long amount = Long.parseLong(value);
@@ -91,10 +89,20 @@ public class Requirements {
                 return new HasMoneyCondition(plugin,amount);
             case PERMISSION:
                 if (value == null) {
-                    throw new InvalidConditionException("Permission cannot be null. Please try to set a valid permission as value in the config.");
+                    throw new InvalidConditionException("Permission cannot be null. Please try to set a valid permission as 'value' in the config.");
                 }
 
                 return new HasPermissionCondition(plugin,value);
+            case GROUP:
+                if (value == null) {
+                    throw new InvalidConditionException("Group cannot be null. Please try to set a valid permission as 'value' in the config.");
+                }
+
+                if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+                    throw new InvalidConditionException("You cannot use this condition without Vault plugin.");
+                }
+
+                return new HasGroupCondition(plugin,value);
             default:
                 return null;
         }
@@ -159,6 +167,16 @@ public class Requirements {
                 }
 
                 return new HasPermissionCondition(plugin,permission);
+            case GROUP:
+                if (!section.contains("value")) {
+                    throw new InvalidConditionException("Group cannot be null. Please try to set a valid permission as 'value' in the config.");
+                }
+
+                if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+                    throw new InvalidConditionException("You cannot use this condition without Vault plugin.");
+                }
+
+                return new HasGroupCondition(plugin,section.getString("value"));
             default:
                 return null;
         }

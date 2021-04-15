@@ -33,6 +33,7 @@ import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
 import me.lorenzo0111.rocketplaceholders.listener.JoinListener;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
@@ -49,6 +50,7 @@ public class PluginLoader {
     private final PlaceholdersManager placeholdersManager;
     private final UpdateChecker updateChecker;
     private Economy economy = null;
+    private Permission permission = null;
     private DatabaseManager databaseManager;
     private HookType hookType = HookType.NULL;
 
@@ -102,7 +104,13 @@ public class PluginLoader {
             RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp != null) {
                 this.economy = rsp.getProvider();
-                this.plugin.getLogger().info("Hooked with Vault.");
+                this.plugin.getLogger().info("Hooked with Vault Economy.");
+            }
+
+            RegisteredServiceProvider<Permission> prsp = plugin.getServer().getServicesManager().getRegistration(Permission.class);
+            if (prsp !=  null) {
+                this.permission = prsp.getProvider();
+                this.plugin.getLogger().info("Hooked with Vault Permission Manager.");
             }
         }
     }
@@ -158,6 +166,11 @@ public class PluginLoader {
     @Nullable
     public Economy getEconomy() {
         return economy;
+    }
+
+    @Nullable
+    public Permission getPermission() {
+        return permission;
     }
 
     public HookType getHookType() {

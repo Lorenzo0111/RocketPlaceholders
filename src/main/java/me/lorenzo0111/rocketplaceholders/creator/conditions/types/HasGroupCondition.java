@@ -22,15 +22,31 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions;
+package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-/**
- * All requirement types for  {@link me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement}
- */
-public enum RequirementType {
-    JAVASCRIPT,
-    MONEY,
-    ITEM,
-    PERMISSION,
-    GROUP
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import net.milkbowl.vault.permission.Permission;
+import org.bukkit.entity.Player;
+
+public class HasGroupCondition extends Requirement {
+    private final String group;
+
+    public HasGroupCondition(RocketPlaceholders plugin,String group) {
+        super(plugin);
+        this.group = group;
+    }
+
+    @Override
+    public boolean apply(Player player) {
+        final Permission permission = plugin.getLoader().getPermission();
+
+        return permission != null && permission.playerInGroup(player,group);
+    }
+
+    @Override
+    public RequirementType getType() {
+        return RequirementType.GROUP;
+    }
 }
