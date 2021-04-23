@@ -27,8 +27,16 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Requirement {
     protected final RocketPlaceholders plugin;
+    protected final Map<String,Object> databaseInfo = new HashMap<>();
+
+    public Map<String,Object> getDatabaseInfo() {
+        return this.databaseInfo;
+    }
 
     /**
      * @param plugin Plugin

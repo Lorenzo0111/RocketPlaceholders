@@ -122,3 +122,6 @@ buildNumber.properties
 
 # Common working directory
 run/
+
+gradle.properties
+ignore/

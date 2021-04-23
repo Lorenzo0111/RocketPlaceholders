@@ -49,12 +49,14 @@ dependencies {
         exclude module: 'spigot'
     }
     implementation 'mysql:mysql-connector-java:8.0.24'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 shadowJar {
-    relocate('google.protobuf', 'me.Lorenzo0111.lib.protobuf')
-    relocate('com.mysql', 'me.Lorenzo0111.lib.mysql')
-    relocate('com.google.protobuf', 'me.Lorenzo0111.lib.google.protobuf')
+    relocate('com.google.gson','me.lorenzo0111.lib.gson')
+    relocate('google.protobuf', 'me.lorenzo0111.lib.protobuf')
+    relocate('com.mysql', 'me.lorenzo0111.lib.mysql')
+    relocate('com.google.protobuf', 'me.lorenzo0111.lib.google.protobuf')
 }
 
 javadoc {

@@ -33,12 +33,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
-    /*
-
-    Plugin by Lorenzo0111 - https://github.com/Lorenzo0111
-
-     */
-
     private final RocketPlaceholders plugin;
     private final UpdateChecker updateChecker;
 

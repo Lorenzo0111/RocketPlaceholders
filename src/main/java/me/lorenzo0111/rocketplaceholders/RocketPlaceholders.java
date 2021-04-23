@@ -40,12 +40,6 @@ public final class RocketPlaceholders extends JavaPlugin {
     private StorageManager storageManager;
     private PluginLoader loader;
 
-    /*
-
-    Plugin by Lorenzo0111 - https://github.com/Lorenzo0111
-
-     */
-
     @Override
     public void onEnable() {
 
@@ -74,8 +68,8 @@ public final class RocketPlaceholders extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
         Bukkit.getScheduler().cancelTasks(this);
+        getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
     }
 
     /**

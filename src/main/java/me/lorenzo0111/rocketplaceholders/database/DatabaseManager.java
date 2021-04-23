@@ -24,24 +24,33 @@
 
 package me.lorenzo0111.rocketplaceholders.database;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.reflect.Type;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
     private final RocketPlaceholders plugin;
     private final ConfigurationSection mysqlSection;
     private Connection connection;
+    private final Gson gson = new Gson();
 
     public DatabaseManager(RocketPlaceholders plugin) {
         this.plugin = plugin;
@@ -53,14 +62,20 @@ public class DatabaseManager {
         }
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             this.plugin.getLogger().info("MySQL driver is not installed, please install it to use the mysql function");
             return;
         }
 
+        final String jdbc = mysqlSection.getString("jdbc");
+
         try {
-            this.connection = DriverManager.getConnection("jdbc:mysql://" + mysqlSection.getString("ip") + ":" + mysqlSection.getInt("port") + "/" + mysqlSection.getString("database"), mysqlSection.getString("username"), mysqlSection.getString("password"));
+            if (jdbc == null) {
+                this.connection = DriverManager.getConnection("jdbc:mysql://" + mysqlSection.getString("ip") + ":" + mysqlSection.getInt("port") + "/" + mysqlSection.getString("database"), mysqlSection.getString("username"), mysqlSection.getString("password"));
+            } else {
+                this.connection = DriverManager.getConnection(jdbc);
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -79,13 +94,66 @@ public class DatabaseManager {
                             "`text` varchar(255) NOT NULL," +
                             "PRIMARY KEY (`identifier`)" +
                             ");");
-
+                    statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_nodes` (" +
+                            "`identifier` varchar(255) NOT NULL," +
+                            "`type` varchar(255) NOT NULL," +
+                            "`value` varchar(255)," +
+                            "`item_material` varchar(255)," +
+                            "`item_name` varchar(255)," +
+                            "`item_lore` varchar(255)," +
+                            "`text` varchar(255)" +
+                            ");");
                 } catch (SQLException exception) {
                     plugin.getLogger().severe("Error while creating tables: " + exception);
                 }
             }
         }.runTaskAsynchronously(plugin);
     }
+
+    public CompletableFuture<Multimap<String, ConditionNode>> getNodes() {
+        CompletableFuture<Multimap<String,ConditionNode>> completableFuture = new CompletableFuture<>();
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+
+                try {
+                    final Statement statement = connection.createStatement();
+
+                    ResultSet set = statement.executeQuery("SELECT * FROM rp_nodes;");
+
+                    Multimap<String,ConditionNode> nodes = ArrayListMultimap.create();
+
+                    while (set.next()) {
+                        List<String> itemLore = new ArrayList<>();
+                        Material material = null;
+                        if (set.getString("item_lore") != null) {
+                            Type listType = new TypeToken<List<String>>() {}.getType();
+                            itemLore = gson.fromJson(set.getString("item_lore"),listType);
+                        }
+
+                        if (set.getString("item_material") != null) {
+                            material = Material.valueOf(set.getString("item_material"));
+                        }
+
+
+                        final Requirement requirement = new Requirements(plugin).createRequirement(RequirementType.valueOf(set.getString("type")),set.getString("value"), material,set.getString("item_name"),itemLore);
+                        nodes.put(set.getString("identifier"), new ConditionNode(requirement, set.getString("text")));
+                    }
+
+                    completableFuture.complete(nodes);
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+
+            }
+
+        }.runTaskAsynchronously(plugin);
+
+        return completableFuture;
+    }
+
 
     public void sync() {
         new BukkitRunnable() {
@@ -98,12 +166,49 @@ public class DatabaseManager {
 
                 try {
                     final PreparedStatement statement = connection.prepareStatement("insert into rp_placeholders (`identifier`, `text`) VALUES (?,?);");
+                    final PreparedStatement nodeStatement = connection.prepareStatement("insert into rp_nodes (`identifier`, `type`, `value`, `item_material`, `item_name`,`item_lore`, `text`) VALUES (?,?,?,?,?,?,?);");
 
                     hashMap.forEach((s, placeholder) -> {
                         try {
                             statement.setString(1, s);
                             statement.setString(2, placeholder.getText());
                             statement.executeUpdate();
+
+                            if (placeholder.hasConditionNodes() && placeholder.getConditionNodes() != null) {
+
+                                for (ConditionNode node : placeholder.getConditionNodes()) {
+                                    nodeStatement.setString(1, s);
+                                    nodeStatement.setString(2, node.getRequirement().getType().toString());
+                                    nodeStatement.setString(3,null); // Value
+                                    nodeStatement.setString(4,null); // Item Material
+                                    nodeStatement.setString(5,null); // Item Name
+                                    nodeStatement.setString(6,null); // Item Lore
+                                    nodeStatement.setString(7, node.getText());
+
+                                    switch (node.getRequirement().getType()) {
+                                        case GROUP:
+                                        case JAVASCRIPT:
+                                        case MONEY:
+                                        case PERMISSION:
+                                            nodeStatement.setObject(3,node.getRequirement().getDatabaseInfo().get("value"));
+                                            break;
+                                        case ITEM:
+                                            nodeStatement.setObject(4,node.getRequirement().getDatabaseInfo().get("item_material"));
+                                            nodeStatement.setObject(5,node.getRequirement().getDatabaseInfo().get("item_name"));
+
+                                            if (node.getRequirement().getDatabaseInfo().containsKey("item_lore") && node.getRequirement().getDatabaseInfo().get("item_lore") != null) {
+                                                nodeStatement.setObject(6,
+                                                        gson.toJson(node.getRequirement().getDatabaseInfo().get("item_lore")));
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    nodeStatement.executeUpdate();
+                                }
+
+                            }
                         } catch (SQLException exception) {
                             exception.printStackTrace();
                         }
@@ -113,7 +218,7 @@ public class DatabaseManager {
                 }
 
 
-                
+
             }
 
         }.runTaskAsynchronously(plugin);
@@ -122,7 +227,8 @@ public class DatabaseManager {
     public CompletableFuture<Map<String, Placeholder>> getFromDatabase() {
         CompletableFuture<Map<String, Placeholder>> completableFuture = new CompletableFuture<>();
 
-        new BukkitRunnable() {
+        getNodes().thenAccept(nodes -> new BukkitRunnable() {
+
             @Override
             public void run() {
                 try {
@@ -132,15 +238,16 @@ public class DatabaseManager {
                     Map<String, Placeholder> hashMap = new HashMap<>();
 
                     while (resultSet.next()) {
-                        hashMap.put(resultSet.getString("identifier"), new Placeholder(resultSet.getString("identifier"), plugin, resultSet.getString("text")));
+                        hashMap.put(resultSet.getString("identifier"), new Placeholder(resultSet.getString("identifier"), plugin, resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier")))));
                     }
 
                     completableFuture.complete(hashMap);
-                }catch (SQLException exception) {
+                } catch (SQLException exception) {
                     exception.printStackTrace();
                 }
             }
-        }.runTaskAsynchronously(plugin);
+
+        }.runTaskAsynchronously(plugin));
 
         return completableFuture;
     }
@@ -160,6 +267,7 @@ public class DatabaseManager {
                     Statement statement = connection.createStatement();
 
                     statement.executeUpdate("DELETE FROM rp_placeholders;");
+                    statement.executeUpdate("DELETE FROM rp_nodes;");
 
                     completableFuture.complete(true);
                 } catch (SQLException exception) {

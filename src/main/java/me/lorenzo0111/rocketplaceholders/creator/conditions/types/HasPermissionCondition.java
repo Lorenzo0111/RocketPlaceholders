@@ -35,6 +35,7 @@ public class HasPermissionCondition extends Requirement {
     public HasPermissionCondition(RocketPlaceholders plugin, String permission) {
         super(plugin);
         this.permission = permission;
+        this.getDatabaseInfo().put("value",permission);
     }
 
     @Override
@@ -45,5 +46,13 @@ public class HasPermissionCondition extends Requirement {
     @Override
     public RequirementType getType() {
         return RequirementType.PERMISSION;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "type=" + getType() + "," +
+                "permission='" + permission + "'" +
+                "}";
     }
 }

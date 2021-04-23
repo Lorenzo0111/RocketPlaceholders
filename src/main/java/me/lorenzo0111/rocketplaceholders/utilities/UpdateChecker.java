@@ -36,12 +36,6 @@ import java.util.Scanner;
 
 public class UpdateChecker {
 
-    /*
-
-    Plugin by Lorenzo0111 - https://github.com/Lorenzo0111
-
-     */
-
     private boolean updateAvailable;
     private final JavaPlugin plugin;
     private final int resourceId;

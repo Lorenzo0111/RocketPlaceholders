@@ -43,6 +43,7 @@ public class JSCondition extends Requirement {
         this.engine = new ScriptEngineManager().getEngineByName("javascript");
         this.engine.put("Server", Bukkit.getServer());
         this.expression = expression;
+        this.getDatabaseInfo().put("value",expression);
     }
 
     @Override

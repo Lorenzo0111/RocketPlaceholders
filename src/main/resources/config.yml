@@ -30,6 +30,7 @@ mysql:
   username: ""
   password: ""
   database: ""
+  jdbc: null # Do not edit this if you don't know what you are doing.
 
 
 # RocketPlaceholders custom placeholders

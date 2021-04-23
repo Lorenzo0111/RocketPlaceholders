@@ -35,6 +35,7 @@ public class HasMoneyCondition extends Requirement {
     public HasMoneyCondition(RocketPlaceholders plugin, long money) {
         super(plugin);
         this.money = money;
+        this.getDatabaseInfo().put("value",String.valueOf(money));
     }
 
     @Override

@@ -30,6 +30,8 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
+
 public class HasItemCondition extends Requirement {
     private final ItemStack item;
 
@@ -44,6 +46,9 @@ public class HasItemCondition extends Requirement {
     public HasItemCondition(ItemStack item, RocketPlaceholders plugin) {
         super(plugin);
         this.item = item;
+        this.getDatabaseInfo().put("item_name", Objects.requireNonNull(item.getItemMeta()).getDisplayName());
+        this.getDatabaseInfo().put("item_lore",Objects.requireNonNull(item.getItemMeta()).getLore());
+        this.getDatabaseInfo().put("item_material",item.getType().toString());
     }
 
     @Override

@@ -36,6 +36,7 @@ public class HasGroupCondition extends Requirement {
     public HasGroupCondition(RocketPlaceholders plugin,String group) {
         super(plugin);
         this.group = group;
+        this.getDatabaseInfo().put("value",group);
     }
 
     @Override
