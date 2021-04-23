@@ -18,7 +18,7 @@ You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplace
 ---
 
 ## Special thanks
-[![jetbrains]](https://jb.gg/OpenSource)
+<a href="https://jb.gg/OpenSource"><img src="https://github.com/Lorenzo0111/RocketPlaceholders/blob/master/media/jetbrains.png?raw=true" alt="drawing" width="200"/></a>
 
 [release]: https://img.shields.io/github/v/release/Lorenzo0111/RocketPlaceholders?style=for-the-badge&logo=appveyor
 [releaseLink]: https://github.com/Lorenzo0111/RocketPlaceholders/releases/latest
@@ -29,5 +29,4 @@ You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplace
 
 [discord]: https://bit.ly/RocketServer_DS
 [spigot]: https://www.spigotmc.org/resources/rocketplaceholders-custom-placeholders.82678/
-[jetbrains]: https://github.com/Lorenzo0111/RocketPlaceholders/blob/master/media/jetbrains.png?raw=true
 [logo]: https://i.ibb.co/kqTB43K/Rocket-Placeholders-Banner.png
