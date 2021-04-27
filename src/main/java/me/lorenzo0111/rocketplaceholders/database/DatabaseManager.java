@@ -238,7 +238,7 @@ public class DatabaseManager {
                     Map<String, Placeholder> hashMap = new HashMap<>();
 
                     while (resultSet.next()) {
-                        hashMap.put(resultSet.getString("identifier"), new Placeholder(resultSet.getString("identifier"), plugin, resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier")))));
+                        hashMap.put(resultSet.getString("identifier"), new Placeholder(null, resultSet.getString("identifier"), plugin, resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier")))));
                     }
 
                     completableFuture.complete(hashMap);
