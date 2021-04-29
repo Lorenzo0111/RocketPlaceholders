@@ -39,6 +39,7 @@ import java.util.Objects;
 public class Placeholder {
 
     private final String identifier;
+    private final String key;
     private final String text;
     private List<ConditionNode> conditionNodes;
     private final JavaPlugin owner;
@@ -67,13 +68,15 @@ public class Placeholder {
     }
 
     /**
+     * @param key Configuration key. Set to null if you are using the api.
      * @param identifier Identifier of the placeholder
      * @param owner Plugin that created the placeholder
      * @param text Main text of the placeholder
      * @param nodes ConditionNodes of the placeholder
      */
-    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, List<ConditionNode> nodes) {
+    public Placeholder(@Nullable String key, @NotNull String identifier, JavaPlugin owner, @NotNull String text,@Nullable List<ConditionNode> nodes) {
         this.identifier = identifier;
+        this.key = key;
 
         if (text.contains("%rp_")) {
             this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
@@ -90,9 +93,14 @@ public class Placeholder {
      * @param identifier Identifier of the placeholder
      * @param owner Plugin that created the placeholder
      * @param text Text of the placeholder
+     *
+     * Replaced by {@link Placeholder#Placeholder(String, String, JavaPlugin, String, List)}
      */
+    @Deprecated
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
         this.identifier = identifier;
+        this.key = null;
+
         if (text.contains("%rp_")) {
             this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
         } else {
@@ -136,5 +144,17 @@ public class Placeholder {
      */
     public boolean hasConditionNodes() {
         return this.conditionNodes != null;
+    }
+
+    /**
+     * @return Configuration key if present.
+     */
+    @Nullable
+    public String getKey() {
+        return key;
+    }
+
+    public boolean hasKey() {
+        return key != null;
     }
 }

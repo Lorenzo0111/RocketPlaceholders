@@ -70,6 +70,6 @@ public class PlaceholderBuilder {
      * @return Built placeholder
      */
     public Placeholder build() {
-        return new Placeholder(identifier, owner, text, nodes);
+        return new Placeholder(null, identifier, owner, text, nodes);
     }
 }

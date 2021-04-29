@@ -56,7 +56,7 @@ public class ConfigManager {
             final ConfigurationSection conditionsSection = Objects.requireNonNull(config.getConfigurationSection(key)).getConfigurationSection("conditions");
 
             if (conditionsSection == null && nodesSection == null) {
-                storageManager.getInternalPlaceholders().build(Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))));
+                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),null);
             }
 
             final List<ConditionNode> nodes = new ArrayList<>();
@@ -79,11 +79,11 @@ public class ConfigManager {
 
                 }
 
-                storageManager.getInternalPlaceholders().build(Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),nodes);
+                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),nodes);
             }
 
             if (nodes.isEmpty()) {
-                storageManager.getInternalPlaceholders().build(Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))));
+                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))), null);
             }
 
         }

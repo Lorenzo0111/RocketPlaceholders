@@ -50,12 +50,13 @@ public class Storage {
         this.placeholders.putAll(storage.getMap());
     }
 
+    @Deprecated
     public void build(@NotNull String identifier, @NotNull String text) {
         this.placeholders.put(identifier, new Placeholder(identifier, plugin, text));
     }
 
-    public void build(@NotNull String identifier, @NotNull String text, List<ConditionNode> nodes) {
-        this.placeholders.put(identifier, new Placeholder(identifier, plugin, text, nodes));
+    public void build(@Nullable String key, @NotNull String identifier, @NotNull String text,@Nullable List<ConditionNode> nodes) {
+        this.placeholders.put(identifier, new Placeholder(key, identifier, plugin, text, nodes));
     }
 
     public void clear() {
