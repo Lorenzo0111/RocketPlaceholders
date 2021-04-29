@@ -36,7 +36,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public final class GuiUtilities {
+public final class GuiUtils {
 
     public static PaginatedGui createGui(String title) {
         final String prefix = "&8&l» &7";

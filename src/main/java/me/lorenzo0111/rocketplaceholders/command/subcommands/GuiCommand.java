@@ -28,7 +28,7 @@ import dev.dbassett.skullcreator.SkullCreator;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
-import me.lorenzo0111.rocketplaceholders.utilities.GuiUtilities;
+import me.lorenzo0111.rocketplaceholders.utilities.GuiUtils;
 import me.mattstudios.mfgui.gui.components.ItemBuilder;
 import me.mattstudios.mfgui.gui.components.xseries.XMaterial;
 import me.mattstudios.mfgui.gui.guis.PaginatedGui;
@@ -63,8 +63,8 @@ public class GuiCommand extends SubCommand {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + "&r &7Loading the GUI, this may take some seconds.."));
 
         final Player player = (Player) sender;
-        final PaginatedGui gui = GuiUtilities.createGui("Placeholders List");
-        GuiUtilities.setPageItems(gui);
+        final PaginatedGui gui = GuiUtils.createGui("Placeholders List");
+        GuiUtils.setPageItems(gui);
 
         String placeholderBase64 = Objects.requireNonNull(this.getCommand().getPlugin().getConfig().getString("gui.placeholder"));
 
@@ -75,7 +75,7 @@ public class GuiCommand extends SubCommand {
                     .setLore("§7Click to edit this placeholder")
                     .asGuiItem( e -> {
 
-                        PaginatedGui settingsGui = GuiUtilities.createGui(placeholder.getIdentifier() + " &8&l» &7Settings");
+                        PaginatedGui settingsGui = GuiUtils.createGui(placeholder.getIdentifier() + " &8&l» &7Settings");
 
                         settingsGui.setItem(2,ItemBuilder.from(Objects.requireNonNull(XMaterial.TORCH.parseItem()))
                                 .setName("§8§l» §7Information")
@@ -94,7 +94,7 @@ public class GuiCommand extends SubCommand {
 
                                     if (placeholder.hasConditionNodes()) {
 
-                                        GuiUtilities.createConditionsGui(placeholder).open(player);
+                                        GuiUtils.createConditionsGui(placeholder).open(player);
 
                                     }
 
