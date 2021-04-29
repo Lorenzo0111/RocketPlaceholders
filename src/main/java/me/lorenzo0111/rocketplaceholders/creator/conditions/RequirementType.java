@@ -32,5 +32,9 @@ public enum RequirementType {
     MONEY,
     ITEM,
     PERMISSION,
-    GROUP
+    GROUP,
+    /**
+     * Requirement added via api
+     */
+    API
 }

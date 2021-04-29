@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * API of RocketPlaceholders
  */
-@SuppressWarnings("unusde")
+@SuppressWarnings("unused")
 public interface RocketPlaceholdersAPI {
 
     /**
