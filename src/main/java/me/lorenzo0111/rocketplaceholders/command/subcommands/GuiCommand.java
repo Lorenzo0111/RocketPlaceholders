@@ -29,7 +29,7 @@ import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.utilities.GuiUtils;
-import me.mattstudios.mfgui.gui.components.ItemBuilder;
+import me.mattstudios.mfgui.gui.components.util.ItemBuilder;
 import me.mattstudios.mfgui.gui.components.xseries.XMaterial;
 import me.mattstudios.mfgui.gui.guis.PaginatedGui;
 import org.bukkit.ChatColor;
@@ -38,7 +38,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GuiCommand extends SubCommand {
@@ -84,9 +83,11 @@ public class GuiCommand extends SubCommand {
                                         placeholder.hasConditionNodes() ? "§8Conditions: §7" + Objects.requireNonNull(placeholder.getConditionNodes()).size() : "")
                                 .asGuiItem(event -> event.setCancelled(true)));
 
-                        Optional<Material> conditionMaterial = placeholder.hasConditionNodes() ? XMaterial.CHEST.parseMaterial() : XMaterial.BARRIER.parseMaterial();
+                        Material material = placeholder.hasConditionNodes() ? XMaterial.CHEST.parseMaterial() : XMaterial.BARRIER.parseMaterial();
 
-                        conditionMaterial.ifPresent(material -> settingsGui.setItem(6, ItemBuilder.from(material)
+                        Objects.requireNonNull(material);
+
+                        settingsGui.setItem(6, ItemBuilder.from(material)
                                 .setName("§8§l» §7Conditions")
                                 .setLore(placeholder.hasConditionNodes() ? "§7Click to view" : "§7There isn't any condition.")
                                 .asGuiItem(event -> {
@@ -97,8 +98,7 @@ public class GuiCommand extends SubCommand {
                                         GuiUtils.createConditionsGui(placeholder).open(player);
 
                                     }
-
-                                })));
+                                }));
 
                         settingsGui.setItem(22,ItemBuilder.from(Material.ARROW)
                                 .setName("§8§l» §7Back")
