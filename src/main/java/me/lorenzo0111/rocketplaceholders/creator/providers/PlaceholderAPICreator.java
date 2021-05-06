@@ -98,18 +98,22 @@ public class PlaceholderAPICreator extends PlaceholderExpansion {
         }
 
         if (!placeholder.hasConditionNodes()) {
-            return PlaceholderAPI.setPlaceholders(player,placeholder.getText());
+            return this.parse(placeholder,player,placeholder.getText());
         }
 
         List<ConditionNode> conditionNodes = Objects.requireNonNull(placeholder.getConditionNodes());
         for (ConditionNode node : conditionNodes) {
             if (((Requirement) node.getCondition()).apply(onlinePlayer)) {
                 plugin.debug("Applied: " + node.getRequirement());
-                return PlaceholderAPI.setPlaceholders(player,node.getText());
+                return this.parse(placeholder,player,node.getText());
             }
         }
 
-        return PlaceholderAPI.setPlaceholders(player,placeholder.getText());
+        return this.parse(placeholder,player,placeholder.getText());
 
+    }
+
+    private String parse(Placeholder placeholder, OfflinePlayer player, String text) {
+        return placeholder.parseJS(PlaceholderAPI.setPlaceholders(player,text));
     }
 }

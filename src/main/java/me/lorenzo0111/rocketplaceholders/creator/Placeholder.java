@@ -142,17 +142,17 @@ public class Placeholder {
      * @return Text of the placeholder
      */
     public String getText() {
-        if (this.parseJS) {
-            return this.parseJS();
-        }
-
         return this.text;
     }
 
     /**
      * Parse javascript
      */
-    private String parseJS() {
+    public String parseJS(String text) {
+        if (!this.parseJS) {
+            return text;
+        }
+
         try {
             Object result = engine.eval(text);
             if (!(result instanceof String)) {
