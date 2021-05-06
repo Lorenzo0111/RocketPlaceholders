@@ -39,10 +39,16 @@ public class UpdateChecker {
     private boolean updateAvailable;
     private final JavaPlugin plugin;
     private final int resourceId;
+    private final String url;
 
-    public UpdateChecker(JavaPlugin plugin, int resourceId) {
+    public UpdateChecker(JavaPlugin plugin, int resourceId, String url) {
         this.plugin = plugin;
         this.resourceId = resourceId;
+        this.url = url;
+
+        if (this.plugin.getDescription().getVersion().endsWith("-SNAPSHOT") || this.plugin.getDescription().getVersion().endsWith("-BETA")) {
+            this.plugin.getLogger().info("Running a SNAPSHOT or BETA version, the updater may be bugged here.");
+        }
 
         this.fetch();
     }
@@ -63,16 +69,7 @@ public class UpdateChecker {
 
     public void sendUpdateCheck(CommandSender player) {
         if (updateAvailable) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l&m---------------------------------------"));
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7There is a new update available."));
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lRocket&e&lPlaceholders &f&l» &7Download it from: &ehttps://bit.ly/RocketPlaceholders"));
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l&m---------------------------------------"));
-        }
-    }
-
-    public void updateCheck() {
-        if (updateAvailable) {
-            this.plugin.getLogger().info("There is a new update available. Download it from: https://bit.ly/RocketPlaceholders");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&8[&eRocketUpdater&8] &7An update of %s is available. Download it from %s",plugin.getDescription().getName(),url)));
         }
     }
 }

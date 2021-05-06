@@ -41,6 +41,11 @@ public interface RocketPlaceholdersAPI {
     void addPlaceholder(Placeholder placeholder);
 
     /**
+     * @param identifier Identifier of the placeholder to remove
+     */
+    void removePlaceholder(String identifier);
+
+    /**
      * Get a placeholder from the storage
      * @param identifier Identifier of the placeholder
      * @return Placeholder that has that identifier or null

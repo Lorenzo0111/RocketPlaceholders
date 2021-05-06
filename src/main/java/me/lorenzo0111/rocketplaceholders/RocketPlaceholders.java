@@ -55,8 +55,8 @@ public final class RocketPlaceholders extends JavaPlugin {
 
         placeholders.registerPlaceholders();
 
-        final UpdateChecker checker = new UpdateChecker(this, 82678);
-        checker.updateCheck();
+        final UpdateChecker checker = new UpdateChecker(this, 82678, "https://bit.ly/RocketPlaceholders");
+        checker.sendUpdateCheck(Bukkit.getConsoleSender());
 
         this.loader = new PluginLoader(this, placeholdersManager, checker);
         this.loader.loadDatabase();

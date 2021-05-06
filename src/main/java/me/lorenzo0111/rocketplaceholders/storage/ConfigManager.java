@@ -54,9 +54,10 @@ public class ConfigManager {
         for (String key : config.getKeys(false)) {
             final ConfigurationSection nodesSection = Objects.requireNonNull(config.getConfigurationSection(key)).getConfigurationSection("permissions");
             final ConfigurationSection conditionsSection = Objects.requireNonNull(config.getConfigurationSection(key)).getConfigurationSection("conditions");
+            final boolean parseJS = config.getBoolean(key + "." + "parsejs");
 
             if (conditionsSection == null && nodesSection == null) {
-                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),null);
+                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),null, parseJS);
             }
 
             final List<ConditionNode> nodes = new ArrayList<>();
@@ -79,11 +80,11 @@ public class ConfigManager {
 
                 }
 
-                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),nodes);
+                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),nodes,parseJS);
             }
 
             if (nodes.isEmpty()) {
-                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))), null);
+                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))), null, parseJS);
             }
 
         }

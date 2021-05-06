@@ -32,13 +32,7 @@ mysql:
   database: ""
   jdbc: null # Do not edit this if you don't know what you are doing.
 
-# Gui Items Base64, upload the skin with the custom head here: https://skulls.rocketplugins.space
-gui:
-  placeholder: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmFkOGEzYTNiMzZhZGQ1ZDk1NDFhOGVjOTcwOTk2ZmJkY2RlYTk0MTRjZDc1NGM1MGU0OGU1ZDM0ZjFiZjYwYSJ9fX0="
-  delete: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWMyZWI5MjE2MjhlNGUzOGM5ZDlkYTM5YmJhNTc3ZGE2ZGJmZTA4ZjEwOTkzZmVjOGM4MTU1YWFhZjk3NiJ9fX0="
-
-
-# RocketPlaceholders custom placeholders
+# Placeholders section
 
 placeholders:
 

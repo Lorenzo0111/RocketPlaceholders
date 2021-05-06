@@ -90,6 +90,32 @@ publishing {
             version = project.version
 
             from components.java
+
+            pom {
+                name = 'RocketPlaceholders'
+                description = 'A minecraft plugin to add custom placeholders'
+                url = 'https://github.com/Lorenzo0111/RocketPlaceholders'
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/Lorenzo0111/RocketPlaceholders/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'lorenzo0111'
+                        name = 'Lorenzo0111'
+                        email = 'lorenzo@rocketplugins.space'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Lorenzo0111/RocketPlaceholders.git'
+                    developerConnection = 'scm:git:ssh://github.com/Lorenzo0111/RocketPlaceholders.git'
+                    url = 'https://github.com/Lorenzo0111/RocketPlaceholders'
+                }
+            }
+
         }
     }
 

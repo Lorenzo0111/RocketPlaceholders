@@ -25,11 +25,16 @@
 package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.InvalidConditionException;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,12 +42,13 @@ import java.util.Objects;
  * A placeholder
  */
 public class Placeholder {
-
+    private boolean parseJS = false;
     private final String identifier;
     private final String key;
     private final String text;
     private List<ConditionNode> conditionNodes;
     private final JavaPlugin owner;
+    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
 
     @Override
     public boolean equals(Object target) {
@@ -90,6 +96,21 @@ public class Placeholder {
     }
 
     /**
+     * @param key Configuration key. Set to null if you are using the api.
+     * @param identifier Identifier of the placeholder
+     * @param owner Plugin that created the placeholder
+     * @param text Main text of the placeholder
+     * @param nodes ConditionNodes of the placeholder
+     * @param parseJS Should parse JavaScript expression
+     */
+    public Placeholder(@Nullable String key, @NotNull String identifier, JavaPlugin owner, @NotNull String text,@Nullable List<ConditionNode> nodes, boolean parseJS) {
+        this(key,identifier,owner,text,nodes);
+
+        this.parseJS = parseJS;
+        this.engine.put("Server", Bukkit.getServer());
+    }
+
+    /**
      * @param identifier Identifier of the placeholder
      * @param owner Plugin that created the placeholder
      * @param text Text of the placeholder
@@ -121,7 +142,29 @@ public class Placeholder {
      * @return Text of the placeholder
      */
     public String getText() {
+        if (this.parseJS) {
+            return this.parseJS();
+        }
+
         return this.text;
+    }
+
+    /**
+     * Parse javascript
+     */
+    private String parseJS() {
+        try {
+            Object result = engine.eval(text);
+            if (!(result instanceof String)) {
+                throw new InvalidConditionException("The expression should return a string.");
+            }
+
+            return (String) result;
+        } catch (ScriptException e) {
+            e.printStackTrace();
+        }
+
+        return "JavaScript error";
     }
 
     /**

@@ -41,6 +41,11 @@ public class RocketPlaceholdersAPIManager implements RocketPlaceholdersAPI {
     }
 
     @Override
+    public void removePlaceholder(String identifier) {
+        this.getPlaceholdersManager().getStorageManager().getExternalPlaceholders().getMap().remove(identifier);
+    }
+
+    @Override
     public @Nullable Placeholder getPlaceholder(String identifier) {
         return this.getPlaceholdersManager().searchPlaceholder(identifier);
     }

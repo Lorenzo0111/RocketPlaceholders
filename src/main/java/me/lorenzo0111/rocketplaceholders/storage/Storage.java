@@ -56,7 +56,11 @@ public class Storage {
     }
 
     public void build(@Nullable String key, @NotNull String identifier, @NotNull String text,@Nullable List<ConditionNode> nodes) {
-        this.placeholders.put(identifier, new Placeholder(key, identifier, plugin, text, nodes));
+        this.build(key,identifier,text,nodes,false);
+    }
+
+    public void build(@Nullable String key, @NotNull String identifier, @NotNull String text,@Nullable List<ConditionNode> nodes, boolean parseJS) {
+        this.placeholders.put(identifier, new Placeholder(key, identifier, plugin, text, nodes, parseJS));
     }
 
     public void clear() {
