@@ -52,7 +52,7 @@ dependencies {
     compileOnly ('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
         exclude module: 'spigot'
     }
-    implementation 'mysql:mysql-connector-java:8.0.24'
+    implementation 'mysql:mysql-connector-java:8.0.25'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "me.mattstudios.utils:matt-framework-gui:2.0.3.3"
     implementation 'dev.dbassett:skullcreator:3.0.1'
