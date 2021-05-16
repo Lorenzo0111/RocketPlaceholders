@@ -177,35 +177,37 @@ public class DatabaseManager {
                             if (placeholder.hasConditionNodes() && placeholder.getConditionNodes() != null) {
 
                                 for (ConditionNode node : placeholder.getConditionNodes()) {
-                                    nodeStatement.setString(1, s);
-                                    nodeStatement.setString(2, node.getRequirement().getType().toString());
-                                    nodeStatement.setString(3,null); // Value
-                                    nodeStatement.setString(4,null); // Item Material
-                                    nodeStatement.setString(5,null); // Item Name
-                                    nodeStatement.setString(6,null); // Item Lore
-                                    nodeStatement.setString(7, node.getText());
+                                    if (!node.getRequirement().getType().equals(RequirementType.API)) {
+                                        nodeStatement.setString(1, s);
+                                        nodeStatement.setString(2, node.getRequirement().getType().toString());
+                                        nodeStatement.setString(3,null); // Value
+                                        nodeStatement.setString(4,null); // Item Material
+                                        nodeStatement.setString(5,null); // Item Name
+                                        nodeStatement.setString(6,null); // Item Lore
+                                        nodeStatement.setString(7, node.getText());
 
-                                    switch (node.getRequirement().getType()) {
-                                        case GROUP:
-                                        case JAVASCRIPT:
-                                        case MONEY:
-                                        case PERMISSION:
-                                            nodeStatement.setObject(3,node.getRequirement().getDatabaseInfo().get("value"));
-                                            break;
-                                        case ITEM:
-                                            nodeStatement.setObject(4,node.getRequirement().getDatabaseInfo().get("item_material"));
-                                            nodeStatement.setObject(5,node.getRequirement().getDatabaseInfo().get("item_name"));
+                                        switch (node.getRequirement().getType()) {
+                                            case GROUP:
+                                            case JAVASCRIPT:
+                                            case MONEY:
+                                            case PERMISSION:
+                                                nodeStatement.setObject(3,node.getRequirement().getDatabaseInfo().get("value"));
+                                                break;
+                                            case ITEM:
+                                                nodeStatement.setObject(4,node.getRequirement().getDatabaseInfo().get("item_material"));
+                                                nodeStatement.setObject(5,node.getRequirement().getDatabaseInfo().get("item_name"));
 
-                                            if (node.getRequirement().getDatabaseInfo().containsKey("item_lore") && node.getRequirement().getDatabaseInfo().get("item_lore") != null) {
-                                                nodeStatement.setObject(6,
-                                                        gson.toJson(node.getRequirement().getDatabaseInfo().get("item_lore")));
-                                            }
-                                            break;
-                                        default:
-                                            break;
+                                                if (node.getRequirement().getDatabaseInfo().containsKey("item_lore") && node.getRequirement().getDatabaseInfo().get("item_lore") != null) {
+                                                    nodeStatement.setObject(6,
+                                                            gson.toJson(node.getRequirement().getDatabaseInfo().get("item_lore")));
+                                                }
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        nodeStatement.executeUpdate();
                                     }
-
-                                    nodeStatement.executeUpdate();
                                 }
 
                             }
