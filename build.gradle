@@ -138,3 +138,7 @@ publishing {
         }
     }
 }
+
+// This code is used for shadowJar
+jar.setEnabled(false)
+tasks.build.dependsOn tasks.shadowJar
