@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
-import dev.dbassett.skullcreator.SkullCreator;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
@@ -65,11 +64,9 @@ public class GuiCommand extends SubCommand {
         final PaginatedGui gui = GuiUtils.createGui("Placeholders List");
         GuiUtils.setPageItems(gui);
 
-        String placeholderBase64 = Objects.requireNonNull(this.getCommand().getPlugin().getConfig().getString("gui.placeholder"));
-
         for (Placeholder placeholder : this.command.getPlugin().getStorageManager().getAll().values().stream().filter(Placeholder::hasKey).collect(Collectors.toList())) {
             gui.addItem( ItemBuilder
-                    .from(SkullCreator.itemFromBase64(placeholderBase64))
+                    .from(Objects.requireNonNull(XMaterial.TARGET.parseMaterial()))
                     .setName(String.format("§8§l» §7%s",placeholder.getIdentifier()))
                     .setLore("§7Click to edit this placeholder")
                     .asGuiItem( e -> {
