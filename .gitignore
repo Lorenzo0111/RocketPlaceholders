@@ -1,10 +1,14 @@
+# Minecraft.gitignore
+# You can download it here: git.io/McIgnore
+# Version: 1.1
+# Running a custom fork
+
 # User-specific stuff
 .idea/
 
 *.iml
 *.ipr
 *.iws
-old.txt
 
 # IntelliJ
 out/
@@ -125,6 +129,3 @@ run/
 
 gradle.properties
 ignore/
-
-# Other
-javadocs.cmd
