@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.api;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,6 +45,17 @@ public interface RocketPlaceholdersAPI {
      * @param identifier Identifier of the placeholder to remove
      */
     void removePlaceholder(String identifier);
+
+    /**
+     * @param placeholder Placeholder to remove
+     */
+    void removePlaceholder(Placeholder placeholder);
+
+    /**
+     * Remove all external placeholders of a plugin
+     * @param owner Owner of the external placeholders
+     */
+    void removePlaceholders(JavaPlugin owner);
 
     /**
      * Get a placeholder from the storage

@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.api;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 public class RocketPlaceholdersAPIManager implements RocketPlaceholdersAPI {
@@ -43,6 +44,21 @@ public class RocketPlaceholdersAPIManager implements RocketPlaceholdersAPI {
     @Override
     public void removePlaceholder(String identifier) {
         this.getPlaceholdersManager().getStorageManager().getExternalPlaceholders().getMap().remove(identifier);
+    }
+
+    @Override
+    public void removePlaceholder(Placeholder placeholder) {
+        this.getPlaceholdersManager().getStorageManager().getExternalPlaceholders().getMap().remove(placeholder.getIdentifier());
+    }
+
+    @Override
+    public void removePlaceholders(JavaPlugin owner) {
+        this.getPlaceholdersManager().getStorageManager().getExternalPlaceholders()
+                .getMap()
+                .values()
+                .stream()
+                .filter((placeholder) -> placeholder.getOwner().equals(owner))
+                .forEach(this::removePlaceholder);
     }
 
     @Override
