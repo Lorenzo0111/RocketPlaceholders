@@ -76,6 +76,11 @@ javadoc {
     destinationDir = new File("javadocs/rocketplaceholders/${version}")
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
