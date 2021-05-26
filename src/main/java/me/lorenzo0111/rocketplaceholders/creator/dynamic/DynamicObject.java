@@ -22,44 +22,13 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions;
+package me.lorenzo0111.rocketplaceholders.creator.dynamic;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import org.bukkit.entity.Player;
+import java.util.concurrent.Callable;
 
-import java.util.HashMap;
-import java.util.Map;
+public interface DynamicObject {
+    String FAKE_TEXT = "This is a fake text called from a DynamicPlaceholder. You should not see this.";
 
-public abstract class Requirement {
-    protected final RocketPlaceholders plugin;
-    protected final Map<String,Object> databaseInfo = new HashMap<>();
-
-    public Map<String,Object> getDatabaseInfo() {
-        return this.databaseInfo;
-    }
-
-    /**
-     * @param plugin Plugin
-     */
-    public Requirement(RocketPlaceholders plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * @param player Player to apply
-     * @return Condition result
-     */
-    abstract public boolean apply(Player player);
-
-    /**
-     * @return Type of condition
-     */
-    abstract public RequirementType getType();
-
-    @Override
-    public String toString() {
-        return "{" +
-                "type=" + this.getType() +
-                '}';
-    }
+    void setCallable(Callable<String> callable);
+    String getDynamicText() throws Exception;
 }

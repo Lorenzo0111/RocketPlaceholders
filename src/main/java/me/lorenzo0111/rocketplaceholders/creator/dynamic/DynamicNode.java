@@ -22,44 +22,51 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions;
+package me.lorenzo0111.rocketplaceholders.creator.dynamic;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import org.bukkit.entity.Player;
+import me.lorenzo0111.rocketplaceholders.creator.Node;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.Callable;
 
-public abstract class Requirement {
-    protected final RocketPlaceholders plugin;
-    protected final Map<String,Object> databaseInfo = new HashMap<>();
+public abstract class DynamicNode extends Node implements DynamicObject {
+    private Callable<String> callable;
 
-    public Map<String,Object> getDatabaseInfo() {
-        return this.databaseInfo;
+    /**
+     * @param condition Condition to view the text
+     * @param text      Callable of the text that can be seen if the player respects the condition
+     */
+    public DynamicNode(Object condition, Callable<String> text) {
+        super(condition, DynamicObject.FAKE_TEXT);
+        this.setCallable(text);
     }
 
     /**
-     * @param plugin Plugin
+     * @return The the dynamic text
      */
-    public Requirement(RocketPlaceholders plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * @param player Player to apply
-     * @return Condition result
-     */
-    abstract public boolean apply(Player player);
-
-    /**
-     * @return Type of condition
-     */
-    abstract public RequirementType getType();
-
     @Override
-    public String toString() {
-        return "{" +
-                "type=" + this.getType() +
-                '}';
+    public String getText() {
+        try {
+            return getDynamicText();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * @param callable Callable of the dynamic placeholder
+     */
+    @Override
+    public void setCallable(Callable<String> callable) {
+        this.callable = callable;
+    }
+
+    /**
+     * @return Text of the callable
+     * @throws Exception If something does not work
+     */
+    @Override
+    public String getDynamicText() throws Exception {
+        return callable.call();
     }
 }
