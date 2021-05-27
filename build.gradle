@@ -54,11 +54,13 @@ dependencies {
 }
 
 shadowJar {
-    relocate('com.google.gson','me.lorenzo0111.lib.gson')
-    relocate('google.protobuf', 'me.lorenzo0111.lib.protobuf')
-    relocate('com.mysql', 'me.lorenzo0111.lib.mysql')
-    relocate('com.google.protobuf', 'me.lorenzo0111.lib.google.protobuf')
-    relocate('me.mattstudios.mfgui', 'me.lorenzo0111.lib.gui')
+    relocate('com.google.gson','me.lorenzo0111.rocketplaceholders.lib.gson')
+    relocate('google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.protobuf')
+    relocate('com.mysql', 'me.lorenzo0111.rocketplaceholders.lib.mysql')
+    relocate('com.google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.google.protobuf')
+    relocate('me.mattstudios.mfgui', 'me.lorenzo0111.rocketplaceholders.lib.gui')
+
+    archiveFileName.set("${baseName}-${version}.${extension}")
 }
 
 javadoc {
