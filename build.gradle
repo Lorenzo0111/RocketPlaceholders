@@ -49,7 +49,7 @@ dependencies {
         exclude module: 'spigot'
     }
     implementation 'mysql:mysql-connector-java:8.0.25'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.7'
     implementation "me.mattstudios.utils:matt-framework-gui:2.0.3.3"
 }
 
