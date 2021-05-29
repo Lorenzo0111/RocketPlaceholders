@@ -107,7 +107,10 @@ public class Placeholder {
         this(key,identifier,owner,text,nodes);
 
         this.parseJS = parseJS;
-        this.engine.put("Server", Bukkit.getServer());
+
+        if (parseJS) {  
+            this.engine.put("Server", Bukkit.getServer());
+        }
     }
 
     /**
