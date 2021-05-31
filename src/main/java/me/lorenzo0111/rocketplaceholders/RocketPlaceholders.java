@@ -39,10 +39,11 @@ public final class RocketPlaceholders extends JavaPlugin {
 
     private StorageManager storageManager;
     private PluginLoader loader;
+    private static RocketPlaceholders instance;
 
     @Override
     public void onEnable() {
-
+        instance = this;
         saveDefaultConfig();
 
         this.storageManager = new StorageManager(this);
@@ -87,5 +88,12 @@ public final class RocketPlaceholders extends JavaPlugin {
         if (this.getConfig().getBoolean("debug")) {
             this.getLogger().info("Debug: " + text);
         }
+    }
+
+    /**
+     * @return Plugin instance
+     */
+    public static RocketPlaceholders getInstance() {
+        return instance;
     }
 }
