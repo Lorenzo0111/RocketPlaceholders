@@ -48,7 +48,7 @@ public class Placeholder {
     private final String text;
     private List<ConditionNode> conditionNodes;
     private final JavaPlugin owner;
-    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
+    private ScriptEngine engine;
 
     @Override
     public boolean equals(Object target) {
@@ -107,7 +107,11 @@ public class Placeholder {
         this(key,identifier,owner,text,nodes);
 
         this.parseJS = parseJS;
-        this.engine.put("Server", Bukkit.getServer());
+
+        if (parseJS) {
+            this.engine = new ScriptEngineManager().getEngineByName("javascript");
+            this.engine.put("Server", Bukkit.getServer());
+        }
     }
 
     /**
