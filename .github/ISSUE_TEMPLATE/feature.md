@@ -3,8 +3,7 @@ name: Feature request
 about: Suggest an idea for my plugin
 title: "[Feature] "
 labels: suggestion
-assignees: ''
-
+assignees: ""
 ---
 
 **What type of feature is it?**
