@@ -56,6 +56,7 @@ public class PlaceholderBuilder {
 
     /**
      * @param requirement Requirement to view the text
+     * @param text Text of the condition
      * @see me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements
      * @return The same instance
      */

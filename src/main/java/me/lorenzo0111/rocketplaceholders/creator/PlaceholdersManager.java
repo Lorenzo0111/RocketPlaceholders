@@ -105,6 +105,8 @@ public class PlaceholdersManager {
 
     /**
      * Hook with MVdWPlaceholderAPI
+     * @param mVdWPlaceholderAPICreator Api Creator
+     * @return the same instance
      */
     public PlaceholdersManager hook(MVdWPlaceholderAPICreator mVdWPlaceholderAPICreator) {
         this.mVdWPlaceholderAPICreator = mVdWPlaceholderAPICreator;

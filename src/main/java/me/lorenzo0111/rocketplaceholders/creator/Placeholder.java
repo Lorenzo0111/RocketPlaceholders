@@ -119,7 +119,7 @@ public class Placeholder {
      * @param owner Plugin that created the placeholder
      * @param text Text of the placeholder
      *
-     * Replaced by {@link Placeholder#Placeholder(String, String, JavaPlugin, String, List)}
+     * @deprecated  Replaced with {@link Placeholder#Placeholder(String, String, JavaPlugin, String, List)}
      */
     @Deprecated
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
@@ -151,6 +151,8 @@ public class Placeholder {
 
     /**
      * Parse javascript
+     * @param text Text to parse
+     * @return Parsed text
      */
     public String parseJS(String text) {
         if (!this.parseJS) {
