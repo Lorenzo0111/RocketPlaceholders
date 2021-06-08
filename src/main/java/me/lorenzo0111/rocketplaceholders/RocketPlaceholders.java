@@ -24,22 +24,26 @@
 
 package me.lorenzo0111.rocketplaceholders;
 
-import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPI;
-import me.lorenzo0111.rocketplaceholders.api.RocketPlaceholdersAPIManager;
+import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
+import me.lorenzo0111.rocketplaceholders.api.impl.RocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import me.lorenzo0111.rocketplaceholders.utilities.UpdateChecker;
+import me.lorenzo0111.rocketplaceholders.web.WebPanelHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.net.MalformedURLException;
 
 public final class RocketPlaceholders extends JavaPlugin {
 
     private StorageManager storageManager;
     private PluginLoader loader;
     private static RocketPlaceholders instance;
+    private WebPanelHandler web;
 
     @Override
     public void onEnable() {
@@ -50,11 +54,17 @@ public final class RocketPlaceholders extends JavaPlugin {
 
         final ConfigManager placeholders = new ConfigManager(this);
         final PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders, this);
-        final RocketPlaceholdersAPI api = new RocketPlaceholdersAPIManager(placeholdersManager);
+        final IRocketPlaceholdersAPI api = new RocketPlaceholdersAPI(placeholdersManager);
 
-        this.getServer().getServicesManager().register(RocketPlaceholdersAPI.class, api, this, ServicePriority.Normal);
+        this.getServer().getServicesManager().register(IRocketPlaceholdersAPI.class, api, this, ServicePriority.Normal);
 
         placeholders.registerPlaceholders();
+
+        try {
+            this.web = new WebPanelHandler(this);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         final UpdateChecker checker = new UpdateChecker(this, 82678, "https://bit.ly/RocketPlaceholders");
         checker.sendUpdateCheck(Bukkit.getConsoleSender());
@@ -95,5 +105,9 @@ public final class RocketPlaceholders extends JavaPlugin {
      */
     public static RocketPlaceholders getInstance() {
         return instance;
+    }
+
+    public WebPanelHandler getWeb() {
+        return web;
     }
 }

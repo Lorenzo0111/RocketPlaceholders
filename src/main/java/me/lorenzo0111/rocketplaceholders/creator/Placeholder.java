@@ -47,8 +47,8 @@ public class Placeholder {
     private final String key;
     private final String text;
     private List<ConditionNode> conditionNodes;
-    private final JavaPlugin owner;
-    private ScriptEngine engine;
+    private transient final JavaPlugin owner;
+    private transient ScriptEngine engine;
 
     @Override
     public boolean equals(Object target) {

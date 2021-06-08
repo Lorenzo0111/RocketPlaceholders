@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.api;
+package me.lorenzo0111.rocketplaceholders.api.utils;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;

@@ -22,17 +22,18 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.api;
+package me.lorenzo0111.rocketplaceholders.api.impl;
 
+import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
-public class RocketPlaceholdersAPIManager implements RocketPlaceholdersAPI {
+public class RocketPlaceholdersAPI implements IRocketPlaceholdersAPI {
     private final PlaceholdersManager placeholdersManager;
 
-    public RocketPlaceholdersAPIManager(PlaceholdersManager placeholdersManager) {
+    public RocketPlaceholdersAPI(PlaceholdersManager placeholdersManager) {
         this.placeholdersManager = placeholdersManager;
     }
 

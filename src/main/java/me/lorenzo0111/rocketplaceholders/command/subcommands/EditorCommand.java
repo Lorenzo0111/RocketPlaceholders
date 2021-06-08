@@ -22,47 +22,37 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.storage;
+package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
-import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
+import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
+import me.lorenzo0111.rocketplaceholders.command.SubCommand;
+import me.lorenzo0111.rocketplaceholders.web.WebPanelHandler;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
-public class StorageManager {
-    private final Storage internalPlaceholders;
-    private final Storage externalPlaceholders;
+public class EditorCommand extends SubCommand {
 
-    public StorageManager(JavaPlugin plugin) {
-        this.internalPlaceholders = new Storage();
-        this.externalPlaceholders = new Storage();
+    public EditorCommand(RocketPlaceholdersCommand command) {
+        super(command);
     }
 
-    public Storage getInternalPlaceholders() {
-        return this.internalPlaceholders;
+    @Override
+    public String getName() {
+        return "editor";
     }
 
-    public Storage getExternalPlaceholders() {
-        return this.externalPlaceholders;
-    }
-
-    @Nullable
-    public Placeholder get(String identifier) {
-        if (this.internalPlaceholders.getMap().containsKey(identifier)) {
-            return this.internalPlaceholders.get(identifier);
+    @Override
+    public void perform(CommandSender sender, String[] args) {
+        WebPanelHandler web = this.getCommand().getPlugin().getWeb();
+        try {
+            String link = web.save();
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Editor URL: " + link));
+        } catch (IOException e) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7An error has occurred while loading editor."));
+            e.printStackTrace();
         }
 
-        return this.externalPlaceholders.get(identifier);
-    }
-
-    public Map<String, Placeholder> getAll() {
-        final Map<String, Placeholder> all = new HashMap<>();
-
-        all.putAll(this.internalPlaceholders.getMap());
-        all.putAll(this.externalPlaceholders.getMap());
-
-        return all;
     }
 }

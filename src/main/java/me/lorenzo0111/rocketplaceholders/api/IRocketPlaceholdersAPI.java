@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
  * API of RocketPlaceholders
  */
 @SuppressWarnings("unused")
-public interface RocketPlaceholdersAPI {
+public interface IRocketPlaceholdersAPI {
 
     /**
      * Add a placeholder via api
