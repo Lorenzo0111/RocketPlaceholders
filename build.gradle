@@ -31,7 +31,7 @@ plugins {
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
 group = 'me.Lorenzo0111'
-version = '1.9.2-SNAPSHOT'
+version = '1.9.2'
 description = 'RocketPlaceholders'
 
 repositories {
@@ -49,8 +49,8 @@ dependencies {
         exclude module: 'spigot'
     }
     implementation 'mysql:mysql-connector-java:8.0.25'
-    implementation 'com.google.code.gson:gson:2.8.7'
     implementation "me.mattstudios.utils:matt-framework-gui:2.0.3.3"
+    implementation 'com.caoccao.javet:javet:0.9.0'
 }
 
 shadowJar {
