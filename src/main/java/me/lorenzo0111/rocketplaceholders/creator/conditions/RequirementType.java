@@ -28,10 +28,25 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions;
  * All requirement types for  {@link me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement}
  */
 public enum RequirementType {
+    /**
+     * JavaScript expression
+     */
     JAVASCRIPT,
+    /**
+     * Vault money
+     */
     MONEY,
+    /**
+     * If player has an item in his inventory
+     */
     ITEM,
+    /**
+     * If player has a permission
+     */
     PERMISSION,
+    /**
+     * If player has a vault group
+     */
     GROUP,
     /**
      * Requirement added via api

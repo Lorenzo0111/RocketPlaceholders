@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator;
 
-import com.caoccao.javet.exceptions.JavetException;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
@@ -33,6 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.script.ScriptException;
 import java.util.List;
 import java.util.Objects;
 
@@ -107,11 +107,7 @@ public class Placeholder {
         this.parseJS = parseJS;
 
         if (parseJS) {
-            try {
-                this.engine = new JavaScriptParser<>();
-            } catch (JavetException e) {
-                e.printStackTrace();
-            }
+            this.engine = new JavaScriptParser<>();
         }
     }
 
@@ -167,7 +163,7 @@ public class Placeholder {
             }
 
             return result;
-        } catch (JavetException e) {
+        } catch (ScriptException e) {
             e.printStackTrace();
         }
 
@@ -204,6 +200,9 @@ public class Placeholder {
         return key;
     }
 
+    /**
+     * @return if there is a config key
+     */
     public boolean hasKey() {
         return key != null;
     }

@@ -28,6 +28,9 @@ import me.lorenzo0111.rocketplaceholders.creator.Node;
 
 import java.util.concurrent.Callable;
 
+/**
+ * A dynamic node is a node with a text that change
+ */
 public abstract class DynamicNode extends Node implements DynamicObject {
     private Callable<String> callable;
 

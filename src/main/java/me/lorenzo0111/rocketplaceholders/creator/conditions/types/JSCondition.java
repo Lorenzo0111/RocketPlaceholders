@@ -24,12 +24,13 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-import com.caoccao.javet.exceptions.JavetException;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.entity.Player;
+
+import javax.script.ScriptException;
 
 public class JSCondition extends Requirement {
     private final JavaScriptParser<Boolean> engine;
@@ -37,14 +38,8 @@ public class JSCondition extends Requirement {
 
     public JSCondition(RocketPlaceholders plugin,String expression) {
         super(plugin);
-        JavaScriptParser<Boolean> p = null;
-        try {
-            p = new JavaScriptParser<>();
-        } catch (JavetException e) {
-            e.printStackTrace();
-        }
 
-        engine = p;
+        engine = new JavaScriptParser<>();
 
         this.expression = expression;
         this.getDatabaseInfo().put("value",expression);
@@ -61,7 +56,7 @@ public class JSCondition extends Requirement {
             }
 
             return result;
-        } catch (JavetException e) {
+        } catch (ScriptException e) {
             plugin.getLogger().info("Error while parsing javascript expression '" + expression + "'. If you want to see the error set debug to true in the config.");
             plugin.debug(e.getMessage());
             plugin.getLogger().info("Returning as false..");

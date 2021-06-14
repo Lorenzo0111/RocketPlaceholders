@@ -50,7 +50,7 @@ dependencies {
     }
     implementation 'mysql:mysql-connector-java:8.0.25'
     implementation "me.mattstudios.utils:matt-framework-gui:2.0.3.3"
-    implementation 'com.caoccao.javet:javet:0.9.0'
+    implementation 'org.openjdk.nashorn:nashorn-core:15.2'
 }
 
 shadowJar {
@@ -59,14 +59,15 @@ shadowJar {
     relocate('com.mysql', 'me.lorenzo0111.rocketplaceholders.lib.mysql')
     relocate('com.google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.google.protobuf')
     relocate('me.mattstudios.mfgui', 'me.lorenzo0111.rocketplaceholders.lib.gui')
+    relocate('org.openjdk.nashorn', 'me.lorenzo0111.rocketplaceholders.lib.nashorn')
 
-    archiveFileName.set("${baseName}-${version}.${extension}")
+    archiveFileName = "${project.name}-${project.version}.jar"
 }
 
 javadoc {
     options.links(
             'https://javadoc.io/static/org.jetbrains/annotations/20.1.0/',
-            'https://docs.oracle.com/javase/8/docs/api/',
+            'https://docs.oracle.com/en/java/javase/16/docs/api/',
             'https://papermc.io/javadocs/paper/1.16/'
     )
     source = sourceSets.main.allJava

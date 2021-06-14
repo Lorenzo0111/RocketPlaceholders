@@ -28,6 +28,9 @@ import me.lorenzo0111.rocketplaceholders.creator.Node;
 
 import java.util.Objects;
 
+/**
+ * A node that contain a condition
+ */
 public class ConditionNode extends Node {
 
     /**

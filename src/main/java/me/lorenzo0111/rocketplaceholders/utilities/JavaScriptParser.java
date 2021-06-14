@@ -24,64 +24,70 @@
 
 package me.lorenzo0111.rocketplaceholders.utilities;
 
-import com.caoccao.javet.exceptions.JavetException;
-import com.caoccao.javet.interop.V8Host;
-import com.caoccao.javet.interop.V8Runtime;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.ServicesManager;
 import org.jetbrains.annotations.Nullable;
+import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
+import javax.script.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * JavaScript Parser
  */
 public class JavaScriptParser<T> {
+    private static ScriptEngineManager engine;
     private final Map<String,Object> bindings;
 
-    /**
-     * @throws JavetException if something is wrong
-     */
-    public JavaScriptParser() throws JavetException {
+    public JavaScriptParser() {
         this.bindings = new HashMap<>();
+        if (engine == null) {
+            ServicesManager manager = Bukkit.getServicesManager();
+            if (manager.isProvidedFor(ScriptEngineManager.class)) {
+                RegisteredServiceProvider<ScriptEngineManager> provider = manager.getRegistration(ScriptEngineManager.class);
+                Objects.requireNonNull(provider, "Provider cannot be null");
+                engine = provider.getProvider();
+            } else {
+                engine = new ScriptEngineManager();
+                manager.register(ScriptEngineManager.class, engine, RocketPlaceholders.getInstance(), ServicePriority.Highest);
+            }
+
+            ScriptEngineFactory factory = new NashornScriptEngineFactory();
+            engine.registerEngineName("JavaScript", factory);
+        }
     }
 
     /**
      * Parse a js expression with the parser
      * @param str expression
      * @return expression result
-     * @throws JavetException if something went wrong
+     * @throws ScriptException if something went wrong
      */
+    @SuppressWarnings("unchecked")
     @Nullable
-    public T parse(String str) throws JavetException {
+    public T parse(String str) throws ScriptException {
         this.bind("Server", Bukkit.getServer());
-        System.out.println(bindings);
-        V8Runtime runtime = this.prepare();
-        T result = runtime.getExecutor(str).executePrimitive();
-        this.bindings.clear();
-        runtime.close();
-        return result;
-    }
+        this.applyBinding(engine);
 
-    private V8Runtime prepare() throws JavetException {
-        final V8Runtime runtime = V8Host.getV8Instance().createV8Runtime();
-        runtime.allowEval(true);
-        this.applyBinding(runtime);
-        return runtime;
+        T result = (T) engine.getEngineByName("JavaScript").eval(str);
+
+        this.bindings.clear();
+        engine.getBindings().clear();
+
+        return result;
     }
 
     public void bind(String key, Object value) {
         this.bindings.put(key,value);
     }
 
-    private void applyBinding(final V8Runtime runtime) {
-        bindings.forEach((k,v) -> {
-            try {
-                runtime.getGlobalObject().set(k,v);
-            } catch (JavetException e) {
-                e.printStackTrace();
-            }
-        });
+    private void applyBinding(final ScriptEngineManager engine) {
+        bindings.forEach(engine::put);
     }
 
 }

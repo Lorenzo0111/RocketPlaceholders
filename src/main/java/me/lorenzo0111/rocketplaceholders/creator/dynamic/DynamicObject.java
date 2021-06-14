@@ -26,9 +26,20 @@ package me.lorenzo0111.rocketplaceholders.creator.dynamic;
 
 import java.util.concurrent.Callable;
 
+/**
+ * A dynamic object is an object with a value that change
+ */
 public interface DynamicObject {
     String FAKE_TEXT = "This is a fake text called from a DynamicPlaceholder. You should not see this.";
 
+    /**
+     * @param callable the manager of the dynamic object
+     */
     void setCallable(Callable<String> callable);
+
+    /**
+     * @return A dynamic text
+     * @throws Exception if something went wrong
+     */
     String getDynamicText() throws Exception;
 }

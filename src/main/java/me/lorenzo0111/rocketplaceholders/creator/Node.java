@@ -24,6 +24,9 @@
 
 package me.lorenzo0111.rocketplaceholders.creator;
 
+/**
+ * A node containing a condition and a text
+ */
 public abstract class Node {
     private final Object condition;
     private final String text;

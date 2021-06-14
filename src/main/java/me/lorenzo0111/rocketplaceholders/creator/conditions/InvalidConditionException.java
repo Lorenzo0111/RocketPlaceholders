@@ -24,6 +24,9 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions;
 
+/**
+ * Used when a condition configuration is wrong
+ */
 public class InvalidConditionException extends RuntimeException {
 
     /**
