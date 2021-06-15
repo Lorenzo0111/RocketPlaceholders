@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "7.0.0"
@@ -59,7 +61,7 @@ shadowJar {
     relocate('com.mysql', 'me.lorenzo0111.rocketplaceholders.lib.mysql')
     relocate('com.google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.google.protobuf')
     relocate('me.mattstudios.mfgui', 'me.lorenzo0111.rocketplaceholders.lib.gui')
-    relocate('org.openjdk.nashorn', 'me.lorenzo0111.rocketplaceholders.lib.nashorn')
+    //relocate('org.openjdk.nashorn', 'me.lorenzo0111.rocketplaceholders.lib.nashorn')
 
     archiveFileName = "${project.name}-${project.version}.jar"
 }
@@ -78,6 +80,13 @@ javadoc {
     include("**/creator/conditions/engine/Requirements.java")
     exclude("**/api/RocketPlaceholdersAPIManager.java")
     destinationDir = new File("javadocs/rocketplaceholders/${version}")
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        duplicatesStrategy DuplicatesStrategy.INCLUDE
+        filter ReplaceTokens, tokens: [version: version]
+    }
 }
 
 java {
