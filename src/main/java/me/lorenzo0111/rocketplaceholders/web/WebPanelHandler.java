@@ -62,6 +62,7 @@ public class WebPanelHandler {
 
     @Nullable
     public String save() throws IOException {
+        plugin.debug(this.generate());
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
