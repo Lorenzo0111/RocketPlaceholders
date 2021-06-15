@@ -32,7 +32,7 @@ plugins {
 
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
-group = 'me.Lorenzo0111'
+group = 'me.lorenzo0111'
 version = '1.9.2'
 description = 'RocketPlaceholders'
 
@@ -46,13 +46,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly('com.github.MilkBowl:VaultAPI:1.7')
     compileOnly ('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
         exclude module: 'spigot'
     }
-    implementation 'mysql:mysql-connector-java:8.0.25'
-    implementation "me.mattstudios.utils:matt-framework-gui:2.0.3.3"
-    implementation 'org.openjdk.nashorn:nashorn-core:15.2'
+    implementation('mysql:mysql-connector-java:8.0.25')
+    implementation("me.mattstudios.utils:matt-framework-gui:2.0.3.3")
 }
 
 shadowJar {
@@ -61,7 +60,6 @@ shadowJar {
     relocate('com.mysql', 'me.lorenzo0111.rocketplaceholders.lib.mysql')
     relocate('com.google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.google.protobuf')
     relocate('me.mattstudios.mfgui', 'me.lorenzo0111.rocketplaceholders.lib.gui')
-    //relocate('org.openjdk.nashorn', 'me.lorenzo0111.rocketplaceholders.lib.nashorn')
 
     archiveFileName = "${project.name}-${project.version}.jar"
 }
@@ -92,6 +90,21 @@ processResources {
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+
+subprojects {
+    group = parent.group
+    version = parent.version
+
+    apply from: 'https://cdn.rocketplugins.space/spigot'
+
+    processResources {
+        from(sourceSets.main.resources.srcDirs) {
+            duplicatesStrategy DuplicatesStrategy.INCLUDE
+            filter ReplaceTokens, tokens: [version: version]
+        }
+    }
 }
 
 publishing {

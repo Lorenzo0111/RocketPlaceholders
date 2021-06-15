@@ -27,10 +27,9 @@ package me.lorenzo0111.rocketplaceholders.utilities;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
-import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 import javax.script.*;
 import java.util.HashMap;
@@ -46,20 +45,29 @@ public class JavaScriptParser<T> {
 
     public JavaScriptParser() {
         this.bindings = new HashMap<>();
-        if (engine == null) {
-            ServicesManager manager = Bukkit.getServicesManager();
-            if (manager.isProvidedFor(ScriptEngineManager.class)) {
-                RegisteredServiceProvider<ScriptEngineManager> provider = manager.getRegistration(ScriptEngineManager.class);
-                Objects.requireNonNull(provider, "Provider cannot be null");
-                engine = provider.getProvider();
-            } else {
-                engine = new ScriptEngineManager();
-                manager.register(ScriptEngineManager.class, engine, RocketPlaceholders.getInstance(), ServicePriority.Highest);
-            }
+        boolean exists = new ScriptEngineManager().getEngineByName("JavaScript") != null;
 
-            ScriptEngineFactory factory = new NashornScriptEngineFactory();
-            engine.registerEngineName("JavaScript", factory);
+        if (exists) {
+            engine = new ScriptEngineManager();
+            return;
         }
+
+        if (engine != null) {
+            return;
+        }
+
+        ServicesManager manager = Bukkit.getServicesManager();
+        if (manager.isProvidedFor(ScriptEngineManager.class)) {
+            RegisteredServiceProvider<ScriptEngineManager> provider = manager.getRegistration(ScriptEngineManager.class);
+            Objects.requireNonNull(provider);
+            engine = provider.getProvider();
+            return;
+        }
+
+        JavaPlugin plugin = RocketPlaceholders.getInstance();
+        plugin.getLogger().severe("JavaScript engine not found. Consider installing JShader from the same author of this plugin.");
+        plugin.getLogger().severe("Download it from: https://git.io/Jnq1M");
+        plugin.getLogger().severe("JavaScript expression will cause errors, do not report it before trying the shader.");
     }
 
     /**
