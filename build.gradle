@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "7.0.0"
@@ -30,8 +32,8 @@ plugins {
 
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
-group = 'me.Lorenzo0111'
-version = '1.9.2-SNAPSHOT'
+group = 'me.lorenzo0111'
+version = '1.9.2'
 description = 'RocketPlaceholders'
 
 repositories {
@@ -44,13 +46,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly('com.github.MilkBowl:VaultAPI:1.7')
     compileOnly ('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
         exclude module: 'spigot'
     }
-    implementation 'mysql:mysql-connector-java:8.0.25'
-    implementation 'com.google.code.gson:gson:2.8.7'
-    implementation "me.mattstudios.utils:matt-framework-gui:2.0.3.3"
+    implementation('mysql:mysql-connector-java:8.0.25')
+    implementation("me.mattstudios.utils:matt-framework-gui:2.0.3.3")
 }
 
 shadowJar {
@@ -60,13 +61,13 @@ shadowJar {
     relocate('com.google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.google.protobuf')
     relocate('me.mattstudios.mfgui', 'me.lorenzo0111.rocketplaceholders.lib.gui')
 
-    archiveFileName.set("${baseName}-${version}.${extension}")
+    archiveFileName = "${project.name}-${project.version}.jar"
 }
 
 javadoc {
     options.links(
             'https://javadoc.io/static/org.jetbrains/annotations/20.1.0/',
-            'https://docs.oracle.com/javase/8/docs/api/',
+            'https://docs.oracle.com/en/java/javase/16/docs/api/',
             'https://papermc.io/javadocs/paper/1.16/'
     )
     source = sourceSets.main.allJava
@@ -79,9 +80,31 @@ javadoc {
     destinationDir = new File("javadocs/rocketplaceholders/${version}")
 }
 
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        duplicatesStrategy DuplicatesStrategy.INCLUDE
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+
+subprojects {
+    group = parent.group
+    version = parent.version
+
+    apply from: 'https://cdn.rocketplugins.space/spigot'
+
+    processResources {
+        from(sourceSets.main.resources.srcDirs) {
+            duplicatesStrategy DuplicatesStrategy.INCLUDE
+            filter ReplaceTokens, tokens: [version: version]
+        }
+    }
 }
 
 publishing {

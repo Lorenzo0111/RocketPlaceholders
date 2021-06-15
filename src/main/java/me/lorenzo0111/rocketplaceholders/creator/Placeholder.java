@@ -26,14 +26,12 @@ package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.InvalidConditionException;
-import org.bukkit.Bukkit;
+import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +46,7 @@ public class Placeholder {
     private final String text;
     private List<ConditionNode> conditionNodes;
     private transient final JavaPlugin owner;
-    private transient ScriptEngine engine;
+    private transient JavaScriptParser<String> engine;
 
     @Override
     public boolean equals(Object target) {
@@ -109,8 +107,7 @@ public class Placeholder {
         this.parseJS = parseJS;
 
         if (parseJS) {
-            this.engine = new ScriptEngineManager().getEngineByName("javascript");
-            this.engine.put("Server", Bukkit.getServer());
+            this.engine = new JavaScriptParser<>();
         }
     }
 
@@ -160,12 +157,12 @@ public class Placeholder {
         }
 
         try {
-            Object result = engine.eval(text);
-            if (!(result instanceof String)) {
-                throw new InvalidConditionException("The expression should return a string.");
+            String result = engine.parse(text);
+            if (result == null) {
+                throw new InvalidConditionException("The expression returned a null value.");
             }
 
-            return (String) result;
+            return result;
         } catch (ScriptException e) {
             e.printStackTrace();
         }
@@ -203,6 +200,9 @@ public class Placeholder {
         return key;
     }
 
+    /**
+     * @return if there is a config key
+     */
     public boolean hasKey() {
         return key != null;
     }

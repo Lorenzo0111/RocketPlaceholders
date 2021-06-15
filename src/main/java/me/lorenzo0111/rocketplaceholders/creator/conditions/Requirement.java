@@ -30,6 +30,9 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A requirement for a condition node
+ */
 public abstract class Requirement {
     protected final RocketPlaceholders plugin;
     protected final Map<String,Object> databaseInfo = new HashMap<>();

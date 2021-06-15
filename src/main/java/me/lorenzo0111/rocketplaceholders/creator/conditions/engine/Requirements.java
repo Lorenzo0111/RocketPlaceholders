@@ -44,6 +44,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Requirements handler
+ */
 public class Requirements {
     private final RocketPlaceholders plugin;
 

@@ -27,36 +27,35 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import org.bukkit.Bukkit;
+import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.entity.Player;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 public class JSCondition extends Requirement {
-    private final ScriptEngine engine;
+    private final JavaScriptParser<Boolean> engine;
     private final String expression;
 
     public JSCondition(RocketPlaceholders plugin,String expression) {
         super(plugin);
-        this.engine = new ScriptEngineManager().getEngineByName("javascript");
-        this.engine.put("Server", Bukkit.getServer());
+
+        engine = new JavaScriptParser<>();
+
         this.expression = expression;
         this.getDatabaseInfo().put("value",expression);
     }
 
     @Override
     public boolean apply(Player player) {
-        engine.put("Player",player);
         try {
-            Object result = engine.eval(expression);
-            if (!(result instanceof Boolean)) {
+            engine.bind("Player",player);
+            Boolean result = engine.parse(expression);
+            if (result == null) {
                 plugin.getLogger().severe("Expression '" + expression + "' has to return a boolean. Returning as false..");
                 return false;
             }
 
-            return (Boolean) result;
+            return result;
         } catch (ScriptException e) {
             plugin.getLogger().info("Error while parsing javascript expression '" + expression + "'. If you want to see the error set debug to true in the config.");
             plugin.debug(e.getMessage());
