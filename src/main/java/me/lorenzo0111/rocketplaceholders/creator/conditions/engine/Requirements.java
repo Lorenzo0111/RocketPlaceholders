@@ -28,11 +28,7 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasGroupCondition;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasItemCondition;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasMoneyCondition;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasPermissionCondition;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.types.JSCondition;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.types.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -110,6 +106,17 @@ public class Requirements {
                 }
 
                 return new HasGroupCondition(plugin,value);
+            case TEXT:
+                if (value == null) {
+                    throw new InvalidConditionException("Value cannot be null. Please insert two valid strings as 'value' in the config.");
+                }
+
+                String[] strings = value.split("%%");
+                if (strings.length != 2) {
+                    throw new InvalidConditionException("Invalid value. Please read https://docs.rocketplugins.space/rocektplugins/rocketplaceholders/configure/conditions/text-condition");
+                }
+
+                return new TextCondition(plugin,strings[0],strings[1]);
             default:
                 return null;
         }
@@ -130,63 +137,13 @@ public class Requirements {
 
         type = RequirementType.valueOf(section.getString("type"));
 
-        switch (type) {
-            case ITEM:
-                Material material = Material.valueOf(section.getString("material"));
-                String name = section.getString("name");
-                List<String> lore = section.getStringList("lore");
-
-                ItemStack item = new ItemStack(material);
-                ItemMeta meta = item.getItemMeta();
-
-                boolean translateColors = false;
-
-                if (section.contains("colors")) {
-                    translateColors = section.getBoolean("colors");
-                }
-
-                if (meta != null) {
-                    meta.setDisplayName(translateColors ? translateColors(name) : name);
-                    meta.setLore(translateColors ? translateColors(lore) : lore);
-                    item.setItemMeta(meta);
-                }
-
-                return new HasItemCondition(item,plugin);
-            case JAVASCRIPT:
-                String expression = section.getString("value");
-                if (expression == null) {
-                    throw new InvalidConditionException("Expression cannot be null, try to set a correct value in the config");
-                }
-
-                return new JSCondition(plugin,expression);
-            case MONEY:
-                if (!section.contains("value")) {
-                    throw new InvalidConditionException("Value cannot be null. Please insert a valid number as value in the config.");
-                }
-
-                long amount = section.getLong("value");
-
-                return new HasMoneyCondition(plugin,amount);
-            case PERMISSION:
-                String permission = section.getString("value");
-                if (permission == null) {
-                    throw new InvalidConditionException("Permission cannot be null. Please try to set a valid permission as value in the config.");
-                }
-
-                return new HasPermissionCondition(plugin,permission);
-            case GROUP:
-                if (!section.contains("value")) {
-                    throw new InvalidConditionException("Group cannot be null. Please try to set a valid permission as 'value' in the config.");
-                }
-
-                if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-                    throw new InvalidConditionException("You cannot use this condition without Vault plugin.");
-                }
-
-                return new HasGroupCondition(plugin,section.getString("value"));
-            default:
-                return null;
-        }
+        return this.createRequirement(
+                type,
+                section.getString("value"),
+                Material.valueOf(section.getString("material","")),
+                section.getString("name"),
+                section.getStringList("lore")
+        );
     }
 
     /**

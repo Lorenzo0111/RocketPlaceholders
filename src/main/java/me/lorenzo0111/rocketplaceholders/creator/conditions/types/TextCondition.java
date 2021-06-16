@@ -27,46 +27,29 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
+import me.lorenzo0111.rocketplaceholders.creator.providers.GenericCreator;
 import org.bukkit.entity.Player;
 
-import javax.script.ScriptException;
+public class TextCondition extends Requirement {
+    private final String one;
+    private final String two;
 
-public class JSCondition extends Requirement {
-    private final transient JavaScriptParser<Boolean> engine;
-    private final String expression;
-
-    public JSCondition(RocketPlaceholders plugin,String expression) {
+    public TextCondition(RocketPlaceholders plugin, String one, String two) {
         super(plugin);
-
-        engine = new JavaScriptParser<>();
-
-        this.expression = expression;
-        this.getDatabaseInfo().put("value",expression);
+        this.one = one;
+        this.two = two;
     }
 
     @Override
     public boolean apply(Player player) {
-        try {
-            engine.bind("Player",player);
-            Boolean result = engine.parse(expression);
-            if (result == null) {
-                plugin.getLogger().severe("Expression '" + expression + "' has to return a boolean. Returning as false..");
-                return false;
-            }
+        String one = GenericCreator.setPlaceholders(plugin,this.one,player);
+        String two = GenericCreator.setPlaceholders(plugin,this.two,player);
 
-            return result;
-        } catch (ScriptException e) {
-            plugin.getLogger().info("Error while parsing javascript expression '" + expression + "'. If you want to see the error set debug to true in the config.");
-            plugin.debug(e.getMessage());
-            plugin.getLogger().info("Returning as false..");
-        }
-
-        return false;
+        return one.equals(two);
     }
 
     @Override
     public RequirementType getType() {
-        return RequirementType.JAVASCRIPT;
+        return RequirementType.TEXT;
     }
 }

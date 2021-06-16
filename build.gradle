@@ -55,7 +55,6 @@ dependencies {
 }
 
 shadowJar {
-    relocate('com.google.gson','me.lorenzo0111.rocketplaceholders.lib.gson')
     relocate('google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.protobuf')
     relocate('com.mysql', 'me.lorenzo0111.rocketplaceholders.lib.mysql')
     relocate('com.google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.google.protobuf')

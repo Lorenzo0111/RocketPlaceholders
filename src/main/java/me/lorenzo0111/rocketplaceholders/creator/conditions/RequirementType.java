@@ -49,6 +49,10 @@ public enum RequirementType {
      */
     GROUP,
     /**
+     * Check two text
+     */
+    TEXT,
+    /**
      * Requirement added via api
      */
     API
