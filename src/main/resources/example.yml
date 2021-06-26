@@ -1,0 +1,12 @@
+placeholder: "test" # The placeholder will be %rp_test% ( PlaceholderAPI ) or {rp_test} ( MVdWPlaceholderAPI )
+text: "This is an example"
+conditions:
+  permissionExample:
+    type: PERMISSION # LIST: https://jd.rocketplugins.space/rocketplaceholders/me/lorenzo0111/rocketplaceholders/creator/conditions/RequirementType.html
+    value: "rocketplaceholder.example"
+    text: "Example text with a permission condition"
+  itemExample:
+    type: ITEM
+    material: STONE
+    name: "&cExample"
+    text: "Example text with a item condition"

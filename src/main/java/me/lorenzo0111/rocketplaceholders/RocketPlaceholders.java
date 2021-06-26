@@ -36,6 +36,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 public final class RocketPlaceholders extends JavaPlugin {
@@ -58,7 +59,11 @@ public final class RocketPlaceholders extends JavaPlugin {
 
         this.getServer().getServicesManager().register(IRocketPlaceholdersAPI.class, api, this, ServicePriority.Normal);
 
-        placeholders.registerPlaceholders();
+        try {
+            placeholders.registerPlaceholders();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
             this.web = new WebPanelHandler(this);

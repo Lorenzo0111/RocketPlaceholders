@@ -32,6 +32,8 @@ import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+
 /**
  * PlaceholdersManager used to handle all placeholders
  */
@@ -96,7 +98,11 @@ public class PlaceholdersManager {
             return;
         }
 
-        this.configManager.reloadPlaceholders();
+        try {
+            this.configManager.reloadPlaceholders();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (this.mVdWPlaceholderAPICreator != null) {
             this.mVdWPlaceholderAPICreator.reload();

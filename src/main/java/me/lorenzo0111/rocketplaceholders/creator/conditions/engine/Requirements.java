@@ -140,7 +140,7 @@ public class Requirements {
         return this.createRequirement(
                 type,
                 section.getString("value"),
-                Material.valueOf(section.getString("material","")),
+                Material.getMaterial(section.getString("material","")),
                 section.getString("name"),
                 section.getStringList("lore")
         );

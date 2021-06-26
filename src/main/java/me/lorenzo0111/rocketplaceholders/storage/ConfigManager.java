@@ -28,13 +28,20 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements;
-import me.lorenzo0111.rocketplaceholders.legacy.PermissionNode;
+import me.lorenzo0111.rocketplaceholders.legacy.LegacyMover;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 @SuppressWarnings("unused")
 public class ConfigManager {
@@ -47,52 +54,69 @@ public class ConfigManager {
         this.storageManager = plugin.getStorageManager();
     }
 
-    @SuppressWarnings("deprecation")
-    public void registerPlaceholders() {
-        final ConfigurationSection config = Objects.requireNonNull(plugin.getConfig().getConfigurationSection("placeholders"), "An error has occurred, configuration error, please contact me on discord (ds.rocketplugins.space)");
+    public void registerPlaceholders() throws IOException {
+        File dir = new File(plugin.getDataFolder(), "placeholders");
+        if (!dir.exists() && dir.mkdirs()) {
+            File example = new File(dir, "example.yml");
 
-        for (String key : config.getKeys(false)) {
-            final ConfigurationSection nodesSection = Objects.requireNonNull(config.getConfigurationSection(key)).getConfigurationSection("permissions");
-            final ConfigurationSection conditionsSection = Objects.requireNonNull(config.getConfigurationSection(key)).getConfigurationSection("conditions");
-            final boolean parseJS = config.getBoolean(key + "." + "parsejs");
+            if (!example.exists()) {
+                try (InputStream in = RocketPlaceholders.class.getClassLoader().getResourceAsStream( "example.yml" )) {
+                    Objects.requireNonNull(in);
 
-            if (conditionsSection == null && nodesSection == null) {
-                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),null, parseJS);
+                    Files.copy(in, example.toPath());
+                } catch (IOException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Unable to create example configuration", e);
+                }
             }
+        }
+
+        if (plugin.getConfig().getConfigurationSection("placeholders") != null)
+            new LegacyMover(plugin,dir).move();
+
+        File[] files = dir.listFiles(File::isFile);
+
+        Objects.requireNonNull(files, "An error has occurred while loading placeholders files.");
+
+        for (File file : files) {
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+            ConfigurationSection conditions = config.getConfigurationSection("conditions");
+
+            final boolean parseJS = config.getBoolean("parsejs");
 
             final List<ConditionNode> nodes = new ArrayList<>();
 
-            if (nodesSection != null) {
-                nodes.addAll(PermissionNode.createPermissionNodes(plugin, nodesSection));
-            }
-
-            if (conditionsSection != null) {
+            if (conditions != null) {
                 Requirements requirements = new Requirements(plugin);
-                for (String condition : conditionsSection.getKeys(false)) {
-                    ConfigurationSection conditionSection = conditionsSection.getConfigurationSection(condition);
 
-                    if (conditionSection !=  null) {
-                        Requirement requirement = requirements.parseRequirement(conditionSection);
-                        if (requirement != null) {
-                            nodes.add(new ConditionNode(requirement,conditionSection.getString("text")));
-                        }
-                    }
+                nodes.addAll(scanConditions(conditions,requirements));
 
-                }
-
-                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))),nodes,parseJS);
+                storageManager.getInternalPlaceholders().build(file.getName(), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
             }
-
-            if (nodes.isEmpty()) {
-                storageManager.getInternalPlaceholders().build(key, Objects.requireNonNull(config.getString(key + ".placeholder")), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString(key + ".text"))), null, parseJS);
-            }
-
         }
 
         plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
     }
 
-    public void reloadPlaceholders() {
+    public static List<ConditionNode> scanConditions(ConfigurationSection section, Requirements requirements) {
+        List<ConditionNode> nodes = new ArrayList<>();
+
+        for (String condition : section.getKeys(false)) {
+            ConfigurationSection conditionSection = section.getConfigurationSection(condition);
+
+            if (conditionSection !=  null) {
+                Requirement requirement = requirements.parseRequirement(conditionSection);
+                if (requirement != null) {
+                    nodes.add(new ConditionNode(requirement,conditionSection.getString("text")));
+                }
+            }
+
+        }
+
+        return nodes;
+    }
+
+    public void reloadPlaceholders() throws IOException {
         storageManager.getInternalPlaceholders().clear();
 
         if (plugin.getLoader().getDatabaseManager() == null || !plugin.getLoader().getDatabaseManager().isMain()) {

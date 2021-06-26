@@ -32,21 +32,4 @@ mysql:
   database: ""
   jdbc: null # Do not edit this if you don't know what you are doing.
 
-# Placeholders section
-
-placeholders:
-
-  1:
-    placeholder: "test" # The placeholder will be %rp_test% ( PlaceholderAPI ) or {rp_test} ( MVdWPlaceholderAPI )
-    text: "This is an example"
-    conditions:
-      permissionExample:
-        type: PERMISSION # LIST: https://jd.rocketplugins.space/rocketplaceholders/me/lorenzo0111/rocketplaceholders/creator/conditions/RequirementType.html
-        value: "rocketplaceholder.example"
-        text: "Example text with a permission condition"
-      itemExample:
-        type: ITEM
-        material: STONE
-        colors: true # Translate color codes
-        name: "&cExample"
-        text: "Example text with a item condition"
+# All placeholders have been moved in the placeholders folder.

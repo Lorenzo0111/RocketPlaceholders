@@ -45,16 +45,4 @@ public class PermissionNode extends ConditionNode {
         super(new HasPermissionCondition(plugin,permission), text);
     }
 
-    public static List<PermissionNode> createPermissionNodes(RocketPlaceholders plugin, ConfigurationSection section) {
-        final List<PermissionNode> nodes = new ArrayList<>();
-        for (String nodeKey : section.getKeys(false)) {
-            if (section.getString(nodeKey + ".permission") != null && section.getString(nodeKey + ".text") != null) {
-                final PermissionNode node = new PermissionNode(plugin,section.getString(nodeKey + ".permission"), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString(nodeKey + ".text"))));
-                nodes.add(node);
-            }
-        }
-
-        return nodes;
-    }
-
 }

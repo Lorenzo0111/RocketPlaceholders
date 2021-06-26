@@ -33,7 +33,7 @@ plugins {
 apply from: 'https://cdn.rocketplugins.space/spigot'
 
 group = 'me.lorenzo0111'
-version = '1.9.2'
+version = '2.0'
 description = 'RocketPlaceholders'
 
 repositories {
@@ -89,21 +89,6 @@ processResources {
 java {
     withJavadocJar()
     withSourcesJar()
-}
-
-
-subprojects {
-    group = parent.group
-    version = parent.version
-
-    apply from: 'https://cdn.rocketplugins.space/spigot'
-
-    processResources {
-        from(sourceSets.main.resources.srcDirs) {
-            duplicatesStrategy DuplicatesStrategy.INCLUDE
-            filter ReplaceTokens, tokens: [version: version]
-        }
-    }
 }
 
 publishing {

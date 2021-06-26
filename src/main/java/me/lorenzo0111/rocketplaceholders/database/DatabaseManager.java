@@ -41,6 +41,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.*;
@@ -134,7 +135,7 @@ public class DatabaseManager {
                         }
 
                         if (set.getString("item_material") != null) {
-                            material = Material.valueOf(set.getString("item_material"));
+                            material = Material.getMaterial(set.getString("item_material"));
                         }
 
 
@@ -286,7 +287,11 @@ public class DatabaseManager {
 
     public void reload(ConfigManager configManager) {
         this.getFromDatabase().thenAccept(placeholders -> {
-            configManager.reloadPlaceholders();
+            try {
+                configManager.reloadPlaceholders();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             this.getStorageManager().getInternalPlaceholders().getMap().putAll(placeholders);
             plugin.getLogger().info("Loaded " + placeholders.size() + " placeholders from the database!");
         });
