@@ -45,6 +45,10 @@ public class Storage {
         this.placeholders.putAll(storage.getMap());
     }
 
+    public void add(@NotNull Placeholder placeholder) {
+        this.add(placeholder.getIdentifier(),placeholder);
+    }
+
     @Deprecated
     public void build(@NotNull String identifier, @NotNull String text) {
         this.placeholders.put(identifier, new Placeholder(identifier, RocketPlaceholders.getInstance(), text));

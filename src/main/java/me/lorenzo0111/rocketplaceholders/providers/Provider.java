@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.providers;
+package me.lorenzo0111.rocketplaceholders.providers;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
+import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -38,9 +39,14 @@ import java.util.Objects;
 
 public abstract class Provider {
     protected final RocketPlaceholders plugin;
-    protected final PlaceholdersManager manager;
+    protected final StorageManager manager;
 
     public Provider(RocketPlaceholders plugin, PlaceholdersManager manager) {
+        this.plugin = plugin;
+        this.manager = manager.getStorageManager();
+    }
+
+    public Provider(RocketPlaceholders plugin, StorageManager manager) {
         this.plugin = plugin;
         this.manager = manager;
     }
@@ -61,7 +67,7 @@ public abstract class Provider {
             return null;
         }
 
-        final Placeholder placeholder = manager.searchPlaceholder(identifier);
+        final Placeholder placeholder = manager.get(identifier);
 
         if (placeholder == null) {
             return null;

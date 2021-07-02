@@ -24,14 +24,22 @@
 
 package me.lorenzo0111.rocketplaceholders.api.impl;
 
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import me.lorenzo0111.rocketplaceholders.hooks.PapiHook;
+import me.lorenzo0111.rocketplaceholders.providers.Provider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RocketPlaceholdersAPI implements IRocketPlaceholdersAPI {
     private final PlaceholdersManager placeholdersManager;
+    private final List<PapiHook> providers = new ArrayList<>();
 
     public RocketPlaceholdersAPI(PlaceholdersManager placeholdersManager) {
         this.placeholdersManager = placeholdersManager;
@@ -60,6 +68,22 @@ public class RocketPlaceholdersAPI implements IRocketPlaceholdersAPI {
                 .stream()
                 .filter((placeholder) -> placeholder.getOwner().equals(owner))
                 .forEach(this::removePlaceholder);
+    }
+
+    @Override
+    public void registerProvider(Provider provider, String identifier) {
+        PapiHook hook = new PapiHook(provider, identifier);
+
+        providers.add(hook);
+
+        RocketPlaceholders.getInstance()
+                .getLogger()
+                .info("Loaded custom provider: " + identifier);
+    }
+
+    @Override
+    public void unloadProviders() {
+        providers.forEach(PlaceholderExpansion::unregister);
     }
 
     @Override

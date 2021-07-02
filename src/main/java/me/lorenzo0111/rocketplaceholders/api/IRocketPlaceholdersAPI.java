@@ -26,8 +26,11 @@ package me.lorenzo0111.rocketplaceholders.api;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import me.lorenzo0111.rocketplaceholders.providers.Provider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * API of RocketPlaceholders
@@ -56,6 +59,19 @@ public interface IRocketPlaceholdersAPI {
      * @param owner Owner of the external placeholders
      */
     void removePlaceholders(JavaPlugin owner);
+
+    /**
+     * Register a custom provider
+     * @param provider Provider to register
+     * @param identifier Identifier of the placeholder. Schema: %identifier_params%
+     * @see me.lorenzo0111.rocketplaceholders.providers.CustomProvider
+     */
+    void registerProvider(Provider provider, String identifier);
+
+    /**
+     * Used by the plugin to unload all custom providers
+     */
+    void unloadProviders();
 
     /**
      * Get a placeholder from the storage

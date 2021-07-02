@@ -27,7 +27,7 @@ package me.lorenzo0111.rocketplaceholders.command.subcommands;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
-import me.lorenzo0111.rocketplaceholders.utilities.HookType;
+import me.lorenzo0111.rocketplaceholders.hooks.HookType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

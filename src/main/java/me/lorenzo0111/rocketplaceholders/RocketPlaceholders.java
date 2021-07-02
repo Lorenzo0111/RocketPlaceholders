@@ -51,7 +51,7 @@ public final class RocketPlaceholders extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
 
-        this.storageManager = new StorageManager(this);
+        this.storageManager = new StorageManager();
 
         final ConfigManager placeholders = new ConfigManager(this);
         final PlaceholdersManager placeholdersManager = new PlaceholdersManager(this.storageManager, placeholders, this);

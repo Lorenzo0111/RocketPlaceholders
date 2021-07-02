@@ -22,23 +22,29 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.providers;
+package me.lorenzo0111.rocketplaceholders.providers;
 
-
-import me.clip.placeholderapi.PlaceholderAPI;
+import be.maximvdw.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
-import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
+public class ProviderUtils {
 
-public class PAPIProvider extends Provider {
-    public PAPIProvider(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
-        super(plugin,placeholdersManager);
+    public static String setPlaceholders(RocketPlaceholders plugin, String string, Player player) {
+        String str = string;
+
+        switch (plugin.getLoader().getHookType()) {
+            case MVDW:
+                str = PlaceholderAPI.replacePlaceholders(player,string);
+                break;
+            case PLACEHOLDERAPI:
+                str = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player,string);
+                break;
+            default:
+                break;
+        }
+
+        return str;
     }
 
-    @Override
-    public String parse(Placeholder placeholder, OfflinePlayer player, String text) {
-        return placeholder.parseJS(PlaceholderAPI.setPlaceholders(player,text));
-    }
 }

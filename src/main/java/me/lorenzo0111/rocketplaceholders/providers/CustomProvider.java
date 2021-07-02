@@ -22,29 +22,32 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.providers;
+package me.lorenzo0111.rocketplaceholders.providers;
 
-import be.maximvdw.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import org.bukkit.entity.Player;
+import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
+import org.bukkit.OfflinePlayer;
 
-public class ProviderUtils {
+import java.util.List;
 
-    public static String setPlaceholders(RocketPlaceholders plugin, String string, Player player) {
-        String str = string;
-
-        switch (plugin.getLoader().getHookType()) {
-            case MVDW:
-                str = PlaceholderAPI.replacePlaceholders(player,string);
-                break;
-            case PLACEHOLDERAPI:
-                str = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player,string);
-                break;
-            default:
-                break;
-        }
-
-        return str;
+public class CustomProvider extends Provider {
+    public CustomProvider(RocketPlaceholders plugin, StorageManager storage) {
+        super(plugin, storage);
     }
 
+    public CustomProvider(RocketPlaceholders plugin, List<Placeholder> placeholders) {
+        super(plugin, toStorage(placeholders));
+    }
+
+    private static StorageManager toStorage(List<Placeholder> placeholders) {
+        StorageManager manager = new StorageManager();
+        placeholders.forEach(placeholder -> manager.getExternalPlaceholders().add(placeholder.getIdentifier(),placeholder));
+        return manager;
+    }
+
+    @Override
+    public String parse(Placeholder placeholder, OfflinePlayer player, String text) {
+        return plugin.getLoader().getHookType().parse(player,text);
+    }
 }

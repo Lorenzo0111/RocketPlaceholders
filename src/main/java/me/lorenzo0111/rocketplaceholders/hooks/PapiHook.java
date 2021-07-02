@@ -25,7 +25,8 @@
 package me.lorenzo0111.rocketplaceholders.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.lorenzo0111.rocketplaceholders.creator.providers.Provider;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.providers.Provider;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -33,20 +34,32 @@ import org.jetbrains.annotations.NotNull;
 public class PapiHook extends PlaceholderExpansion {
     private final Provider provider;
     private final JavaPlugin plugin;
+    private String identifier;
+    private String author;
 
     public PapiHook(JavaPlugin plugin, Provider provider) {
         this.provider = provider;
         this.plugin = plugin;
+
+        this.identifier = "rp";
+        this.author = "Lorenzo0111";
+    }
+
+    public PapiHook(Provider provider, String identifier) {
+        this(RocketPlaceholders.getInstance(),provider);
+
+        this.identifier = identifier;
+        this.author = "RP-2.0";
     }
 
     @Override
     public @NotNull String getIdentifier() {
-        return "rp";
+        return this.identifier;
     }
 
     @Override
     public @NotNull String getAuthor() {
-        return "Lorenzo0111";
+        return this.author;
     }
 
     @Override

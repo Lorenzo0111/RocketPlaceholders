@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.providers;
+package me.lorenzo0111.rocketplaceholders.providers;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
@@ -39,7 +39,7 @@ public class MVdWProvider extends Provider {
     }
 
     public void reload() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> manager.getStorageManager().getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, String.format("rp_%s",s), (event) -> this.provide(event.getOfflinePlayer(),event.getPlaceholder()))));
+        Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> manager.getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, String.format("rp_%s",s), (event) -> this.provide(event.getOfflinePlayer(),event.getPlaceholder()))));
     }
 
     @Override

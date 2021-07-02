@@ -25,7 +25,6 @@
 package me.lorenzo0111.rocketplaceholders.storage;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -35,7 +34,7 @@ public class StorageManager {
     private final Storage internalPlaceholders;
     private final Storage externalPlaceholders;
 
-    public StorageManager(JavaPlugin plugin) {
+    public StorageManager() {
         this.internalPlaceholders = new Storage();
         this.externalPlaceholders = new Storage();
     }

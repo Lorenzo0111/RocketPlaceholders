@@ -27,7 +27,7 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import me.lorenzo0111.rocketplaceholders.creator.providers.ProviderUtils;
+import me.lorenzo0111.rocketplaceholders.providers.ProviderUtils;
 import org.bukkit.entity.Player;
 
 public class TextCondition extends Requirement {
