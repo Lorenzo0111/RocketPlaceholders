@@ -41,9 +41,8 @@ import java.util.Objects;
  * A placeholder
  */
 public class Placeholder {
-    private boolean parseJS = false;
+    private final PlaceholderSettings settings;
     private final String identifier;
-    private final String key;
     private final String text;
     private List<ConditionNode> conditionNodes;
     private transient final JavaPlugin owner;
@@ -59,17 +58,10 @@ public class Placeholder {
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, @Nullable List<ConditionNode> nodes, @Nullable PlaceholderSettings settings) {
         this.identifier = identifier;
 
-        String key = null;
-        if (settings != null) {
-            key = settings.key();
-            this.parseJS = settings.parseJs();
+        this.settings = settings;
 
-            if (this.parseJS) {
-                this.engine = new JavaScriptParser<>();
-            }
-        }
-
-        this.key = key;
+        if (settings != null && settings.parseJs())
+            this.engine = new JavaScriptParser<>();
 
         if (text.contains("%rp_")) {
             this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
@@ -92,7 +84,7 @@ public class Placeholder {
     @Deprecated
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
         this.identifier = identifier;
-        this.key = null;
+        this.settings = null;
 
         if (text.contains("%rp_")) {
             this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
@@ -108,7 +100,7 @@ public class Placeholder {
      * @return Parsed text
      */
     public String parseJS(String text) {
-        if (!this.parseJS) {
+        if (this.settings == null || !this.settings.parseJs()) {
             return text;
         }
 
@@ -186,17 +178,14 @@ public class Placeholder {
     }
 
     /**
-     * @return Configuration key if present.
+     * @return Placeholder settings
      */
     @Nullable
-    public String getKey() {
-        return key;
+    public PlaceholderSettings getSettings() {
+        return settings;
     }
 
-    /**
-     * @return if there is a config key
-     */
     public boolean hasKey() {
-        return key != null;
+        return settings != null && settings.key() != null;
     }
 }

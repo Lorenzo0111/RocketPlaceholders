@@ -36,6 +36,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,16 @@ public class GuiCommand extends SubCommand {
         final PaginatedGui gui = GuiUtils.createGui("Placeholders List");
         GuiUtils.setPageItems(gui);
 
-        for (Placeholder placeholder : this.command.getPlugin().getStorageManager().getAll().values().stream().filter(Placeholder::hasKey).collect(Collectors.toList())) {
+        List<Placeholder> placeholders = this.command
+                .getPlugin()
+                .getStorageManager()
+                .getAll()
+                .values()
+                .stream()
+                .filter(Placeholder::hasKey)
+                .collect(Collectors.toList());
+
+        for (Placeholder placeholder : placeholders) {
             gui.addItem( ItemBuilder
                     .from(Objects.requireNonNull(XMaterial.TARGET.parseMaterial()))
                     .setName(String.format("§8§l» §7%s",placeholder.getIdentifier()))

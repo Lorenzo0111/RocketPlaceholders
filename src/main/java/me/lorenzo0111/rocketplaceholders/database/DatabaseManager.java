@@ -91,7 +91,7 @@ public class DatabaseManager {
                 try {
                     final Statement statement = connection.createStatement();
 
-                    // todo: update tables from 1.x
+                    upgrade(statement);
 
                     statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_placeholders` (" +
                             "`identifier` varchar(255) UNIQUE NOT NULL," +
@@ -108,6 +108,8 @@ public class DatabaseManager {
                             "`item_lore` varchar(255)," +
                             "`text` varchar(255)" +
                             ");");
+
+                    statement.close();
                 } catch (SQLException exception) {
                     plugin.getLogger().severe("Error while creating tables: " + exception);
                 }
@@ -115,6 +117,26 @@ public class DatabaseManager {
         }.runTaskAsynchronously(plugin);
     }
 
+    public void upgrade(Statement statement) throws SQLException {
+        ResultSet resultSet = connection.getMetaData().getTables(null, null, "rp_info", new String[] {"TABLE"});
+
+        if (!resultSet.next()) {
+            // Upgrade
+
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_info` (" +
+                    "`key` varchar(255) NOT NULL," +
+                    "`value` TEXT NOT NULL," +
+                    "PRIMARY KEY (`key`)" +
+                    ");");
+
+            statement.executeUpdate("INSERT INTO `rp_info`(`key`,`value`) VALUES('version','2.0')");
+
+            statement.executeUpdate("ALTER TABLE `rp_placeholders`" +
+                    "ADD `settings` TEXT;");
+        }
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
     public CompletableFuture<Multimap<String, ConditionNode>> getNodes() {
         CompletableFuture<Multimap<String,ConditionNode>> completableFuture = new CompletableFuture<>();
 
@@ -147,6 +169,8 @@ public class DatabaseManager {
                         nodes.put(set.getString("identifier"), new ConditionNode(requirement, set.getString("text")));
                     }
 
+                    statement.close();
+                    set.close();
                     completableFuture.complete(nodes);
                 } catch (SQLException exception) {
                     exception.printStackTrace();
@@ -170,13 +194,14 @@ public class DatabaseManager {
                 final Map<String, Placeholder> hashMap = internalPlaceholders.getMap();
 
                 try {
-                    final PreparedStatement statement = connection.prepareStatement("insert into rp_placeholders (`identifier`, `text`) VALUES (?,?);");
+                    final PreparedStatement statement = connection.prepareStatement("insert into rp_placeholders (`identifier`, `text`, `settings`) VALUES (?,?,?);");
                     final PreparedStatement nodeStatement = connection.prepareStatement("insert into rp_nodes (`identifier`, `type`, `value`, `item_material`, `item_name`,`item_lore`, `text`) VALUES (?,?,?,?,?,?,?);");
 
                     hashMap.forEach((s, placeholder) -> {
                         try {
                             statement.setString(1, s);
                             statement.setString(2, placeholder.getText());
+                            statement.setString(3, gson.toJson(placeholder.getSettings()));
                             statement.executeUpdate();
 
                             if (placeholder.hasConditionNodes() && placeholder.getConditionNodes() != null) {
@@ -220,6 +245,8 @@ public class DatabaseManager {
                             exception.printStackTrace();
                         }
                     });
+                    statement.close();
+                    nodeStatement.close();
                 } catch (SQLException exception) {
                     exception.printStackTrace();
                 }
@@ -253,6 +280,8 @@ public class DatabaseManager {
                         hashMap.put(resultSet.getString("identifier"), new Placeholder(resultSet.getString("identifier"), plugin, resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier"))), settings));
                     }
 
+                    resultSet.close();
+                    statement.close();
                     completableFuture.complete(hashMap);
                 } catch (SQLException exception) {
                     exception.printStackTrace();
@@ -282,6 +311,7 @@ public class DatabaseManager {
                     statement.executeUpdate("DELETE FROM rp_nodes;");
 
                     completableFuture.complete(true);
+                    statement.close();
                 } catch (SQLException exception) {
                     exception.printStackTrace();
 
