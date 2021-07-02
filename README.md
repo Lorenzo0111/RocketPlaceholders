@@ -5,9 +5,7 @@
 
 # Information
 
-[RocketPlaceholders][spigot] is a CustomPlaceholders plugin!
-With this plugin you can create custom placeholders based on PlaceholderAPI
-
+[RocketPlaceholders][spigot] is a minecraft plugin to add custom placeholders with conditions to PlaceholderAPI!
 ## Usage
 
 You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplaceholders/starting)
