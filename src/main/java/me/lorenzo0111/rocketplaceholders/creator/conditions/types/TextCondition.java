@@ -27,7 +27,7 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import me.lorenzo0111.rocketplaceholders.creator.providers.GenericCreator;
+import me.lorenzo0111.rocketplaceholders.creator.providers.ProviderUtils;
 import org.bukkit.entity.Player;
 
 public class TextCondition extends Requirement {
@@ -42,8 +42,8 @@ public class TextCondition extends Requirement {
 
     @Override
     public boolean apply(Player player) {
-        String one = GenericCreator.setPlaceholders(plugin,this.one,player);
-        String two = GenericCreator.setPlaceholders(plugin,this.two,player);
+        String one = ProviderUtils.setPlaceholders(plugin,this.one,player);
+        String two = ProviderUtils.setPlaceholders(plugin,this.two,player);
 
         return one.equals(two);
     }

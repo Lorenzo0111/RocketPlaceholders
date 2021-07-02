@@ -25,7 +25,8 @@
 package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.InvalidConditionException;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
+import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,6 +48,83 @@ public class Placeholder {
     private List<ConditionNode> conditionNodes;
     private transient final JavaPlugin owner;
     private transient JavaScriptParser<String> engine;
+
+    /**
+     * @param identifier Identifier of the placeholder
+     * @param owner Plugin that created the placeholder
+     * @param text Main text of the placeholder
+     * @param nodes ConditionNodes of the placeholder
+     * @param settings Placeholder settings
+     */
+    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text, @Nullable List<ConditionNode> nodes, @Nullable PlaceholderSettings settings) {
+        this.identifier = identifier;
+
+        String key = null;
+        if (settings != null) {
+            key = settings.key();
+            this.parseJS = settings.parseJs();
+
+            if (this.parseJS) {
+                this.engine = new JavaScriptParser<>();
+            }
+        }
+
+        this.key = key;
+
+        if (text.contains("%rp_")) {
+            this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
+        } else {
+            this.text = ChatColor.translateAlternateColorCodes('&', text);
+        }
+
+        this.conditionNodes = nodes;
+
+        this.owner = owner;
+    }
+
+    /**
+     * @param identifier Identifier of the placeholder
+     * @param owner Plugin that created the placeholder
+     * @param text Text of the placeholder
+     *
+     * @deprecated  Replaced with {@link Placeholder#Placeholder( String, JavaPlugin, String, List, PlaceholderSettings)}
+     */
+    @Deprecated
+    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
+        this.identifier = identifier;
+        this.key = null;
+
+        if (text.contains("%rp_")) {
+            this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
+        } else {
+            this.text = ChatColor.translateAlternateColorCodes('&', text);
+        }
+        this.owner = owner;
+    }
+
+    /**
+     * Parse javascript
+     * @param text Text to parse
+     * @return Parsed text
+     */
+    public String parseJS(String text) {
+        if (!this.parseJS) {
+            return text;
+        }
+
+        try {
+            String result = engine.parse(text);
+            if (result == null) {
+                throw new InvalidConditionException("The expression returned a null value.");
+            }
+
+            return result;
+        } catch (ScriptException e) {
+            e.printStackTrace();
+        }
+
+        return "JavaScript error";
+    }
 
     @Override
     public boolean equals(Object target) {
@@ -72,67 +150,6 @@ public class Placeholder {
     }
 
     /**
-     * @param key Configuration key. Set to null if you are using the api.
-     * @param identifier Identifier of the placeholder
-     * @param owner Plugin that created the placeholder
-     * @param text Main text of the placeholder
-     * @param nodes ConditionNodes of the placeholder
-     */
-    public Placeholder(@Nullable String key, @NotNull String identifier, JavaPlugin owner, @NotNull String text,@Nullable List<ConditionNode> nodes) {
-        this.identifier = identifier;
-        this.key = key;
-
-        if (text.contains("%rp_")) {
-            this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
-        } else {
-            this.text = ChatColor.translateAlternateColorCodes('&', text);
-        }
-
-        this.conditionNodes = nodes;
-
-        this.owner = owner;
-    }
-
-    /**
-     * @param key Configuration key. Set to null if you are using the api.
-     * @param identifier Identifier of the placeholder
-     * @param owner Plugin that created the placeholder
-     * @param text Main text of the placeholder
-     * @param nodes ConditionNodes of the placeholder
-     * @param parseJS Should parse JavaScript expression
-     */
-    public Placeholder(@Nullable String key, @NotNull String identifier, JavaPlugin owner, @NotNull String text,@Nullable List<ConditionNode> nodes, boolean parseJS) {
-        this(key,identifier,owner,text,nodes);
-
-        this.parseJS = parseJS;
-
-        if (parseJS) {
-            this.engine = new JavaScriptParser<>();
-        }
-    }
-
-    /**
-     * @param identifier Identifier of the placeholder
-     * @param owner Plugin that created the placeholder
-     * @param text Text of the placeholder
-     *
-     * @deprecated  Replaced with {@link Placeholder#Placeholder(String, String, JavaPlugin, String, List)}
-     */
-    @Deprecated
-    public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
-        this.identifier = identifier;
-        this.key = null;
-
-        if (text.contains("%rp_")) {
-            this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
-        } else {
-            this.text = ChatColor.translateAlternateColorCodes('&', text);
-        }
-        this.owner = owner;
-    }
-
-
-    /**
      * @return Identifier of the placeholder
      */
     public String getIdentifier() {
@@ -144,30 +161,6 @@ public class Placeholder {
      */
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * Parse javascript
-     * @param text Text to parse
-     * @return Parsed text
-     */
-    public String parseJS(String text) {
-        if (!this.parseJS) {
-            return text;
-        }
-
-        try {
-            String result = engine.parse(text);
-            if (result == null) {
-                throw new InvalidConditionException("The expression returned a null value.");
-            }
-
-            return result;
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        }
-
-        return "JavaScript error";
     }
 
     /**

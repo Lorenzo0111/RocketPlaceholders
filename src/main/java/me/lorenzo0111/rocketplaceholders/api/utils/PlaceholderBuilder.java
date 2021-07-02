@@ -27,6 +27,7 @@ package me.lorenzo0111.rocketplaceholders.api.utils;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class PlaceholderBuilder {
     /**
      * @param requirement Requirement to view the text
      * @param text Text of the condition
-     * @see me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements
+     * @see Requirements
      * @return The same instance
      */
     public PlaceholderBuilder createConditionNode(Requirement requirement, String text) {
@@ -71,6 +72,6 @@ public class PlaceholderBuilder {
      * @return Built placeholder
      */
     public Placeholder build() {
-        return new Placeholder(null, identifier, owner, text, nodes);
+        return new Placeholder(identifier, owner, text, nodes, null);
     }
 }

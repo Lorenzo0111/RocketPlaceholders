@@ -22,29 +22,30 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.providers;
+package me.lorenzo0111.rocketplaceholders.storage;
 
-import be.maximvdw.placeholderapi.PlaceholderAPI;
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
-public class GenericCreator {
+public class PlaceholderSettings {
+    private boolean parseJs;
+    private String key;
 
-    public static String setPlaceholders(RocketPlaceholders plugin, String string, Player player) {
-        String str = string;
-
-        switch (plugin.getLoader().getHookType()) {
-            case MVDW:
-                str = PlaceholderAPI.replacePlaceholders(player,string);
-                break;
-            case PLACEHOLDERAPI:
-                str = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player,string);
-                break;
-            default:
-                break;
-        }
-
-        return str;
+    public PlaceholderSettings key(String key) {
+        this.key = key;
+        return this;
     }
 
+    public PlaceholderSettings parseJs(boolean parseJs) {
+        this.parseJs = parseJs;
+        return this;
+    }
+
+    @Nullable
+    public String key() {
+        return key;
+    }
+
+    public boolean parseJs() {
+        return parseJs;
+    }
 }

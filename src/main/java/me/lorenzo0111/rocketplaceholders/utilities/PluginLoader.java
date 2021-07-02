@@ -27,19 +27,19 @@ package me.lorenzo0111.rocketplaceholders.utilities;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
-import me.lorenzo0111.rocketplaceholders.creator.providers.MVdWPlaceholderAPICreator;
-import me.lorenzo0111.rocketplaceholders.creator.providers.PlaceholderAPICreator;
+import me.lorenzo0111.rocketplaceholders.creator.providers.MVdWProvider;
+import me.lorenzo0111.rocketplaceholders.creator.providers.PAPIProvider;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
+import me.lorenzo0111.rocketplaceholders.hooks.PapiHook;
+import me.lorenzo0111.rocketplaceholders.hooks.VaultHook;
 import me.lorenzo0111.rocketplaceholders.listener.JoinListener;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -49,8 +49,7 @@ public class PluginLoader {
     private final RocketPlaceholders plugin;
     private final PlaceholdersManager placeholdersManager;
     private final UpdateChecker updateChecker;
-    private Economy economy = null;
-    private Permission permission = null;
+    private VaultHook vault;
     private DatabaseManager databaseManager;
     private HookType hookType = HookType.NULL;
 
@@ -79,7 +78,7 @@ public class PluginLoader {
         boolean hook = false;
 
         if (Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI") != null) {
-            new MVdWPlaceholderAPICreator(plugin, placeholdersManager);
+            new MVdWProvider(plugin, placeholdersManager);
             this.hookType = HookType.MVDW;
             hook = true;
         }
@@ -87,7 +86,7 @@ public class PluginLoader {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             this.plugin.getLogger().info("PlaceholderAPI hooked!");
             this.plugin.getLogger().info(this.plugin.getDescription().getName() + " v" + this.plugin.getDescription().getVersion() + " by Lorenzo0111 is now enabled!");
-            new PlaceholderAPICreator(plugin, placeholdersManager).register();
+            new PapiHook(plugin,new PAPIProvider(plugin,placeholdersManager)).register();
             this.hookType = HookType.PLACEHOLDERAPI;
             hook = true;
         }
@@ -100,19 +99,7 @@ public class PluginLoader {
     }
 
     public void setupHooks() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
-            if (rsp != null) {
-                this.economy = rsp.getProvider();
-                this.plugin.getLogger().info("Hooked with Vault Economy.");
-            }
-
-            RegisteredServiceProvider<Permission> prsp = plugin.getServer().getServicesManager().getRegistration(Permission.class);
-            if (prsp !=  null) {
-                this.permission = prsp.getProvider();
-                this.plugin.getLogger().info("Hooked with Vault Permission Manager.");
-            }
-        }
+        this.vault = new VaultHook(plugin);
     }
 
     public void loadDatabase() {
@@ -163,14 +150,8 @@ public class PluginLoader {
         return updateChecker;
     }
 
-    @Nullable
-    public Economy getEconomy() {
-        return economy;
-    }
-
-    @Nullable
-    public Permission getPermission() {
-        return permission;
+    public @NotNull VaultHook getVault() {
+        return vault;
     }
 
     public HookType getHookType() {

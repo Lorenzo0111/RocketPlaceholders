@@ -24,9 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.providers;
 
-
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
@@ -34,49 +31,22 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 
+public abstract class Provider {
+    protected final RocketPlaceholders plugin;
+    protected final PlaceholdersManager manager;
 
-public class PlaceholderAPICreator extends PlaceholderExpansion {
-    private final RocketPlaceholders plugin;
-    private final PlaceholdersManager placeholdersManager;
-
-    public PlaceholderAPICreator(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
+    public Provider(RocketPlaceholders plugin, PlaceholdersManager manager) {
         this.plugin = plugin;
-        this.placeholdersManager = placeholdersManager;
+        this.manager = manager;
     }
 
-    @Override
-    public @NotNull String getIdentifier() {
-        return "rp";
-    }
-
-    @Override
-    public @NotNull String getAuthor() {
-        return "Lorenzo0111";
-    }
-
-    @Override
-    public @NotNull String getVersion() {
-        return plugin.getDescription().getVersion();
-    }
-
-    @Override
-    public boolean canRegister() {
-        return true;
-    }
-
-    @Override
-    public boolean persist() {
-        return true;
-    }
-
-    @Override
-    public String onRequest(OfflinePlayer player, @NotNull String identifier) {
-
+    @Nullable
+    public String provide(@Nullable OfflinePlayer player, String identifier) {
         if (player == null) {
             return null;
         }
@@ -91,7 +61,7 @@ public class PlaceholderAPICreator extends PlaceholderExpansion {
             return null;
         }
 
-        final Placeholder placeholder = placeholdersManager.searchPlaceholder(identifier);
+        final Placeholder placeholder = manager.searchPlaceholder(identifier);
 
         if (placeholder == null) {
             return null;
@@ -110,10 +80,7 @@ public class PlaceholderAPICreator extends PlaceholderExpansion {
         }
 
         return this.parse(placeholder,player,placeholder.getText());
-
     }
 
-    private String parse(Placeholder placeholder, OfflinePlayer player, String text) {
-        return placeholder.parseJS(PlaceholderAPI.setPlaceholders(player,text));
-    }
+    public abstract String parse(Placeholder placeholder, OfflinePlayer player, String text);
 }

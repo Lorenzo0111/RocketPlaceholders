@@ -62,7 +62,7 @@ public class Debugger {
 
         this.log("Hooks");
 
-        this.logData("Vault", plugin.getLoader().getEconomy() != null ? "true" : "false");
+        this.logData("Vault", plugin.getLoader().getVault().hooked() ? "true" : "false");
 
         /*
         *

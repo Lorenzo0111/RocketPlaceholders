@@ -27,6 +27,7 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
 public class HasMoneyCondition extends Requirement {
@@ -40,11 +41,13 @@ public class HasMoneyCondition extends Requirement {
 
     @Override
     public boolean apply(Player player) {
-        if (plugin.getLoader().getEconomy() == null) {
+        if (!plugin.getLoader().getVault().hooked()) {
             return false;
         }
 
-        return plugin.getLoader().getEconomy().has(player,money);
+        Economy economy = plugin.getLoader().getVault().economy();
+
+        return economy != null && economy.has(player, money);
     }
 
     @Override

@@ -41,7 +41,10 @@ public class HasGroupCondition extends Requirement {
 
     @Override
     public boolean apply(Player player) {
-        final Permission permission = plugin.getLoader().getPermission();
+        if (!plugin.getLoader().getVault().hooked())
+            return false;
+
+        Permission permission = plugin.getLoader().getVault().permissions();
 
         return permission != null && permission.playerInGroup(player,group);
     }

@@ -28,45 +28,22 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
-import java.util.List;
-import java.util.Objects;
-
-public class MVdWPlaceholderAPICreator {
-    private final RocketPlaceholders plugin;
-    private final PlaceholdersManager placeholdersManager;
-
-    public MVdWPlaceholderAPICreator(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
-        this.plugin = plugin;
-        this.placeholdersManager = placeholdersManager.hook(this);
+public class MVdWProvider extends Provider {
+    public MVdWProvider(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
+        super(plugin,placeholdersManager);
+        placeholdersManager.hook(this);
         this.reload();
     }
 
     public void reload() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> placeholdersManager.getStorageManager().getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, String.format("rp_%s",s), (event) -> {
-            if (!event.isOnline()) return null;
-
-            if (!placeholder.hasConditionNodes()) {
-                return this.parse(placeholder, event.getPlayer(), placeholder.getText());
-            }
-
-            List<ConditionNode> conditionNodes = Objects.requireNonNull(placeholder.getConditionNodes());
-            for (ConditionNode node : conditionNodes) {
-                if (((Requirement) node.getCondition()).apply(event.getPlayer())) {
-                    plugin.debug("Applied: " + node.getRequirement());
-                    return this.parse(placeholder, event.getPlayer(), node.getText());
-                }
-            }
-
-            return this.parse(placeholder, event.getPlayer(), placeholder.getText());
-        })));
+        Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> manager.getStorageManager().getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, String.format("rp_%s",s), (event) -> this.provide(event.getOfflinePlayer(),event.getPlaceholder()))));
     }
 
-    private String parse(Placeholder placeholder, Player player, String text) {
+    @Override
+    public String parse(Placeholder placeholder, OfflinePlayer player, String text) {
         return placeholder.parseJS(PlaceholderAPI.replacePlaceholders(player,text));
     }
 

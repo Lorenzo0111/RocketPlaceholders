@@ -25,7 +25,7 @@
 package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.creator.providers.MVdWPlaceholderAPICreator;
+import me.lorenzo0111.rocketplaceholders.creator.providers.MVdWProvider;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
@@ -41,7 +41,7 @@ public class PlaceholdersManager {
     private final StorageManager storageManager;
     private final ConfigManager configManager;
     private final RocketPlaceholders plugin;
-    private MVdWPlaceholderAPICreator mVdWPlaceholderAPICreator;
+    private MVdWProvider mVdWPlaceholderAPICreator;
 
     /**
      * @param storageManager Storage manager that contains all placeholders
@@ -114,7 +114,7 @@ public class PlaceholdersManager {
      * @param mVdWPlaceholderAPICreator Api Creator
      * @return the same instance
      */
-    public PlaceholdersManager hook(MVdWPlaceholderAPICreator mVdWPlaceholderAPICreator) {
+    public PlaceholdersManager hook(MVdWProvider mVdWPlaceholderAPICreator) {
         this.mVdWPlaceholderAPICreator = mVdWPlaceholderAPICreator;
         return this;
     }

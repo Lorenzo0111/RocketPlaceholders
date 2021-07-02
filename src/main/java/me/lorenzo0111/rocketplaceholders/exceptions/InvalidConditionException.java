@@ -22,50 +22,17 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions;
-
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.Map;
+package me.lorenzo0111.rocketplaceholders.exceptions;
 
 /**
- * A requirement for a condition node
+ * Used when a condition configuration is wrong
  */
-public abstract class Requirement {
-    protected transient final RocketPlaceholders plugin;
-    protected transient final Map<String,Object> databaseInfo = new HashMap<>();
+public class InvalidConditionException extends RuntimeException {
 
     /**
-     * @return Database information
+     * @param message Message of the exception
      */
-    public Map<String,Object> getDatabaseInfo() {
-        return this.databaseInfo;
-    }
-
-    /**
-     * @param plugin Plugin
-     */
-    public Requirement(RocketPlaceholders plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * @param player Player to apply
-     * @return Condition result
-     */
-    abstract public boolean apply(Player player);
-
-    /**
-     * @return Type of condition
-     */
-    abstract public RequirementType getType();
-
-    @Override
-    public String toString() {
-        return "{" +
-                "type=" + this.getType() +
-                '}';
+    public InvalidConditionException(String message) {
+        super(message);
     }
 }

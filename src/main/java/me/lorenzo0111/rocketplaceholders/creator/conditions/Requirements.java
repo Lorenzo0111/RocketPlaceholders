@@ -22,12 +22,10 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions.engine;
+package me.lorenzo0111.rocketplaceholders.creator.conditions;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.InvalidConditionException;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.types.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -46,6 +44,10 @@ import java.util.List;
 public class Requirements {
     private final RocketPlaceholders plugin;
 
+    /**
+     * Create a requirements builder
+     * @param plugin Plugin
+     */
     public Requirements(RocketPlaceholders plugin) {
         this.plugin = plugin;
     }

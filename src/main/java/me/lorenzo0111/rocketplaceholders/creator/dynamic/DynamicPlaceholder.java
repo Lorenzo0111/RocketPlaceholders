@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.creator.dynamic;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,27 +41,25 @@ public class DynamicPlaceholder extends Placeholder implements DynamicObject {
     private Callable<String> callable;
 
     /**
-     * @param key Configuration key. Set to null if you are using the api.
      * @param identifier Identifier of the placeholder
      * @param owner Plugin that created the placeholder
      * @param text Main callable text of the placeholder
      * @param nodes ConditionNodes of the placeholder
      */
-    public DynamicPlaceholder(@Nullable String key, @NotNull String identifier, JavaPlugin owner, @NotNull Callable<String> text, @Nullable List<ConditionNode> nodes) {
-        super(key, identifier, owner, DynamicObject.FAKE_TEXT, nodes);
+    public DynamicPlaceholder(@NotNull String identifier, JavaPlugin owner, @NotNull Callable<String> text, @Nullable List<ConditionNode> nodes) {
+        super(identifier, owner, DynamicObject.FAKE_TEXT, nodes, null);
         this.setCallable(text);
     }
 
     /**
-     * @param key Configuration key. Set to null if you are using the api.
      * @param identifier Identifier of the placeholder
      * @param owner Plugin that created the placeholder
      * @param text Main callable text of the placeholder
      * @param nodes ConditionNodes of the placeholder
-     * @param parseJS Should parse JavaScript expression
+     * @param settings Placeholder settings
      */
-    public DynamicPlaceholder(@Nullable String key, @NotNull String identifier, JavaPlugin owner, @NotNull Callable<String> text, @Nullable List<ConditionNode> nodes, boolean parseJS) {
-        super(key, identifier, owner, DynamicObject.FAKE_TEXT, nodes, parseJS);
+    public DynamicPlaceholder(@NotNull String identifier, JavaPlugin owner, @NotNull Callable<String> text, @Nullable List<ConditionNode> nodes, @Nullable PlaceholderSettings settings) {
+        super(identifier, owner, DynamicObject.FAKE_TEXT, nodes, settings);
         this.setCallable(text);
     }
 
@@ -69,7 +68,7 @@ public class DynamicPlaceholder extends Placeholder implements DynamicObject {
      * @param owner Plugin that created the placeholder
      * @param text Callable text of the placeholder
      *
-     * @deprecated  Replaced with {@link DynamicPlaceholder#DynamicPlaceholder(String, String, JavaPlugin, Callable, List)}
+     * @deprecated  Replaced with {@link DynamicPlaceholder#DynamicPlaceholder(String, JavaPlugin, Callable, List)}
      */
     @Deprecated
     public DynamicPlaceholder(@NotNull String identifier, JavaPlugin owner, @NotNull Callable<String> text) {

@@ -22,50 +22,40 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions;
+package me.lorenzo0111.rocketplaceholders.hooks;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import org.bukkit.entity.Player;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.lorenzo0111.rocketplaceholders.creator.providers.Provider;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+public class PapiHook extends PlaceholderExpansion {
+    private final Provider provider;
+    private final JavaPlugin plugin;
 
-/**
- * A requirement for a condition node
- */
-public abstract class Requirement {
-    protected transient final RocketPlaceholders plugin;
-    protected transient final Map<String,Object> databaseInfo = new HashMap<>();
-
-    /**
-     * @return Database information
-     */
-    public Map<String,Object> getDatabaseInfo() {
-        return this.databaseInfo;
-    }
-
-    /**
-     * @param plugin Plugin
-     */
-    public Requirement(RocketPlaceholders plugin) {
+    public PapiHook(JavaPlugin plugin, Provider provider) {
+        this.provider = provider;
         this.plugin = plugin;
     }
 
-    /**
-     * @param player Player to apply
-     * @return Condition result
-     */
-    abstract public boolean apply(Player player);
-
-    /**
-     * @return Type of condition
-     */
-    abstract public RequirementType getType();
+    @Override
+    public @NotNull String getIdentifier() {
+        return "rp";
+    }
 
     @Override
-    public String toString() {
-        return "{" +
-                "type=" + this.getType() +
-                '}';
+    public @NotNull String getAuthor() {
+        return "Lorenzo0111";
+    }
+
+    @Override
+    public @NotNull String getVersion() {
+        return plugin.getDescription().getVersion();
+    }
+
+    @Override
+    public String onRequest(OfflinePlayer player, @NotNull String params) {
+        return provider.provide(player,params);
     }
 }

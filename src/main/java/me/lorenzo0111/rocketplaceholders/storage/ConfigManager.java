@@ -27,7 +27,7 @@ package me.lorenzo0111.rocketplaceholders.storage;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
 import me.lorenzo0111.rocketplaceholders.legacy.LegacyMover;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;

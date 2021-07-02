@@ -22,50 +22,29 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions;
+package me.lorenzo0111.rocketplaceholders.creator.providers;
 
+import be.maximvdw.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+public class ProviderUtils {
 
-/**
- * A requirement for a condition node
- */
-public abstract class Requirement {
-    protected transient final RocketPlaceholders plugin;
-    protected transient final Map<String,Object> databaseInfo = new HashMap<>();
+    public static String setPlaceholders(RocketPlaceholders plugin, String string, Player player) {
+        String str = string;
 
-    /**
-     * @return Database information
-     */
-    public Map<String,Object> getDatabaseInfo() {
-        return this.databaseInfo;
+        switch (plugin.getLoader().getHookType()) {
+            case MVDW:
+                str = PlaceholderAPI.replacePlaceholders(player,string);
+                break;
+            case PLACEHOLDERAPI:
+                str = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player,string);
+                break;
+            default:
+                break;
+        }
+
+        return str;
     }
 
-    /**
-     * @param plugin Plugin
-     */
-    public Requirement(RocketPlaceholders plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * @param player Player to apply
-     * @return Condition result
-     */
-    abstract public boolean apply(Player player);
-
-    /**
-     * @return Type of condition
-     */
-    abstract public RequirementType getType();
-
-    @Override
-    public String toString() {
-        return "{" +
-                "type=" + this.getType() +
-                '}';
-    }
 }

@@ -33,8 +33,9 @@ import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.engine.Requirements;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
+import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.Material;
@@ -90,9 +91,12 @@ public class DatabaseManager {
                 try {
                     final Statement statement = connection.createStatement();
 
+                    // todo: update tables from 1.x
+
                     statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_placeholders` (" +
                             "`identifier` varchar(255) UNIQUE NOT NULL," +
                             "`text` varchar(255) NOT NULL," +
+                            "`settings` TEXT," +
                             "PRIMARY KEY (`identifier`)" +
                             ");");
                     statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_nodes` (" +
@@ -235,13 +239,18 @@ public class DatabaseManager {
             @Override
             public void run() {
                 try {
+                    Gson gson = new Gson();
                     PreparedStatement statement = connection.prepareStatement("SELECT * FROM rp_placeholders;");
                     ResultSet resultSet = statement.executeQuery();
 
                     Map<String, Placeholder> hashMap = new HashMap<>();
 
                     while (resultSet.next()) {
-                        hashMap.put(resultSet.getString("identifier"), new Placeholder(null, resultSet.getString("identifier"), plugin, resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier")))));
+                        PlaceholderSettings settings = null;
+                        if (resultSet.getString("settings") != null)
+                            settings = gson.fromJson(resultSet.getString("settings"), PlaceholderSettings.class);
+
+                        hashMap.put(resultSet.getString("identifier"), new Placeholder(resultSet.getString("identifier"), plugin, resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier"))), settings));
                     }
 
                     completableFuture.complete(hashMap);
