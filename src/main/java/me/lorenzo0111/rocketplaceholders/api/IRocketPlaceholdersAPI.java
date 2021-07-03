@@ -30,8 +30,6 @@ import me.lorenzo0111.rocketplaceholders.providers.Provider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 /**
  * API of RocketPlaceholders
  */

@@ -25,8 +25,8 @@
 package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.providers.MVdWProvider;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
+import me.lorenzo0111.rocketplaceholders.providers.MVdWProvider;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;

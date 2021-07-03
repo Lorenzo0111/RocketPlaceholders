@@ -31,7 +31,8 @@ import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
-import javax.script.*;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

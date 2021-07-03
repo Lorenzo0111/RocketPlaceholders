@@ -25,8 +25,8 @@
 package me.lorenzo0111.rocketplaceholders.creator.conditions;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.types.*;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -27,12 +27,6 @@ package me.lorenzo0111.rocketplaceholders.legacy;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasPermissionCondition;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * <b>Warning:</b> This class will be removed in the next version.
