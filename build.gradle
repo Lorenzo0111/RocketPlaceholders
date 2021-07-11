@@ -30,8 +30,6 @@ plugins {
     id 'maven-publish'
 }
 
-apply from: 'https://cdn.rocketplugins.space/spigot'
-
 group = 'me.lorenzo0111'
 version = '2.0'
 description = 'RocketPlaceholders'
@@ -43,15 +41,22 @@ repositories {
         url = 'http://repo.mvdw-software.be/content/groups/public/'
         allowInsecureProtocol = true
     }
+    maven { url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/') }
+    maven { url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/') }
+    maven { url = uri('https://repo.codemc.org/repository/maven-public') }
 }
 
 dependencies {
+    compileOnly('org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT')
+    compileOnly('me.clip:placeholderapi:2.10.10')
+    compileOnly('org.jetbrains:annotations:21.0.0')
     compileOnly('com.github.MilkBowl:VaultAPI:1.7')
     compileOnly ('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
         exclude module: 'spigot'
     }
     implementation('mysql:mysql-connector-java:8.0.25')
     implementation("me.mattstudios.utils:matt-framework-gui:2.0.3.3")
+    implementation('org.bstats:bstats-bukkit:2.2.1')
 }
 
 shadowJar {
@@ -59,6 +64,7 @@ shadowJar {
     relocate('com.mysql', 'me.lorenzo0111.rocketplaceholders.lib.mysql')
     relocate('com.google.protobuf', 'me.lorenzo0111.rocketplaceholders.lib.google.protobuf')
     relocate('me.mattstudios.mfgui', 'me.lorenzo0111.rocketplaceholders.lib.gui')
+    relocate('org.bstats', 'me.lorenzo0111.rocketplaceholders.lib.bstats')
 
     archiveFileName = "${project.name}-${project.version}.jar"
 }
@@ -89,6 +95,12 @@ processResources {
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+java.sourceCompatibility = JavaVersion.VERSION_1_8 
+
+tasks.withType(JavaCompile) { 
+    options.encoding = 'UTF-8'
 }
 
 publishing {
