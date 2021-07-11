@@ -88,9 +88,9 @@ public class LegacyMover {
                     "If you need support you can contact us on discord: https://discord.io/RocketPlugins");
 
             config.save(file);
-
-            this.delete(plugin.getConfig());
         }
+
+        this.delete(plugin.getConfig());
     }
 
     private void delete(FileConfiguration file) throws IOException {
