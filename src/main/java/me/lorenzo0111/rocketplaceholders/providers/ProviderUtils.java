@@ -26,11 +26,11 @@ package me.lorenzo0111.rocketplaceholders.providers;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 public class ProviderUtils {
 
-    public static String setPlaceholders(RocketPlaceholders plugin, String string, Player player) {
+    public static String setPlaceholders(RocketPlaceholders plugin, String string, OfflinePlayer player) {
         String str = string;
 
         switch (plugin.getLoader().getHookType()) {

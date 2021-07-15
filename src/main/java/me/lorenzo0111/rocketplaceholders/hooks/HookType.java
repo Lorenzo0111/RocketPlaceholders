@@ -24,70 +24,26 @@
 
 package me.lorenzo0111.rocketplaceholders.hooks;
 
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.providers.ProviderUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public enum HookType {
-    PLACEHOLDERAPI("PlaceholderAPI", "me.clip.placeholderapi.PlaceholderAPI"),
-    MVDW("MVdWPlaceholderAPI", ""),
-    NULL("null", null);
+    PLACEHOLDERAPI("PlaceholderAPI"),
+    MVDW("MVdWPlaceholderAPI"),
+    NULL("null");
 
     private final String plugin;
-    private final String provider;
-    private Method method;
 
-    HookType(String plugin, @Nullable String provider) {
+    HookType(String plugin) {
         this.plugin = plugin;
-        this.provider = provider;
-
-        this.loadMethod();
-    }
-
-    private void loadMethod() {
-        if (provider == null) return;
-
-        try {
-            Class<?> aClass = Class.forName(provider);
-            Method method;
-
-            switch (this) {
-                case PLACEHOLDERAPI:
-                    method = aClass.getMethod("setPlaceholders", OfflinePlayer.class, String.class);
-                    break;
-                case MVDW:
-                    method = aClass.getMethod("replacePlaceholders", OfflinePlayer.class, String.class);
-                    break;
-                default:
-                    method = null;
-                    break;
-            }
-
-            if (method == null) return;
-
-            this.method = method;
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-        }
     }
 
     public @NotNull String parse(OfflinePlayer player, String string) {
-        if (provider == null) return string;
+        if (this == HookType.NULL) return string;
 
-        try {
-            Object invoke = method.invoke(null, player, string);
-
-            if (!(invoke instanceof String)) {
-                return string;
-            }
-
-            return (String) invoke;
-        } catch (IllegalAccessException | InvocationTargetException ignored) {
-            return string;
-        }
+        return ProviderUtils.setPlaceholders(RocketPlaceholders.getInstance(), string, player);
     }
 
     public String getPlugin() {

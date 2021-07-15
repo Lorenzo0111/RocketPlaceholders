@@ -29,8 +29,7 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasPermissionCondition;
 
 /**
- * <b>Warning:</b> This class will be removed in the next version.
- * Please use {@link me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode} instead
+ * @deprecated Please use {@link me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode} instead
  */
 @Deprecated
 public class PermissionNode extends ConditionNode {
