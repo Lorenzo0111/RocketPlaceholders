@@ -12,7 +12,7 @@
 # RocketPlaceholders Wiki: https://docs.rocketplugins.space/rocketplaceholders
 
 # RocketPlaceholders prefix
-prefix: "&c&lRocket&e&lPlaceholders &f&l»&r"
+prefix: "&9RocketPlaceholders &8»&r"
 no_permission: "&cYou do not have permission to use this command!"
 debug: false
 

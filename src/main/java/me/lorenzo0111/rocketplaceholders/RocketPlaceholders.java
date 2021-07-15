@@ -36,6 +36,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -45,6 +46,7 @@ public final class RocketPlaceholders extends JavaPlugin {
     private PluginLoader loader;
     private static RocketPlaceholders instance;
     private WebPanelHandler web;
+    private File placeholdersDir = new File(this.getDataFolder(), "placeholders");
 
     @Override
     public void onEnable() {
@@ -114,5 +116,9 @@ public final class RocketPlaceholders extends JavaPlugin {
 
     public WebPanelHandler getWeb() {
         return web;
+    }
+
+    public File getPlaceholdersDir() {
+        return placeholdersDir;
     }
 }

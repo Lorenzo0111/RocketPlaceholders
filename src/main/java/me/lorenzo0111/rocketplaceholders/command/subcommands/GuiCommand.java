@@ -24,13 +24,16 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
+import com.cryptomorin.xseries.XMaterial;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.PaginatedGui;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
+import me.lorenzo0111.rocketplaceholders.conversation.ConversationUtil;
+import me.lorenzo0111.rocketplaceholders.conversation.conversations.TextConversation;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.utilities.GuiUtils;
-import me.mattstudios.mfgui.gui.components.util.ItemBuilder;
-import me.mattstudios.mfgui.gui.components.xseries.XMaterial;
-import me.mattstudios.mfgui.gui.guis.PaginatedGui;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -77,26 +80,31 @@ public class GuiCommand extends SubCommand {
         for (Placeholder placeholder : placeholders) {
             gui.addItem( ItemBuilder
                     .from(Objects.requireNonNull(XMaterial.TARGET.parseMaterial()))
-                    .setName(String.format("§8§l» §7%s",placeholder.getIdentifier()))
-                    .setLore("§7Click to edit this placeholder")
+                    .name(Component.text(String.format("§8§l» §7%s",placeholder.getIdentifier())))
+                    .lore(Component.text("§7Click to edit this placeholder"))
                     .asGuiItem( e -> {
 
                         PaginatedGui settingsGui = GuiUtils.createGui(placeholder.getIdentifier() + " &8&l» &7Settings");
 
                         settingsGui.setItem(2,ItemBuilder.from(Objects.requireNonNull(XMaterial.TORCH.parseItem()))
-                                .setName("§8§l» §7Information")
-                                .setLore("§8Identifier: §7" + placeholder.getIdentifier(),
-                                        "§8Text: §7" + placeholder.getText(),
-                                        placeholder.hasConditionNodes() ? "§8Conditions: §7" + Objects.requireNonNull(placeholder.getConditionNodes()).size() : "")
-                                .asGuiItem(event -> event.setCancelled(true)));
+                                .name(Component.text("§8§l» §7Information"))
+                                .lore(Component.text("§8Identifier: §7" + placeholder.getIdentifier()),
+                                        Component.text("§8Text: §7" + placeholder.getText()),
+                                        placeholder.hasConditionNodes() ? Component.text("§8Conditions: §7" + Objects.requireNonNull(placeholder.getConditionNodes()).size()) : Component.empty(),
+                                        Component.text("§7§oClick to edit the text."))
+                                .asGuiItem(event -> {
+                                    event.setCancelled(true);
+                                    gui.close(event.getWhoClicked());
+                                    ConversationUtil.createConversation(this.getCommand().getPlugin(), new TextConversation((Player) event.getWhoClicked(), placeholder));
+                                }));
 
                         Material material = placeholder.hasConditionNodes() ? XMaterial.CHEST.parseMaterial() : XMaterial.BARRIER.parseMaterial();
 
                         Objects.requireNonNull(material);
 
                         settingsGui.setItem(6, ItemBuilder.from(material)
-                                .setName("§8§l» §7Conditions")
-                                .setLore(placeholder.hasConditionNodes() ? "§7Click to view" : "§7There isn't any condition.")
+                                .name(Component.text("§8§l» §7Conditions"))
+                                .lore(placeholder.hasConditionNodes() ? Component.text("§7Click to view") : Component.text("§7There isn't any condition."))
                                 .asGuiItem(event -> {
                                     event.setCancelled(true);
 
@@ -108,7 +116,7 @@ public class GuiCommand extends SubCommand {
                                 }));
 
                         settingsGui.setItem(22,ItemBuilder.from(Material.ARROW)
-                                .setName("§8§l» §7Back")
+                                .name(Component.text("§8§l» §7Back"))
                                 .asGuiItem(event -> {
                                     event.setCancelled(true);
                                     event.getWhoClicked().closeInventory();

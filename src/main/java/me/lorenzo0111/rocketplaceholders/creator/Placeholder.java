@@ -24,16 +24,21 @@
 
 package me.lorenzo0111.rocketplaceholders.creator;
 
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.script.ScriptException;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +48,7 @@ import java.util.Objects;
 public class Placeholder {
     private final PlaceholderSettings settings;
     private final String identifier;
-    private final String text;
+    private String text;
     private List<ConditionNode> conditionNodes;
     private transient final JavaPlugin owner;
     private transient JavaScriptParser<String> engine;
@@ -139,6 +144,59 @@ public class Placeholder {
                 ", conditionNodes=" + conditionNodes +
                 ", owner=" + owner +
                 '}';
+    }
+
+    public boolean setText(String text) {
+        this.text = text;
+
+        if (this.settings.key() == null) return false;
+
+        return this.edit("text", text);
+    }
+
+    /**
+     * Edit a value from the file
+     * @param path Path of the setting
+     * @param value Value of the setting
+     * @return true if success
+     */
+    public boolean edit(String path,Object value) {
+        File file = this.getFile();
+        FileConfiguration config = this.getConfig();
+
+        try {
+            config.set(path, value);
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @return The placeholder config
+     */
+    public FileConfiguration getConfig() {
+        if (getFile() == null) return null;
+
+        return YamlConfiguration.loadConfiguration(getFile());
+    }
+
+    /**
+     * @return The placeholder file
+     */
+    public File getFile() {
+        if (this.settings.key() == null) return null;
+
+        File placeholdersDir = RocketPlaceholders.getInstance()
+                .getPlaceholdersDir();
+
+        File file = new File(placeholdersDir, this.settings.key());
+        if (!file.exists()) return null;
+
+        return file;
     }
 
     /**

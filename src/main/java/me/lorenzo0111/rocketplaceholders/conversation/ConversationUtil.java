@@ -22,39 +22,26 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator;
+package me.lorenzo0111.rocketplaceholders.conversation;
 
-/**
- * A node containing a condition and a text
- */
-public abstract class Node {
-    private final Object condition;
-    private String text;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import org.bukkit.ChatColor;
+import org.bukkit.conversations.ConversationFactory;
 
-    /**
-     * @param condition Condition to view the text
-     * @param text Text that can be seen if the player respects the condition
-     */
-    public Node(Object condition, String text) {
-        this.condition = condition;
-        this.text = text;
+public class ConversationUtil {
+
+    public static void createConversation(RocketPlaceholders plugin, Conversation conversation) {
+        conversation.setPlugin(plugin);
+
+        ConversationFactory factory = new ConversationFactory(plugin)
+                .withPrefix(context -> ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix", "") + " "))
+                .withEscapeSequence("cancel")
+                .withTimeout(60)
+                .withModality(true)
+                .withFirstPrompt(conversation)
+                .withLocalEcho(false);
+
+        factory.buildConversation(conversation.getAuthor()).begin();
     }
 
-    /**
-     * @return Text that can be seen if the player has the permission
-     */
-    public String getText() {
-        return this.text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    /**
-     * @return Permission to view the text
-     */
-    public Object getCondition() {
-        return this.condition;
-    }
 }

@@ -22,39 +22,34 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator;
+package me.lorenzo0111.rocketplaceholders.conversation.conversations;
 
-/**
- * A node containing a condition and a text
- */
-public abstract class Node {
-    private final Object condition;
-    private String text;
+import me.lorenzo0111.rocketplaceholders.conversation.Conversation;
+import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
-    /**
-     * @param condition Condition to view the text
-     * @param text Text that can be seen if the player respects the condition
-     */
-    public Node(Object condition, String text) {
-        this.condition = condition;
-        this.text = text;
+public class TextConversation extends Conversation {
+    private final Placeholder placeholder;
+    private final Player player;
+
+    public TextConversation(Player author, Placeholder placeholder) {
+        super("Write the new text of the placeholder", author);
+
+        this.placeholder = placeholder;
+        this.player = author;
     }
 
-    /**
-     * @return Text that can be seen if the player has the permission
-     */
-    public String getText() {
-        return this.text;
-    }
+    @Override
+    public void handle(@Nullable String input) {
+        if (input == null) return;
 
-    public void setText(String text) {
-        this.text = text;
-    }
+        if (placeholder.setText(input)) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getPlugin().getConfig().getString("prefix") + " &7Placeholder text edited."));
+            return;
+        }
 
-    /**
-     * @return Permission to view the text
-     */
-    public Object getCondition() {
-        return this.condition;
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getPlugin().getConfig().getString("prefix") + " &cYou can't edit this placeholder's text."));
     }
 }
