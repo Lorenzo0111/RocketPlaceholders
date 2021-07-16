@@ -83,7 +83,7 @@ shadowJar {
 
 javadoc {
     options.links(
-            'https://javadoc.io/static/org.jetbrains/annotations/20.1.0/',
+            'https://javadoc.io/static/org.jetbrains/annotations/21.0.1/',
             'https://docs.oracle.com/en/java/javase/16/docs/api/',
             'https://papermc.io/javadocs/paper/1.16/'
     )
@@ -94,7 +94,6 @@ javadoc {
     include("**/creator/dynamic/*.java")
     include("**/creator/conditions/engine/Requirements.java")
     exclude("**/api/RocketPlaceholdersAPIManager.java")
-    destinationDir = new File("javadocs/rocketplaceholders/${version}")
 }
 
 processResources {
