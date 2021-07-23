@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.types.*;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import org.bukkit.Bukkit;
@@ -42,15 +41,8 @@ import java.util.List;
  * Requirements handler
  */
 public class Requirements {
-    private final RocketPlaceholders plugin;
 
-    /**
-     * Create a requirements builder
-     * @param plugin Plugin
-     */
-    public Requirements(RocketPlaceholders plugin) {
-        this.plugin = plugin;
-    }
+    private Requirements() {}
 
     /**
      * @param type Type of the requirement
@@ -61,7 +53,7 @@ public class Requirements {
      * @return A requirement
      */
     @Nullable
-    public Requirement createRequirement(RequirementType type, @Nullable String value, @Nullable Material material, @Nullable String itemName,@Nullable List<String> itemLore) {
+    public static Requirement createRequirement(RequirementType type, @Nullable String value, @Nullable Material material, @Nullable String itemName,@Nullable List<String> itemLore) {
         switch (type) {
             case ITEM:
                 if (material == null) {
@@ -77,13 +69,13 @@ public class Requirements {
                     item.setItemMeta(meta);
                 }
 
-                return new HasItemCondition(item,plugin);
+                return new HasItemCondition(item);
             case JAVASCRIPT:
                 if (value == null) {
                     throw new InvalidConditionException("Expression cannot be null, try to set a correct 'value' in the config");
                 }
 
-                return new JSCondition(plugin,value);
+                return new JSCondition(value);
             case MONEY:
                 if (value == null) {
                     throw new InvalidConditionException("Value cannot be null. Please insert a valid number as 'value' in the config.");
@@ -91,13 +83,13 @@ public class Requirements {
 
                 long amount = Long.parseLong(value);
 
-                return new HasMoneyCondition(plugin,amount);
+                return new HasMoneyCondition(amount);
             case PERMISSION:
                 if (value == null) {
                     throw new InvalidConditionException("Permission cannot be null. Please try to set a valid permission as 'value' in the config.");
                 }
 
-                return new HasPermissionCondition(plugin,value);
+                return new HasPermissionCondition(value);
             case GROUP:
                 if (value == null) {
                     throw new InvalidConditionException("Group cannot be null. Please try to set a valid permission as 'value' in the config.");
@@ -107,7 +99,7 @@ public class Requirements {
                     throw new InvalidConditionException("You cannot use this condition without Vault plugin.");
                 }
 
-                return new HasGroupCondition(plugin,value);
+                return new HasGroupCondition(value);
             case TEXT:
                 if (value == null) {
                     throw new InvalidConditionException("Value cannot be null. Please insert two valid strings as 'value' in the config.");
@@ -118,7 +110,7 @@ public class Requirements {
                     throw new InvalidConditionException("Invalid value. Please read https://docs.rocketplugins.space/rocektplugins/rocketplaceholders/configure/conditions/text-condition");
                 }
 
-                return new TextCondition(plugin,strings[0],strings[1]);
+                return new TextCondition(strings[0],strings[1]);
             default:
                 return null;
         }
@@ -130,7 +122,7 @@ public class Requirements {
      * @return A requirement
      */
     @Nullable
-    public Requirement parseRequirement(ConfigurationSection section) {
+    public static Requirement parseRequirement(ConfigurationSection section) {
         RequirementType type;
 
         if (section.get("type") == null) {
@@ -139,7 +131,7 @@ public class Requirements {
 
         type = RequirementType.valueOf(section.getString("type"));
 
-        return this.createRequirement(
+        return createRequirement(
                 type,
                 section.getString("value"),
                 Material.getMaterial(section.getString("material","")),
@@ -153,7 +145,7 @@ public class Requirements {
      * @return Colorized text
      */
     @Nullable
-    private String translateColors(String text) {
+    private static String translateColors(String text) {
         if (text == null) {
             return null;
         }
@@ -166,7 +158,7 @@ public class Requirements {
      * @return List of colorized texts
      */
     @Nullable
-    private List<String> translateColors(List<String> text) {
+    private static List<String> translateColors(List<String> text) {
         if (text == null) {
             return null;
         }

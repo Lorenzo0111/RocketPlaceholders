@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import net.milkbowl.vault.economy.Economy;
@@ -33,8 +32,7 @@ import org.bukkit.entity.Player;
 public class HasMoneyCondition extends Requirement {
     private final long money;
 
-    public HasMoneyCondition(RocketPlaceholders plugin, long money) {
-        super(plugin);
+    public HasMoneyCondition(long money) {
         this.money = money;
         this.getDatabaseInfo().put("value",String.valueOf(money));
     }

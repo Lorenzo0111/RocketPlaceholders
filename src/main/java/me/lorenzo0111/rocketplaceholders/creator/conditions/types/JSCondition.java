@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
@@ -36,9 +35,7 @@ public class JSCondition extends Requirement {
     private final transient JavaScriptParser<Boolean> engine;
     private final String expression;
 
-    public JSCondition(RocketPlaceholders plugin,String expression) {
-        super(plugin);
-
+    public JSCondition(String expression) {
         engine = new JavaScriptParser<>();
 
         this.expression = expression;

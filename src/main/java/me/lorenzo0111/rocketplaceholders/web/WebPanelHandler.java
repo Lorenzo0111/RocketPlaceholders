@@ -65,11 +65,9 @@ public class WebPanelHandler {
 
     @Nullable
     public String save() throws IOException {
-        plugin.debug(this.generate());
-
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
-        connection.setRequestProperty("User-Agent", plugin.toString());
+        connection.setRequestProperty("User-Agent", String.format("%s/%s (%s)", plugin.getName(),plugin.getDescription().getVersion(),getClass().getName()));
         connection.setRequestProperty("accept", "application/json");
         connection.setRequestProperty("Content-Type", "application/json; utf-8");
         connection.setRequestMethod("POST");

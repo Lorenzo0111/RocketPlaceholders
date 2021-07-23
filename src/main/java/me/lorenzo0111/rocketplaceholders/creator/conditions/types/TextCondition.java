@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import me.lorenzo0111.rocketplaceholders.providers.ProviderUtils;
@@ -34,8 +33,7 @@ public class TextCondition extends Requirement {
     private final String one;
     private final String two;
 
-    public TextCondition(RocketPlaceholders plugin, String one, String two) {
-        super(plugin);
+    public TextCondition(String one, String two) {
         this.one = one;
         this.two = two;
     }

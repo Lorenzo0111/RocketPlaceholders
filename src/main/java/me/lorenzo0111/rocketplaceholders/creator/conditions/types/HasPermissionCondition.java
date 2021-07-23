@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import org.bukkit.entity.Player;
@@ -32,8 +31,7 @@ import org.bukkit.entity.Player;
 public class HasPermissionCondition extends Requirement {
     private final String permission;
 
-    public HasPermissionCondition(RocketPlaceholders plugin, String permission) {
-        super(plugin);
+    public HasPermissionCondition(String permission) {
         this.permission = permission;
         this.getDatabaseInfo().put("value",permission);
     }

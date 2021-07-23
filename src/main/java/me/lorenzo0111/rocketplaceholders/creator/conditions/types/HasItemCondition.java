@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import org.bukkit.entity.Player;
@@ -43,8 +42,7 @@ public class HasItemCondition extends Requirement {
                 '}';
     }
 
-    public HasItemCondition(ItemStack item, RocketPlaceholders plugin) {
-        super(plugin);
+    public HasItemCondition(ItemStack item) {
         this.item = item;
         this.getDatabaseInfo().put("item_name", Objects.requireNonNull(item.getItemMeta()).getDisplayName());
         this.getDatabaseInfo().put("item_lore",Objects.requireNonNull(item.getItemMeta()).getLore());

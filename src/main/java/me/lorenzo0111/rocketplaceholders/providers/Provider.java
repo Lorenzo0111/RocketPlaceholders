@@ -28,7 +28,6 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -79,7 +78,7 @@ public abstract class Provider {
 
         List<ConditionNode> conditionNodes = Objects.requireNonNull(placeholder.getConditionNodes());
         for (ConditionNode node : conditionNodes) {
-            if (((Requirement) node.getCondition()).apply(onlinePlayer)) {
+            if (node.getRequirement().apply(onlinePlayer)) {
                 plugin.debug("Applied: " + node.getRequirement());
                 return this.parse(placeholder,player,node.getText());
             }

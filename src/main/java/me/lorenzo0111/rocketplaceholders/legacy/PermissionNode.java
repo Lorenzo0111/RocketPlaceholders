@@ -34,8 +34,9 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasPermissionC
 @Deprecated
 public class PermissionNode extends ConditionNode {
 
+    @SuppressWarnings("unused")
     public PermissionNode(RocketPlaceholders plugin, String permission, String text) {
-        super(new HasPermissionCondition(plugin,permission), text);
+        super(new HasPermissionCondition(permission), text);
     }
 
 }

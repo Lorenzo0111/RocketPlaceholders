@@ -84,12 +84,8 @@ public class ConfigManager {
 
             final boolean parseJS = config.getBoolean("parsejs");
 
-            final List<ConditionNode> nodes = new ArrayList<>();
-
             if (conditions != null) {
-                Requirements requirements = new Requirements(plugin);
-
-                nodes.addAll(scanConditions(conditions,requirements));
+                final List<ConditionNode> nodes = new ArrayList<>(scanConditions(conditions));
 
                 storageManager.getInternalPlaceholders().build(file.getName(), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
             }
@@ -98,14 +94,14 @@ public class ConfigManager {
         plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
     }
 
-    public static List<ConditionNode> scanConditions(ConfigurationSection section, Requirements requirements) {
+    public static List<ConditionNode> scanConditions(ConfigurationSection section) {
         List<ConditionNode> nodes = new ArrayList<>();
 
         for (String condition : section.getKeys(false)) {
             ConfigurationSection conditionSection = section.getConfigurationSection(condition);
 
             if (conditionSection !=  null) {
-                Requirement requirement = requirements.parseRequirement(conditionSection);
+                Requirement requirement = Requirements.parseRequirement(conditionSection);
                 if (requirement != null) {
                     nodes.add(new ConditionNode(requirement,conditionSection.getString("text")));
                 }

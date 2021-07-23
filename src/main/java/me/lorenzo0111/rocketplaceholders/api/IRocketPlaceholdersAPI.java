@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.api;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import me.lorenzo0111.rocketplaceholders.providers.CustomProvider;
 import me.lorenzo0111.rocketplaceholders.providers.Provider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +63,7 @@ public interface IRocketPlaceholdersAPI {
      * Register a custom provider
      * @param provider Provider to register
      * @param identifier Identifier of the placeholder. Schema: %identifier_params%
-     * @see me.lorenzo0111.rocketplaceholders.providers.CustomProvider
+     * @see CustomProvider
      */
     void registerProvider(Provider provider, String identifier);
 

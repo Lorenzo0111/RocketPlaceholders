@@ -34,7 +34,7 @@ import java.util.Map;
  * A requirement for a condition node
  */
 public abstract class Requirement {
-    protected transient final RocketPlaceholders plugin;
+    protected transient final RocketPlaceholders plugin = RocketPlaceholders.getInstance();
     protected transient final Map<String,Object> databaseInfo = new HashMap<>();
 
     /**
@@ -44,11 +44,17 @@ public abstract class Requirement {
         return this.databaseInfo;
     }
 
+    public Requirement() {
+    }
+
     /**
      * @param plugin Plugin
+     * @deprecated use {@link Requirement#Requirement()}
      */
+    @Deprecated
+    @SuppressWarnings("unused")
     public Requirement(RocketPlaceholders plugin) {
-        this.plugin = plugin;
+        this();
     }
 
     /**

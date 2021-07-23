@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import net.milkbowl.vault.permission.Permission;
@@ -33,8 +32,7 @@ import org.bukkit.entity.Player;
 public class HasGroupCondition extends Requirement {
     private final String group;
 
-    public HasGroupCondition(RocketPlaceholders plugin,String group) {
-        super(plugin);
+    public HasGroupCondition(String group) {
         this.group = group;
         this.getDatabaseInfo().put("value",group);
     }

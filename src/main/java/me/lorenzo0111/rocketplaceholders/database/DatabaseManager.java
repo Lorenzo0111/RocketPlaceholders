@@ -165,7 +165,7 @@ public class DatabaseManager {
                         }
 
 
-                        final Requirement requirement = new Requirements(plugin).createRequirement(RequirementType.valueOf(set.getString("type")),set.getString("value"), material,set.getString("item_name"),itemLore);
+                        final Requirement requirement = Requirements.createRequirement(RequirementType.valueOf(set.getString("type")),set.getString("value"), material,set.getString("item_name"),itemLore);
                         nodes.put(set.getString("identifier"), new ConditionNode(requirement, set.getString("text")));
                     }
 
