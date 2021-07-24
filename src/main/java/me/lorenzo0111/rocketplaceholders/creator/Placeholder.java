@@ -104,7 +104,7 @@ public class Placeholder {
      * @param text Text to parse
      * @return Parsed text
      */
-    public String parseJS(String text) {
+    public String parseJS(String text) throws InvalidConditionException {
         if (this.settings == null || !this.settings.parseJs()) {
             return text;
         }

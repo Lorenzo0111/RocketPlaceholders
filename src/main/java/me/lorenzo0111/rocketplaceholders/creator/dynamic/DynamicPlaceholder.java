@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.creator.dynamic;
 
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -95,7 +96,7 @@ public class DynamicPlaceholder extends Placeholder implements DynamicObject {
      * @return Parsed text
      */
     @Override
-    public String parseJS(String text) {
+    public String parseJS(String text) throws InvalidConditionException {
         return super.parseJS(text);
     }
 

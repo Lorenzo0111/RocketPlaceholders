@@ -28,6 +28,7 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -80,12 +81,23 @@ public abstract class Provider {
         for (ConditionNode node : conditionNodes) {
             if (node.getRequirement().apply(onlinePlayer)) {
                 plugin.debug("Applied: " + node.getRequirement());
-                return this.parse(placeholder,player,node.getText());
+                try {
+                    return this.parse(placeholder,player,node.getText());
+                } catch (InvalidConditionException e) {
+                    plugin.getLogger().severe(String.format("An error has occurred while parsing placeholder %s: %s", placeholder.getIdentifier(), e.getMessage()));
+                    return null;
+                }
             }
         }
 
-        return this.parse(placeholder,player,placeholder.getText());
+        try {
+            return this.parse(placeholder,player,placeholder.getText());
+        } catch (InvalidConditionException e) {
+            plugin.getLogger().severe(String.format("An error has occurred while parsing placeholder %s: %s", placeholder.getIdentifier(), e.getMessage()));
+            return null;
+        }
+
     }
 
-    public abstract String parse(Placeholder placeholder, OfflinePlayer player, String text);
+    public abstract String parse(Placeholder placeholder, OfflinePlayer player, String text) throws InvalidConditionException;
 }

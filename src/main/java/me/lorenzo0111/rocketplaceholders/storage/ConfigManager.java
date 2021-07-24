@@ -28,6 +28,7 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.legacy.LegacyMover;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -54,7 +55,7 @@ public class ConfigManager {
         this.storageManager = plugin.getStorageManager();
     }
 
-    public void registerPlaceholders() throws IOException {
+    public void registerPlaceholders() throws IOException, InvalidConditionException {
         File dir = new File(plugin.getDataFolder(), "placeholders");
         if (!dir.exists() && dir.mkdirs()) {
             File example = new File(dir, "example.yml");
@@ -94,7 +95,7 @@ public class ConfigManager {
         plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
     }
 
-    public static List<ConditionNode> scanConditions(ConfigurationSection section) {
+    public static List<ConditionNode> scanConditions(ConfigurationSection section) throws InvalidConditionException {
         List<ConditionNode> nodes = new ArrayList<>();
 
         for (String condition : section.getKeys(false)) {

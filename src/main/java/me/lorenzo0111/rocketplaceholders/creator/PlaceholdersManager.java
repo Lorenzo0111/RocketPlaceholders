@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.providers.MVdWProvider;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
@@ -100,7 +101,7 @@ public class PlaceholdersManager {
 
         try {
             this.configManager.reloadPlaceholders();
-        } catch (IOException e) {
+        } catch (IOException | InvalidConditionException e) {
             e.printStackTrace();
         }
 

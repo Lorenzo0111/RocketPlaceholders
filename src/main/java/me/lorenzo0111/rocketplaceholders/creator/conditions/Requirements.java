@@ -53,7 +53,7 @@ public class Requirements {
      * @return A requirement
      */
     @Nullable
-    public static Requirement createRequirement(RequirementType type, @Nullable String value, @Nullable Material material, @Nullable String itemName,@Nullable List<String> itemLore) {
+    public static Requirement createRequirement(RequirementType type, @Nullable String value, @Nullable Material material, @Nullable String itemName,@Nullable List<String> itemLore) throws InvalidConditionException {
         switch (type) {
             case ITEM:
                 if (material == null) {
@@ -122,7 +122,7 @@ public class Requirements {
      * @return A requirement
      */
     @Nullable
-    public static Requirement parseRequirement(ConfigurationSection section) {
+    public static Requirement parseRequirement(ConfigurationSection section) throws InvalidConditionException {
         RequirementType type;
 
         if (section.get("type") == null) {

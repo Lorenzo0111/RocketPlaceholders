@@ -27,6 +27,7 @@ package me.lorenzo0111.rocketplaceholders;
 import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.api.impl.RocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
@@ -63,7 +64,7 @@ public final class RocketPlaceholders extends JavaPlugin {
 
         try {
             placeholders.registerPlaceholders();
-        } catch (IOException e) {
+        } catch (IOException | InvalidConditionException e) {
             e.printStackTrace();
         }
 

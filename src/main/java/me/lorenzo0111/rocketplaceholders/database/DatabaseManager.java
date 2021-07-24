@@ -34,6 +34,7 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
@@ -328,7 +329,7 @@ public class DatabaseManager {
         this.getFromDatabase().thenAccept(placeholders -> {
             try {
                 configManager.reloadPlaceholders();
-            } catch (IOException e) {
+            } catch (IOException | InvalidConditionException e) {
                 e.printStackTrace();
             }
             this.getStorageManager().getInternalPlaceholders().getMap().putAll(placeholders);

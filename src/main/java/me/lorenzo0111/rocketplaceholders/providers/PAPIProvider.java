@@ -29,6 +29,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import org.bukkit.OfflinePlayer;
 
 
@@ -38,7 +39,7 @@ public class PAPIProvider extends Provider {
     }
 
     @Override
-    public String parse(Placeholder placeholder, OfflinePlayer player, String text) {
+    public String parse(Placeholder placeholder, OfflinePlayer player, String text) throws InvalidConditionException {
         return placeholder.parseJS(PlaceholderAPI.setPlaceholders(player,text));
     }
 }
