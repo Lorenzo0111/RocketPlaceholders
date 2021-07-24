@@ -74,7 +74,7 @@ public class ConfigManager {
         if (plugin.getConfig().getConfigurationSection("placeholders") != null)
             new LegacyMover(plugin,dir).move();
 
-        File[] files = dir.listFiles(File::isFile);
+        File[] files = dir.listFiles(new PlaceholderFilter());
 
         Objects.requireNonNull(files, "An error has occurred while loading placeholders files.");
 
