@@ -73,6 +73,7 @@ public class RocketPlaceholdersAPI implements IRocketPlaceholdersAPI {
     @Override
     public void registerProvider(Provider provider, String identifier) {
         PapiHook hook = new PapiHook(provider, identifier);
+        hook.register();
 
         providers.add(hook);
 

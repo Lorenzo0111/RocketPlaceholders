@@ -46,7 +46,7 @@ public class WebPanelHandler {
 
     public WebPanelHandler(RocketPlaceholders plugin) throws MalformedURLException {
         this.plugin = plugin;
-        this.url = new URL("https://editor.rp.rocketplugins.space");
+        this.url = new URL("https://editor.rp.rocketplugins.space/new");
     }
 
     @NotNull

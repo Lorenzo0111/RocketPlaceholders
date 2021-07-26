@@ -114,13 +114,7 @@ public class PluginLoader {
             if (databaseManager.isMain()) {
                 this.plugin.getLogger().info("Adding placeholders to the database..");
 
-                databaseManager.removeAll().thenAccept(success -> {
-                    if (success) {
-                        this.databaseManager.sync();
-                    } else {
-                        this.plugin.getLogger().severe("An error has occurred while adding placeholders to the database, please try again or open an issue on github.");
-                    }
-                });
+                databaseManager.removeAll().thenAccept(v -> this.databaseManager.sync());
             } else {
                 this.plugin.getLogger().info("Retrieving placeholders from the database..");
 

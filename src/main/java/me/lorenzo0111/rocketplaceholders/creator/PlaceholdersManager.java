@@ -85,11 +85,8 @@ public class PlaceholdersManager {
         if (databaseManager != null) {
 
             if (databaseManager.isMain()) {
-                databaseManager.removeAll().thenAccept(bool -> {
-                    if (bool) {
-                        databaseManager.sync();
-                    }
-
+                databaseManager.removeAll().thenAccept(v -> {
+                    databaseManager.sync();
                     databaseManager.reload(configManager);
                 });
             } else {

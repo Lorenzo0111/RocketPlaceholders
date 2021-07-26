@@ -47,13 +47,14 @@ public final class RocketPlaceholders extends JavaPlugin {
     private PluginLoader loader;
     private static RocketPlaceholders instance;
     private WebPanelHandler web;
-    private File placeholdersDir = new File(this.getDataFolder(), "placeholders");
+    private File placeholdersDir;
 
     @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
 
+        this.placeholdersDir = new File(this.getDataFolder(), "placeholders");
         this.storageManager = new StorageManager();
 
         final ConfigManager placeholders = new ConfigManager(this);

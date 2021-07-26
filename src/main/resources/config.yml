@@ -30,6 +30,5 @@ mysql:
   username: ""
   password: ""
   database: ""
-  jdbc: null # Do not edit this if you don't know what you are doing.
 
 # All placeholders have been moved in the placeholders folder.

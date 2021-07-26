@@ -24,6 +24,10 @@
 
 package me.lorenzo0111.rocketplaceholders.database;
 
+import com.glyart.mystral.database.AsyncDatabase;
+import com.glyart.mystral.database.Credentials;
+import com.glyart.mystral.database.Mystral;
+import com.glyart.mystral.sql.BatchSetter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.reflect.TypeToken;
@@ -39,20 +43,26 @@ import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class DatabaseManager {
     private final RocketPlaceholders plugin;
     private final ConfigurationSection mysqlSection;
-    private Connection connection;
+    private AsyncDatabase database;
     private final Gson gson = new Gson();
 
     public DatabaseManager(RocketPlaceholders plugin) {
@@ -71,115 +81,95 @@ public class DatabaseManager {
             return;
         }
 
-        final String jdbc = mysqlSection.getString("jdbc");
+        Credentials credentials = Credentials.builder()
+                .host(mysqlSection.getString("ip", "127.0.0.1"))
+                .port(mysqlSection.getInt("port", 3306))
+                .user(mysqlSection.getString("username", "root"))
+                .password(mysqlSection.getString("password", ""))
+                .schema(mysqlSection.getString("database"))
+                .pool("RocketPlaceholders Pool")
+                .build();
 
-        try {
-            if (jdbc == null) {
-                this.connection = DriverManager.getConnection("jdbc:mysql://" + mysqlSection.getString("ip") + ":" + mysqlSection.getInt("port") + "/" + mysqlSection.getString("database"), mysqlSection.getString("username"), mysqlSection.getString("password"));
-            } else {
-                this.connection = DriverManager.getConnection(jdbc);
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
+        Executor executor = (cmd) -> Bukkit.getScheduler().runTaskAsynchronously(plugin, cmd);
+        this.database = Mystral.newAsyncDatabase(credentials, executor);
     }
 
     public void createTables() {
         new BukkitRunnable() {
             @Override
             public void run() {
-                try {
-                    final Statement statement = connection.createStatement();
+                database.update("CREATE TABLE IF NOT EXISTS `rp_placeholders` (" +
+                        "`identifier` varchar(255) UNIQUE NOT NULL," +
+                        "`text` varchar(255) NOT NULL," +
+                        "`settings` TEXT," +
+                        "PRIMARY KEY (`identifier`)" +
+                        ");",false);
+                database.update("CREATE TABLE IF NOT EXISTS `rp_nodes` (" +
+                        "`identifier` varchar(255) NOT NULL," +
+                        "`type` varchar(255) NOT NULL," +
+                        "`value` varchar(255)," +
+                        "`item_material` varchar(255)," +
+                        "`item_name` varchar(255)," +
+                        "`item_lore` varchar(255)," +
+                        "`text` varchar(255)" +
+                        ");", false);
 
-                    upgrade(statement);
-
-                    statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_placeholders` (" +
-                            "`identifier` varchar(255) UNIQUE NOT NULL," +
-                            "`text` varchar(255) NOT NULL," +
-                            "`settings` TEXT," +
-                            "PRIMARY KEY (`identifier`)" +
-                            ");");
-                    statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_nodes` (" +
-                            "`identifier` varchar(255) NOT NULL," +
-                            "`type` varchar(255) NOT NULL," +
-                            "`value` varchar(255)," +
-                            "`item_material` varchar(255)," +
-                            "`item_name` varchar(255)," +
-                            "`item_lore` varchar(255)," +
-                            "`text` varchar(255)" +
-                            ");");
-
-                    statement.close();
-                } catch (SQLException exception) {
-                    plugin.getLogger().severe("Error while creating tables: " + exception);
-                }
+                upgrade();
             }
         }.runTaskAsynchronously(plugin);
     }
 
-    public void upgrade(Statement statement) throws SQLException {
-        ResultSet resultSet = connection.getMetaData().getTables(null, null, "rp_info", new String[] {"TABLE"});
+    public void upgrade() {
+        database.update("CREATE TABLE IF NOT EXISTS `rp_info` (" +
+                "`key` varchar(255) NOT NULL," +
+                "`value` TEXT NOT NULL," +
+                "PRIMARY KEY (`key`)" +
+                ");", false);
 
-        if (!resultSet.next()) {
-            // Upgrade
-
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `rp_info` (" +
-                    "`key` varchar(255) NOT NULL," +
-                    "`value` TEXT NOT NULL," +
-                    "PRIMARY KEY (`key`)" +
-                    ");");
-
-            statement.executeUpdate("INSERT INTO `rp_info`(`key`,`value`) VALUES('version','2.0')");
-
-            statement.executeUpdate("ALTER TABLE `rp_placeholders`" +
-                    "ADD `settings` TEXT;");
-        }
+        CompletableFuture<Integer> future = database.query("SELECT * FROM `rp_info`;", (set) -> set.getInt("version"));
+        future.whenComplete((version,error) -> {
+            if (version == null || version == 0) {
+                database.update("INSERT INTO `rp_info`(`key`,`value`) VALUES('version','2.0')", false);
+                database.update("ALTER TABLE `rp_placeholders`" +
+                        "ADD `settings` TEXT;",false);
+            }
+        });
     }
 
     @SuppressWarnings("UnstableApiUsage")
     public CompletableFuture<Multimap<String, ConditionNode>> getNodes() {
         CompletableFuture<Multimap<String,ConditionNode>> completableFuture = new CompletableFuture<>();
 
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-
-                try {
-                    final Statement statement = connection.createStatement();
-
-                    ResultSet set = statement.executeQuery("SELECT * FROM rp_nodes;");
-
-                    Multimap<String,ConditionNode> nodes = ArrayListMultimap.create();
-
-                    while (set.next()) {
-                        List<String> itemLore = new ArrayList<>();
-                        Material material = null;
-                        if (set.getString("item_lore") != null) {
-                            Type listType = new TypeToken<List<String>>() {}.getType();
-                            itemLore = gson.fromJson(set.getString("item_lore"),listType);
-                        }
-
-                        if (set.getString("item_material") != null) {
-                            material = Material.getMaterial(set.getString("item_material"));
-                        }
-
-
-                        final Requirement requirement = Requirements.createRequirement(RequirementType.valueOf(set.getString("type")),set.getString("value"), material,set.getString("item_name"),itemLore);
-                        nodes.put(set.getString("identifier"), new ConditionNode(requirement, set.getString("text")));
-                    }
-
-                    statement.close();
-                    set.close();
-                    completableFuture.complete(nodes);
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-                }
-
+        CompletableFuture<List<RawNode>> map =  database.queryForList("SELECT * FROM rp_nodes;", (set, i) -> {
+            List<String> itemLore = new ArrayList<>();
+            Material material = null;
+            if (set.getString("item_lore") != null) {
+                Type listType = new TypeToken<List<String>>() {}.getType();
+                itemLore = gson.fromJson(set.getString("item_lore"),listType);
             }
 
-        }.runTaskAsynchronously(plugin);
+            if (set.getString("item_material") != null) {
+                material = Material.getMaterial(set.getString("item_material"));
+            }
+
+
+            final Requirement requirement = Requirements.createRequirement(RequirementType.valueOf(set.getString("type")),set.getString("value"), material,set.getString("item_name"),itemLore);
+            return new RawNode(set.getString("identifier"), new ConditionNode(requirement, set.getString("text")));
+        });
+
+        map.whenComplete((list, error) -> {
+            if (error != null) {
+                plugin.getLogger().log(Level.WARNING, "An error has occurred while querying from database.." ,error);
+                completableFuture.complete(null);
+                return;
+            }
+
+            Multimap<String,ConditionNode> multimap = ArrayListMultimap.create();
+            for (RawNode rawNode : list) {
+                multimap.put(rawNode.getOwner(), rawNode.getNode());
+            }
+            completableFuture.complete(multimap);
+        });
 
         return completableFuture;
     }
@@ -192,68 +182,76 @@ public class DatabaseManager {
             public void run() {
                 final Storage internalPlaceholders = getStorageManager().getInternalPlaceholders();
 
-                final Map<String, Placeholder> hashMap = internalPlaceholders.getMap();
+                List<Placeholder> placeholders = new ArrayList<>(internalPlaceholders.getMap().values());
 
-                try {
-                    final PreparedStatement statement = connection.prepareStatement("insert into rp_placeholders (`identifier`, `text`, `settings`) VALUES (?,?,?);");
-                    final PreparedStatement nodeStatement = connection.prepareStatement("insert into rp_nodes (`identifier`, `type`, `value`, `item_material`, `item_name`,`item_lore`, `text`) VALUES (?,?,?,?,?,?,?);");
+                database.batchUpdate("insert into rp_placeholders (`identifier`, `text`, `settings`) VALUES (?,?,?);", new BatchSetter() {
+                    @Override
+                    public void setValues(@NotNull PreparedStatement statement, int i) throws SQLException {
+                        Placeholder placeholder = placeholders.get(i);
+                        statement.setString(1, placeholder.getIdentifier());
+                        statement.setString(2, placeholder.getText());
+                        statement.setString(3, gson.toJson(placeholder.getSettings()));
+                    }
 
-                    hashMap.forEach((s, placeholder) -> {
-                        try {
-                            statement.setString(1, s);
-                            statement.setString(2, placeholder.getText());
-                            statement.setString(3, gson.toJson(placeholder.getSettings()));
-                            statement.executeUpdate();
+                    @Override
+                    public int getBatchSize() {
+                        return placeholders.size();
+                    }
+                });
 
-                            if (placeholder.hasConditionNodes() && placeholder.getConditionNodes() != null) {
+                List<Placeholder> collect = internalPlaceholders.getMap()
+                        .values()
+                        .stream()
+                        .filter(Placeholder::hasConditionNodes)
+                        .collect(Collectors.toList());
 
-                                for (ConditionNode node : placeholder.getConditionNodes()) {
-                                    if (!node.getRequirement().getType().equals(RequirementType.API)) {
-                                        nodeStatement.setString(1, s);
-                                        nodeStatement.setString(2, node.getRequirement().getType().toString());
-                                        nodeStatement.setString(3,null); // Value
-                                        nodeStatement.setString(4,null); // Item Material
-                                        nodeStatement.setString(5,null); // Item Name
-                                        nodeStatement.setString(6,null); // Item Lore
-                                        nodeStatement.setString(7, node.getText());
-
-                                        switch (node.getRequirement().getType()) {
-                                            case GROUP:
-                                            case JAVASCRIPT:
-                                            case MONEY:
-                                            case PERMISSION:
-                                                nodeStatement.setObject(3,node.getRequirement().getDatabaseInfo().get("value"));
-                                                break;
-                                            case ITEM:
-                                                nodeStatement.setObject(4,node.getRequirement().getDatabaseInfo().get("item_material"));
-                                                nodeStatement.setObject(5,node.getRequirement().getDatabaseInfo().get("item_name"));
-
-                                                if (node.getRequirement().getDatabaseInfo().containsKey("item_lore") && node.getRequirement().getDatabaseInfo().get("item_lore") != null) {
-                                                    nodeStatement.setObject(6,
-                                                            gson.toJson(node.getRequirement().getDatabaseInfo().get("item_lore")));
-                                                }
-                                                break;
-                                            default:
-                                                break;
-                                        }
-
-                                        nodeStatement.executeUpdate();
-                                    }
-                                }
-
-                            }
-                        } catch (SQLException exception) {
-                            exception.printStackTrace();
-                        }
-                    });
-                    statement.close();
-                    nodeStatement.close();
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
+                List<RawNode> nodes = new ArrayList<>();
+                for (Placeholder placeholder : collect) {
+                    List<ConditionNode> conditionNodes = placeholder.getConditionNodes();
+                    if (conditionNodes == null) continue;
+                    for (ConditionNode node : conditionNodes) {
+                        if (node.getRequirement().getType().equals(RequirementType.API)) continue;
+                        nodes.add(new RawNode(placeholder.getIdentifier(), node));
+                    }
                 }
 
+                database.batchUpdate("insert into rp_nodes (`identifier`, `type`, `value`, `item_material`, `item_name`,`item_lore`, `text`) VALUES (?,?,?,?,?,?,?);", new BatchSetter() {
+                    @Override
+                    public void setValues(@NotNull PreparedStatement statement, int i) throws SQLException {
+                        RawNode node = nodes.get(i);
+                        statement.setString(1, node.getOwner());
+                        statement.setString(2, node.getNode().getRequirement().getType().toString());
+                        statement.setString(3, null);
+                        statement.setString(4, null);
+                        statement.setString(5, null);
+                        statement.setString(6, null);
+                        statement.setString(7, node.getNode().getText());
 
+                        switch (node.getNode().getRequirement().getType()) {
+                            case GROUP:
+                            case JAVASCRIPT:
+                            case MONEY:
+                            case PERMISSION:
+                                statement.setObject(3, node.getNode().getRequirement().getDatabaseInfo().get("value"));
+                                break;
+                            case ITEM:
+                                statement.setObject(4, node.getNode().getRequirement().getDatabaseInfo().get("item_material"));
+                                statement.setObject(5, node.getNode().getRequirement().getDatabaseInfo().get("item_name"));
 
+                                if (node.getNode().getRequirement().getDatabaseInfo().containsKey("item_lore") && node.getNode().getRequirement().getDatabaseInfo().get("item_lore") != null) {
+                                    statement.setObject(6,
+                                            gson.toJson(node.getNode().getRequirement().getDatabaseInfo().get("item_lore")));
+                                }
+                            default:
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return nodes.size();
+                    }
+                });
             }
 
         }.runTaskAsynchronously(plugin);
@@ -262,34 +260,30 @@ public class DatabaseManager {
     public CompletableFuture<Map<String, Placeholder>> getFromDatabase() {
         CompletableFuture<Map<String, Placeholder>> completableFuture = new CompletableFuture<>();
 
-        getNodes().thenAccept(nodes -> new BukkitRunnable() {
+        getNodes().thenAccept(nodes -> {
+            Map<String, Placeholder> hashMap = new HashMap<>();
 
-            @Override
-            public void run() {
-                try {
-                    Gson gson = new Gson();
-                    PreparedStatement statement = connection.prepareStatement("SELECT * FROM rp_placeholders;");
-                    ResultSet resultSet = statement.executeQuery();
+            CompletableFuture<List<Placeholder>> future = database.queryForList("SELECT * FROM rp_placeholders;", (set,i) -> {
+                PlaceholderSettings settings = null;
+                if (set.getString("settings") != null)
+                    settings = gson.fromJson(set.getString("settings"), PlaceholderSettings.class);
 
-                    Map<String, Placeholder> hashMap = new HashMap<>();
+                return new Placeholder(set.getString("identifier"), plugin, set.getString("text"), new ArrayList<>(nodes.get(set.getString("identifier"))), settings);
+            });
 
-                    while (resultSet.next()) {
-                        PlaceholderSettings settings = null;
-                        if (resultSet.getString("settings") != null)
-                            settings = gson.fromJson(resultSet.getString("settings"), PlaceholderSettings.class);
-
-                        hashMap.put(resultSet.getString("identifier"), new Placeholder(resultSet.getString("identifier"), plugin, resultSet.getString("text"), new ArrayList<>(nodes.get(resultSet.getString("identifier"))), settings));
-                    }
-
-                    resultSet.close();
-                    statement.close();
-                    completableFuture.complete(hashMap);
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
+            future.whenComplete((placeholders,error) -> {
+                if (error != null) {
+                    plugin.getLogger().log(Level.WARNING, "An error has occurred while loading data from database.", error);
+                    completableFuture.complete(null);
+                    return;
                 }
-            }
 
-        }.runTaskAsynchronously(plugin));
+                for (Placeholder placeholder : placeholders) {
+                    hashMap.put(placeholder.getIdentifier(), placeholder);
+                }
+                completableFuture.complete(hashMap);
+            });
+        });
 
         return completableFuture;
     }
@@ -298,31 +292,11 @@ public class DatabaseManager {
         return mysqlSection.getBoolean("main");
     }
 
-    public CompletableFuture<Boolean> removeAll() {
-        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
+    public CompletableFuture<Void> removeAll() {
+        CompletableFuture<Integer> placeholders = database.update("DELETE FROM rp_placeholders;", false);
+        CompletableFuture<Integer> nodes = database.update("DELETE FROM rp_nodes;", false);
 
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                try {
-                    Statement statement = connection.createStatement();
-
-                    statement.executeUpdate("DELETE FROM rp_placeholders;");
-                    statement.executeUpdate("DELETE FROM rp_nodes;");
-
-                    completableFuture.complete(true);
-                    statement.close();
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-
-                    completableFuture.complete(false);
-                }
-            }
-
-        }.runTaskAsynchronously(plugin);
-
-        return completableFuture;
+        return CompletableFuture.allOf(placeholders,nodes);
     }
 
     public void reload(ConfigManager configManager) {
