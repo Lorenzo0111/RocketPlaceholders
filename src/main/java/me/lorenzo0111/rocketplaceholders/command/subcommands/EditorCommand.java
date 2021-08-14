@@ -24,11 +24,15 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
+import me.lorenzo0111.rocketplaceholders.api.IWebPanelHandler;
+import me.lorenzo0111.rocketplaceholders.api.WebEdit;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
-import me.lorenzo0111.rocketplaceholders.web.WebPanelHandler;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidResponseException;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -44,15 +48,35 @@ public class EditorCommand extends SubCommand {
     }
 
     @Override
-    public void perform(CommandSender sender, String[] args) {
-        WebPanelHandler web = this.getCommand().getPlugin().getWeb();
-        try {
-            String link = web.save();
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Editor URL: " + link));
-        } catch (IOException e) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7An error has occurred while loading editor."));
-            e.printStackTrace();
-        }
+    public void perform(@NotNull CommandSender sender, String[] args) {
+        Bukkit.getScheduler().runTaskAsynchronously(this.getCommand().getPlugin(), () -> {
+            if (!sender.hasPermission("rocketplaceholders.command.editor")) {
+                this.sendPermissionsError(sender);
+                return;
+            }
 
+            IWebPanelHandler web = this.getCommand().getPlugin().getWeb();
+
+            if (args.length != 2) {
+                try {
+                    String link = web.save();
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Editor URL: " + link));
+                } catch (IOException e) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7An error has occurred while loading editor session."));
+                    this.getCommand().getPlugin().getLogger().warning(e.getMessage());
+                }
+
+                return;
+            }
+
+            String code = args[1];
+            try {
+                WebEdit edit = web.load(code);
+                this.getCommand().getPlugin().importEdit(edit);
+            } catch (InvalidResponseException e) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7An error has occurred while loading editor session."));
+                this.getCommand().getPlugin().getLogger().warning(e.getMessage());
+            }
+        });
     }
 }

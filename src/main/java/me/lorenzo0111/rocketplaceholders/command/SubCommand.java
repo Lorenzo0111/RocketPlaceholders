@@ -47,4 +47,8 @@ public abstract class SubCommand {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&cYou don't have the permission to execute this command."));
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

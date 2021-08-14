@@ -29,6 +29,7 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,12 +42,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A placeholder
  */
 public class Placeholder {
-    private final PlaceholderSettings settings;
+    private PlaceholderSettings settings;
     private final String identifier;
     private String text;
     private List<ConditionNode> conditionNodes;
@@ -174,6 +176,34 @@ public class Placeholder {
         return true;
     }
 
+    public void serialize(@NotNull File file) throws IOException {
+        if (!file.exists() && file.createNewFile()) RocketPlaceholders.getInstance().debug("Created file " + file.getName());
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        if (settings == null) settings = new PlaceholderSettings();
+        settings.key(file.getName());
+
+        config.set("placeholder", identifier);
+        config.set("text", text);
+
+        if (conditionNodes != null) {
+            for (ConditionNode node : conditionNodes) {
+                String key = "conditions." + UUID.randomUUID() + ".";
+
+                config.set(key+"type", node.getRequirement().getType().toString());
+                config.set(key+"value", node.getRequirement().getDatabaseInfo().get("value"));
+
+                config.set(key+"name", node.getRequirement().getDatabaseInfo().get("item_name"));
+                config.set(key+"material", node.getRequirement().getDatabaseInfo().get("item_material"));
+                config.set(key+"lore", node.getRequirement().getDatabaseInfo().get("item_lore"));
+
+                config.set(key+"one", node.getRequirement().getDatabaseInfo().get("one"));
+                config.set(key+"two", node.getRequirement().getDatabaseInfo().get("two"));
+            }
+        }
+
+        config.save(file);
+    }
+
 
     /**
      * @return The placeholder config
@@ -188,12 +218,16 @@ public class Placeholder {
      * @return The placeholder file
      */
     public File getFile() {
-        if (this.settings.key() == null) return null;
+        String key;
+        if (settings == null) return null;
+
+        key = settings.key();
+        if (key == null) return null;
 
         File placeholdersDir = RocketPlaceholders.getInstance()
                 .getPlaceholdersDir();
 
-        File file = new File(placeholdersDir, this.settings.key());
+        File file = new File(placeholdersDir, key);
         if (!file.exists()) return null;
 
         return file;

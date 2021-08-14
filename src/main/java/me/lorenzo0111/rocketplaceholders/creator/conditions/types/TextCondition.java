@@ -36,6 +36,9 @@ public class TextCondition extends Requirement {
     public TextCondition(String one, String two) {
         this.one = one;
         this.two = two;
+
+        this.getDatabaseInfo().put("one", one);
+        this.getDatabaseInfo().put("two", two);
     }
 
     @Override

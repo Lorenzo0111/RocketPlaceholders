@@ -27,10 +27,12 @@ package me.lorenzo0111.rocketplaceholders.legacy;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.types.HasPermissionCondition;
+import org.jetbrains.annotations.ApiStatus.ScheduledForRemoval;
 
 /**
  * @deprecated Please use {@link me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode} instead
  */
+@ScheduledForRemoval(inVersion = "2.1")
 @Deprecated
 public class PermissionNode extends ConditionNode {
 

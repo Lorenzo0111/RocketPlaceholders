@@ -62,6 +62,9 @@ public class JavaScriptParser<T> {
             RegisteredServiceProvider<ScriptEngineManager> provider = manager.getRegistration(ScriptEngineManager.class);
             Objects.requireNonNull(provider);
             engine = provider.getProvider();
+            RocketPlaceholders.getInstance()
+                    .getLogger()
+                    .info("Hooked into " + provider.getPlugin().getName() + " for JavaScript support.");
             return;
         }
 

@@ -242,6 +242,10 @@ public class DatabaseManager {
                                     statement.setObject(6,
                                             gson.toJson(node.getNode().getRequirement().getDatabaseInfo().get("item_lore")));
                                 }
+                                break;
+                            case TEXT:
+                                statement.setString(3, node.getNode().getRequirement().getDatabaseInfo().get("one") + "%%" + node.getNode().getRequirement().getDatabaseInfo().get("two"));
+                                break;
                             default:
                                 break;
                         }

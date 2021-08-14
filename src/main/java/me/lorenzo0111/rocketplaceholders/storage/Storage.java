@@ -71,6 +71,10 @@ public class Storage {
         return this.placeholders.get(identifier);
     }
 
+    public boolean contains(String identifier) {
+        return getMap().containsKey(identifier);
+    }
+
     public Map<String, Placeholder> getMap() {
         return this.placeholders;
     }

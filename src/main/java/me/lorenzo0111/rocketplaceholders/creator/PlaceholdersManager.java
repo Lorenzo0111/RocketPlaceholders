@@ -123,4 +123,11 @@ public class PlaceholdersManager {
     public StorageManager getStorageManager() {
         return storageManager;
     }
+
+    /**
+     * @return The config manager
+     */
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
 }

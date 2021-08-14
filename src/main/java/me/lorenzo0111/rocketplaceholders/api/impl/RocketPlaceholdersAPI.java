@@ -27,6 +27,7 @@ package me.lorenzo0111.rocketplaceholders.api.impl;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
+import me.lorenzo0111.rocketplaceholders.api.IWebPanelHandler;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.hooks.PapiHook;
@@ -95,5 +96,11 @@ public class RocketPlaceholdersAPI implements IRocketPlaceholdersAPI {
     @Override
     public PlaceholdersManager getPlaceholdersManager() {
         return placeholdersManager;
+    }
+
+    @Override
+    public void setWebEditor(IWebPanelHandler editor) {
+        RocketPlaceholders.getInstance()
+                .setWeb(editor);
     }
 }

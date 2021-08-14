@@ -25,6 +25,7 @@
 package me.lorenzo0111.rocketplaceholders.storage;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
@@ -34,6 +35,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,6 +121,23 @@ public class ConfigManager {
 
         if (plugin.getLoader().getDatabaseManager() == null || !plugin.getLoader().getDatabaseManager().isMain()) {
             registerPlaceholders();
+        }
+    }
+
+    public void reload(@Nullable String oldIdentifier, @NotNull Placeholder placeholder) {
+        FileConfiguration config = placeholder.getConfig();
+
+        ConfigurationSection conditions = config.getConfigurationSection("conditions");
+
+        final boolean parseJS = config.getBoolean("parsejs");
+
+        if (conditions != null) {
+            final List<ConditionNode> nodes = new ArrayList<>(scanConditions(conditions));
+
+            storageManager.getInternalPlaceholders()
+                            .getMap()
+                            .remove(oldIdentifier == null ? placeholder.getIdentifier() : oldIdentifier);
+            storageManager.getInternalPlaceholders().build(placeholder.getFile().getName(), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
         }
     }
 

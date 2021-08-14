@@ -27,8 +27,8 @@ package me.lorenzo0111.rocketplaceholders.storage;
 import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderSettings {
-    private boolean parseJs;
-    private String key;
+    private boolean parseJs = false;
+    private String key = null;
 
     public PlaceholderSettings key(String key) {
         this.key = key;

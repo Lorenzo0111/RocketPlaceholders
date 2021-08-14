@@ -85,4 +85,10 @@ public interface IRocketPlaceholdersAPI {
      * @return PlaceholdersManager
      */
     PlaceholdersManager getPlaceholdersManager();
+
+    /**
+     * Edit the web editor handler.
+     * @param editor The new editor
+     */
+    void setWebEditor(IWebPanelHandler editor);
 }

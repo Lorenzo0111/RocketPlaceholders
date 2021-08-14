@@ -38,6 +38,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter {
 
@@ -91,12 +93,18 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String @NotNull [] args) {
 
         final List<String> strings = new ArrayList<>();
 
-        for (int i = 0; i < getSubcommands().size(); i++){
-            strings.add(getSubcommands().get(i).getName());
+        if (args.length == 0) {
+            return subcommands.stream()
+                    .map(SubCommand::getName)
+                    .collect(Collectors.toList());
+        }
+
+        for (SubCommand subCommand : subcommands){
+            if (subCommand.getName().toLowerCase(Locale.ROOT).startsWith(args[0].toLowerCase(Locale.ROOT))) strings.add(subCommand.getName());
         }
 
         return strings;

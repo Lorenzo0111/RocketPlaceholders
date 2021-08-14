@@ -26,29 +26,33 @@ package me.lorenzo0111.rocketplaceholders.web;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
+import me.lorenzo0111.rocketplaceholders.api.IWebPanelHandler;
+import me.lorenzo0111.rocketplaceholders.api.WebEdit;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidResponseException;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class WebPanelHandler {
+public class WebPanelHandler implements IWebPanelHandler {
     private final RocketPlaceholders plugin;
-    private final URL url;
+    private final URL add;
+    private final String get;
 
     public WebPanelHandler(RocketPlaceholders plugin) throws MalformedURLException {
         this.plugin = plugin;
-        this.url = new URL("https://editor.rp.rocketplugins.space/new");
+        this.add = new URL("https://editor.rocketplugins.space/new");
+        this.get = "https://editor.rocketplugins.space/raw/";
     }
 
+    @Override
     @NotNull
     public String generate() {
         Gson gson = new Gson();
@@ -63,16 +67,10 @@ public class WebPanelHandler {
         return object.getAsString();
     }
 
+    @Override
     @Nullable
     public String save() throws IOException {
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-
-        connection.setRequestProperty("User-Agent", String.format("%s/%s (%s)", plugin.getName(),plugin.getDescription().getVersion(),getClass().getName()));
-        connection.setRequestProperty("accept", "application/json");
-        connection.setRequestProperty("Content-Type", "application/json; utf-8");
-        connection.setRequestMethod("POST");
-        connection.setConnectTimeout(5000);
-        connection.setReadTimeout(5000);
+        HttpsURLConnection connection = this.createConnection(add,"POST");
 
         try(OutputStream os = connection.getOutputStream()) {
             byte[] input = this.format(this.generate()).getBytes(StandardCharsets.UTF_8);
@@ -92,6 +90,44 @@ public class WebPanelHandler {
             return response.toString();
         }
 
+    }
+
+    @Override
+    public @NotNull WebEdit load(String code) throws InvalidResponseException {
+        try {
+            URL url = new URL(get + code);
+            HttpsURLConnection connection = this.createConnection(url,"GET");
+
+            Reader reader = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8);
+            BufferedReader br = new BufferedReader(reader);
+
+            StringBuilder response = new StringBuilder();
+            String responseLine;
+
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+
+            reader.close();
+            br.close();
+            Gson serializer = new Gson();
+            return serializer.fromJson(response.toString(), WebEdit.class);
+        } catch (IOException | JsonSyntaxException e) {
+            throw new InvalidResponseException(e);
+        }
+    }
+
+    private @NotNull HttpsURLConnection createConnection(@NotNull URL url, String method) throws IOException {
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+        connection.setRequestProperty("User-Agent", String.format("%s/%s (%s)", plugin.getName(),plugin.getDescription().getVersion(),getClass().getSimpleName()));
+        connection.setRequestProperty("accept", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; utf-8");
+        connection.setRequestMethod(method);
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(5000);
+
+        return connection;
     }
 
     public RocketPlaceholders getPlugin() {

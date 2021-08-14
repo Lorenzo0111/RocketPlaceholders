@@ -49,5 +49,6 @@ public class HelpCommand extends SubCommand {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders gui » &7Open the gui"));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders debug » &7Print debug message"));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders test (Placeholder Name) » &7Try a placeholder"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &8/rocketplaceholders editor » &7Generate a WebEditor session"));
     }
 }
