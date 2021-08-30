@@ -64,7 +64,7 @@ dependencies {
     implementation('mysql:mysql-connector-java:8.0.26')
     implementation("dev.triumphteam:triumph-gui:3.0.3")
     implementation('org.bstats:bstats-bukkit:2.2.1')
-    implementation('com.github.cryptomorin:XSeries:8.3.0')
+    implementation('com.github.cryptomorin:XSeries:8.4.0')
     implementation("net.kyori:adventure-api:4.8.1")
     implementation("net.kyori:adventure-text-serializer-legacy:4.8.1")
 }
