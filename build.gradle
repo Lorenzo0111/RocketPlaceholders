@@ -26,8 +26,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'java'
+    id 'maven-publish'
     id "com.github.johnrengelman.shadow" version "7.0.0"
-    id "net.kyori.indra.publishing" version "2.0.6"
     id "net.kyori.indra.license-header" version "2.0.6"
     id "io.github.slimjar" version "1.3.0"
 }
@@ -134,12 +134,35 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-indra {
-    mitLicense()
-    github("Lorenzo0111", "RocketPlaceholders")
-    publishReleasesTo("repsy", "https://repo.repsy.io/mvn/lorenzo0111/public")
-    publishSnapshotsTo("codeMc", "https://repo.codemc.io/repository/maven-snapshots/")
-    publishReleasesTo("codeMc", "https://repo.codemc.io/repository/maven-releases/")
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = description
+            version = project.version
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            def snapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
+            def releaseUrl = "https://repo.codemc.io/repository/maven-releases/"
+
+            url = project.version.endsWith("SNAPSHOT") ? snapshotUrl : releaseUrl
+
+            def mavenUsername = System.getenv("NEXUS_USERNAME") ? System.getenv("NEXUS_USERNAME") : null
+            def mavenPassword = System.getenv("NEXUS_PASSWORD") ? System.getenv("NEXUS_PASSWORD") : null
+
+            if(mavenUsername != null && mavenPassword != null) {
+                credentials {
+                    username = mavenUsername
+                    password = mavenPassword
+                }
+            }
+        }
+    }
 }
 
 tasks.build.dependsOn tasks.shadowJar
