@@ -24,6 +24,7 @@
 
 package me.lorenzo0111.rocketplaceholders;
 
+import io.github.slimjar.app.builder.ApplicationBuilder;
 import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.api.IWebPanelHandler;
 import me.lorenzo0111.rocketplaceholders.api.WebEdit;
@@ -45,6 +46,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +60,32 @@ public final class RocketPlaceholders extends JavaPlugin {
     private IWebPanelHandler web;
     private File placeholdersDir;
     private static IRocketPlaceholdersAPI api;
+
+    @Override
+    public void onLoad() {
+        try {
+            long time = System.currentTimeMillis();
+            this.getLogger().info("Loading libraries, please wait..");
+
+            File folder = new File(this.getDataFolder(), "libraries");
+            if (folder.exists() || folder.mkdirs()) {
+                ApplicationBuilder.appending(this.getName())
+                        .downloadDirectoryPath(folder.toPath())
+                        .logger((s, objects) -> this.getLogger().info(MessageFormat.format(s,objects)))
+                        .build()
+                        .start();
+
+                this.getLogger().info("Loaded all libraries in " + time + "ms.");
+                return;
+            }
+
+        } catch (URISyntaxException | ReflectiveOperationException | NoSuchAlgorithmException | IOException e) {
+            this.getLogger().info("An error has occurred while loading dependencies: " + e.getMessage());
+        }
+
+        this.getLogger().info("Unable to load dependencies. Disabling..");
+        Bukkit.getPluginManager().disablePlugin(this);
+    }
 
     @Override
     public void onEnable() {

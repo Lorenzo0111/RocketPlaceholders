@@ -29,6 +29,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
     id "net.kyori.indra.publishing" version "2.0.6"
     id "net.kyori.indra.license-header" version "2.0.6"
+    id "io.github.slimjar" version "1.3.0"
 }
 
 group = 'me.lorenzo0111'
@@ -41,15 +42,13 @@ ext {
 
 repositories {
     mavenCentral()
-    maven { url 'https://jitpack.io' }
-    maven {
-        url = 'http://repo.mvdw-software.be/content/groups/public/'
-        allowInsecureProtocol = true
-    }
-    maven { url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/') }
-    maven { url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/') }
-    maven { url = uri('https://repo.codemc.org/repository/maven-public') }
-    maven { url = uri("https://repo.mattstudios.me/artifactory/public/") }
+    maven { url "https://jitpack.io" }
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
+    maven { url "https://repo.codemc.org/repository/maven-public" }
+    maven { url "https://repo.mattstudios.me/artifactory/public/" }
+    maven { url "https://repo.lucko.me/" }
+    maven { url "https://repo.vshnv.tech/releases/" }
 }
 
 dependencies {
@@ -57,17 +56,19 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.10.10")
     compileOnly("org.jetbrains:annotations:22.0.0")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT") {
+    compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT") {
         exclude module: 'spigot'
     }
 
+    implementation("io.github.slimjar:slimjar:1.2.6")
     implementation("com.github.glyart:mystral:1.2.1-SNAPSHOT")
-    implementation("mysql:mysql-connector-java:8.0.26")
     implementation("dev.triumphteam:triumph-gui:3.0.3")
     implementation("org.bstats:bstats-bukkit:2.2.1")
     implementation("com.github.cryptomorin:XSeries:8.4.0")
     implementation("net.kyori:adventure-api:4.9.1")
     implementation("net.kyori:adventure-text-serializer-legacy:4.9.1")
+    slim("mysql:mysql-connector-java:8.0.26")
+    slim("commons-io:commons-io:2.11.0")
 }
 
 shadowJar {
@@ -75,7 +76,6 @@ shadowJar {
     relocate("org.checkerframework", "${libsBase}checkerframework")
     relocate("com.zaxxer.hikari", "${libsBase}hikari")
     relocate("google.protobuf", "${libsBase}protobuf")
-    relocate("com.mysql", "${libsBase}mysql")
     relocate("com.google.protobuf", "${libsBase}google.protobuf")
     relocate("com.google.common", "${libsBase}google.common")
     relocate("com.google.errorprone", "${libsBase}google.errorprone")
@@ -87,8 +87,14 @@ shadowJar {
     relocate("net.kyori.adventure", "${libsBase}adventure")
     relocate("net.kyori.examination", "${libsBase}examination")
     relocate("com.cryptomorin.xseries", "${libsBase}xseries")
+    relocate("io.github.slimjar", "${libsBase}slimjar")
 
     archiveFileName = "${project.name}-${project.version}.jar"
+}
+
+slimJar {
+    relocate("com.mysql", "${libsBase}mysql")
+    relocate("org.apache.commons.io","${libsBase}io")
 }
 
 javadoc {

@@ -31,6 +31,7 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.legacy.LegacyMover;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -91,7 +92,7 @@ public class ConfigManager {
             if (conditions != null) {
                 final List<ConditionNode> nodes = new ArrayList<>(scanConditions(conditions));
 
-                storageManager.getInternalPlaceholders().build(file.getName(), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
+                storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
             }
         }
 
