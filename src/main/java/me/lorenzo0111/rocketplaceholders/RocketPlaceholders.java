@@ -72,6 +72,7 @@ public final class RocketPlaceholders extends JavaPlugin {
                 ApplicationBuilder.appending(this.getName())
                         .downloadDirectoryPath(folder.toPath())
                         .logger((s, objects) -> this.getLogger().info(MessageFormat.format(s,objects)))
+                        .mirrorSelector((a, b) -> a) // https://github.com/slimjar/slimjar/issues/61#issuecomment-955549772
                         .build()
                         .start();
 

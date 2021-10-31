@@ -89,11 +89,12 @@ public class ConfigManager {
 
             final boolean parseJS = config.getBoolean("parsejs");
 
+            List<ConditionNode> nodes = null;
             if (conditions != null) {
-                final List<ConditionNode> nodes = new ArrayList<>(scanConditions(conditions));
-
-                storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
+                nodes = new ArrayList<>(scanConditions(conditions));
             }
+
+            storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes,parseJS);
         }
 
         plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
