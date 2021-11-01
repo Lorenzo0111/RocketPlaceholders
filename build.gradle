@@ -65,7 +65,7 @@ dependencies {
     implementation("dev.triumphteam:triumph-gui:3.0.4")
     implementation("org.bstats:bstats-bukkit:2.2.1")
     implementation("com.github.cryptomorin:XSeries:8.4.0")
-    implementation("net.kyori:adventure-api:4.9.2")
+    implementation("net.kyori:adventure-api:4.9.3")
     implementation("net.kyori:adventure-text-serializer-legacy:4.9.2")
     slim("mysql:mysql-connector-java:8.0.27")
     slim("commons-io:commons-io:2.11.0")
