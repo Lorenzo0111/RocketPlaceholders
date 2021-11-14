@@ -25,6 +25,8 @@
 package me.lorenzo0111.rocketplaceholders;
 
 import io.github.slimjar.app.builder.ApplicationBuilder;
+import io.github.slimjar.resolver.data.Repository;
+import io.github.slimjar.resolver.mirrors.SimpleMirrorSelector;
 import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
 import me.lorenzo0111.rocketplaceholders.api.IWebPanelHandler;
 import me.lorenzo0111.rocketplaceholders.api.WebEdit;
@@ -47,8 +49,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +77,7 @@ public final class RocketPlaceholders extends JavaPlugin {
                         .downloadDirectoryPath(folder.toPath())
                         .logger((s, objects) -> this.getLogger().info(MessageFormat.format(s,objects)))
                         .mirrorSelector((a, b) -> a) // https://github.com/slimjar/slimjar/issues/61#issuecomment-955549772
+                        .internalRepositories(Collections.singleton(new Repository(new URL(SimpleMirrorSelector.ALT_CENTRAL_URL))))
                         .build()
                         .start();
 
