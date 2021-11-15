@@ -48,7 +48,7 @@ repositories {
     maven { url "https://repo.codemc.org/repository/maven-public" }
     maven { url "https://repo.mattstudios.me/artifactory/public/" }
     maven { url "https://repo.lucko.me/" }
-    maven { url "https://dl.rocketplugins.space/" }
+    maven { url "https://dl.lorenzo0111.me/" }
 }
 
 dependencies {
