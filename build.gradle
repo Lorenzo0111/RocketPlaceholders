@@ -53,7 +53,7 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.10.10")
+    compileOnly("me.clip:placeholderapi:2.11.1")
     compileOnly("org.jetbrains:annotations:23.0.0")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT") {
