@@ -79,7 +79,7 @@ public final class RocketPlaceholders extends JavaPlugin {
                         .build()
                         .start();
 
-                this.getLogger().info("Loaded all libraries in " + time + "ms.");
+                this.getLogger().info("Loaded all libraries in " + (System.currentTimeMillis() - time) + "ms.");
                 return;
             }
 

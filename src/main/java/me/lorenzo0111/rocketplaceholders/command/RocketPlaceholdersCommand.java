@@ -63,6 +63,7 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
         subcommands.add(new TestCommand(this));
         subcommands.add(new GuiCommand(this));
         subcommands.add(new EditorCommand(this));
+        subcommands.add(new SetCommand(this));
     }
 
     @Override

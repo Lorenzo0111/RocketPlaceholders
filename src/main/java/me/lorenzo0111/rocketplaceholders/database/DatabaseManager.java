@@ -180,6 +180,8 @@ public class DatabaseManager {
 
             @Override
             public void run() {
+                plugin.getLogger().info("Saving data to the database..");
+
                 final Storage internalPlaceholders = getStorageManager().getInternalPlaceholders();
 
                 List<Placeholder> placeholders = new ArrayList<>(internalPlaceholders.getMap().values());

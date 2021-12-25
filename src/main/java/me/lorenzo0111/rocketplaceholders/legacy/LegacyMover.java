@@ -44,6 +44,7 @@ public class LegacyMover {
         this.directory = directory;
     }
 
+    @SuppressWarnings("deprecation")
     public void move() throws IOException {
         ConfigurationSection allSection = plugin.getConfig().getConfigurationSection("placeholders");
 

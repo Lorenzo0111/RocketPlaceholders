@@ -29,7 +29,6 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
-import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -91,7 +90,7 @@ public class Placeholder {
     @Deprecated
     public Placeholder(@NotNull String identifier, JavaPlugin owner, @NotNull String text) {
         this.identifier = identifier;
-        this.settings = null;
+        this.settings = new PlaceholderSettings();
 
         if (text.contains("%rp_")) {
             this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
@@ -166,6 +165,11 @@ public class Placeholder {
         File file = this.getFile();
         FileConfiguration config = this.getConfig();
 
+        if (file == null || config == null) {
+            System.out.println(file == null ? "File is null" : "Config is null");
+            return false;
+        }
+
         try {
             config.set(path, value);
             config.save(file);
@@ -227,7 +231,9 @@ public class Placeholder {
         File placeholdersDir = RocketPlaceholders.getInstance()
                 .getPlaceholdersDir();
 
-        File file = new File(placeholdersDir, key);
+        System.out.println(placeholdersDir == null ? "Placeholders dir is null" : "Placeholders dir is not null");
+
+        File file = new File(placeholdersDir, key+".yml");
         if (!file.exists()) return null;
 
         return file;
@@ -272,7 +278,7 @@ public class Placeholder {
     /**
      * @return Placeholder settings
      */
-    @Nullable
+    @NotNull
     public PlaceholderSettings getSettings() {
         return settings;
     }
