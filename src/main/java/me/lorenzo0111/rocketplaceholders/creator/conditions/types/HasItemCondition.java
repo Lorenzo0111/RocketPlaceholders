@@ -28,6 +28,7 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -51,11 +52,21 @@ public class HasItemCondition extends Requirement {
 
     @Override
     public boolean apply(Player player) {
-        return player.getInventory().containsAtLeast(item,item.getAmount());
+        return player.getInventory().containsAtLeast(item,item.getAmount()) || hasInArmor(player,item);
     }
 
     @Override
     public RequirementType getType() {
         return RequirementType.ITEM;
+    }
+
+    private boolean hasInArmor(@NotNull Player player, ItemStack item) {
+        for (ItemStack armor : player.getInventory().getArmorContents()) {
+            if (armor.isSimilar(item)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
