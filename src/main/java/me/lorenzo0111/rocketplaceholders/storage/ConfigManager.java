@@ -31,6 +31,7 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.legacy.LegacyMover;
+import me.lorenzo0111.rocketplaceholders.utilities.HexParser;
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -94,7 +95,7 @@ public class ConfigManager {
                 nodes = new ArrayList<>(scanConditions(conditions));
             }
 
-            storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes,parseJS);
+            storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), HexParser.text(config.getString("text", "")),nodes,parseJS);
         }
 
         plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
@@ -139,7 +140,7 @@ public class ConfigManager {
             storageManager.getInternalPlaceholders()
                             .getMap()
                             .remove(oldIdentifier == null ? placeholder.getIdentifier() : oldIdentifier);
-            storageManager.getInternalPlaceholders().build(placeholder.getFile().getName(), config.getString("placeholder", "null"), ChatColor.translateAlternateColorCodes('&', config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
+            storageManager.getInternalPlaceholders().build(placeholder.getFile().getName(), config.getString("placeholder", "null"), HexParser.text(config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
         }
     }
 

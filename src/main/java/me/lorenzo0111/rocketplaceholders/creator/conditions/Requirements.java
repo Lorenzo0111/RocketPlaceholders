@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.types.*;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
+import me.lorenzo0111.rocketplaceholders.utilities.HexParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -150,7 +151,7 @@ public class Requirements {
             return null;
         }
 
-        return ChatColor.translateAlternateColorCodes('&', text);
+        return HexParser.text(text);
     }
 
     /**
@@ -166,7 +167,7 @@ public class Requirements {
         List<String> translated = new ArrayList<>();
 
         for (String string : text) {
-            translated.add(ChatColor.translateAlternateColorCodes('&', string));
+            translated.add(HexParser.text(string));
         }
 
         return translated;

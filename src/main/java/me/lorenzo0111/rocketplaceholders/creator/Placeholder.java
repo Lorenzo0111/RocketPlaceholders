@@ -28,6 +28,7 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
+import me.lorenzo0111.rocketplaceholders.utilities.HexParser;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -72,7 +73,7 @@ public class Placeholder {
         if (text.contains("%rp_")) {
             this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
         } else {
-            this.text = ChatColor.translateAlternateColorCodes('&', text);
+            this.text = HexParser.text(text);
         }
 
         this.conditionNodes = nodes;
@@ -95,7 +96,7 @@ public class Placeholder {
         if (text.contains("%rp_")) {
             this.text = ChatColor.translateAlternateColorCodes('&', "&cError! You can't use rp placeholders in the text.");
         } else {
-            this.text = ChatColor.translateAlternateColorCodes('&', text);
+            this.text = HexParser.text(text);
         }
         this.owner = owner;
     }

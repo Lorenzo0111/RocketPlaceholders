@@ -67,6 +67,10 @@ dependencies {
     implementation("com.github.cryptomorin:XSeries:8.6.0")
     implementation("net.kyori:adventure-api:4.9.3")
     implementation("net.kyori:adventure-text-serializer-legacy:4.9.3")
+    implementation("com.github.harry0198:HexiTextLib:9a9ce45ec1") {
+        exclude module: "annotations"
+    }
+
     slim("mysql:mysql-connector-java:8.0.27")
     slim("commons-io:commons-io:2.11.0")
 }
@@ -88,6 +92,7 @@ shadowJar {
     relocate("net.kyori.examination", "${libsBase}examination")
     relocate("com.cryptomorin.xseries", "${libsBase}xseries")
     relocate("io.github.slimjar", "${libsBase}slimjar")
+    relocate("com.haroldstudios.hexitextlib", "${libsBase}.hex")
 
     archiveFileName = "${project.name}-${project.version}.jar"
 }
