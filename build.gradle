@@ -71,7 +71,7 @@ dependencies {
         exclude module: "annotations"
     }
 
-    slim("mysql:mysql-connector-java:8.0.27")
+    slim("mysql:mysql-connector-java:8.0.28")
     slim("commons-io:commons-io:2.11.0")
 }
 
