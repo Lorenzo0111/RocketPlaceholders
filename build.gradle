@@ -46,9 +46,8 @@ repositories {
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "https://repo.codemc.org/repository/maven-public" }
-    maven { url "https://repo.mattstudios.me/artifactory/public/" }
     maven { url "https://repo.lucko.me/" }
-    maven { url "https://dl.lorenzo0111.me/" }
+    maven { url "https://dl.lorenzo0111.me/releases/" }
 }
 
 dependencies {
@@ -67,7 +66,7 @@ dependencies {
     implementation("com.github.cryptomorin:XSeries:8.6.1")
     implementation("net.kyori:adventure-api:4.9.3")
     implementation("net.kyori:adventure-text-serializer-legacy:4.9.3")
-    implementation("com.github.harry0198:HexiTextLib:9a9ce45ec1") {
+    implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
         exclude module: "annotations"
     }
 
@@ -79,12 +78,7 @@ shadowJar {
     relocate("com.glyart.mystral", "${libsBase}mystral")
     relocate("org.checkerframework", "${libsBase}checkerframework")
     relocate("com.zaxxer.hikari", "${libsBase}hikari")
-    relocate("google.protobuf", "${libsBase}protobuf")
-    relocate("com.google.protobuf", "${libsBase}google.protobuf")
-    relocate("com.google.common", "${libsBase}google.common")
-    relocate("com.google.errorprone", "${libsBase}google.errorprone")
-    relocate("com.google.j2objc", "${libsBase}google.j2objc")
-    relocate("com.google.thirdparty", "${libsBase}google.thirdparty")
+    relocate("com.google.gson", "${libsBase}gson")
     relocate("org.slf4j", "${libsBase}slf4j")
     relocate("org.bstats", "${libsBase}bstats")
     relocate("dev.triumphteam.gui", "${libsBase}gui")
