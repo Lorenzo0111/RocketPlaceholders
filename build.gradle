@@ -63,7 +63,7 @@ dependencies {
     implementation("com.github.glyart:mystral:1.4.5-SNAPSHOT")
     implementation("dev.triumphteam:triumph-gui:3.2")
     implementation("org.bstats:bstats-bukkit:3.0.0")
-    implementation("com.github.cryptomorin:XSeries:8.6.1")
+    implementation("com.github.cryptomorin:XSeries:8.7.0")
     implementation("net.kyori:adventure-api:4.9.3")
     implementation("net.kyori:adventure-text-serializer-legacy:4.9.3")
     implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
