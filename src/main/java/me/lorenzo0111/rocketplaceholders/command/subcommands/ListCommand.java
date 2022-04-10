@@ -61,7 +61,6 @@ public class ListCommand extends SubCommand {
                 StringBuilder internalBuilder = new StringBuilder("(");
                 internalPlaceholders.forEach((identifier,placeholder) -> internalBuilder.append(identifier).append(","));
 
-                System.out.println(internalBuilder.length());
                 if (internalBuilder.length() > 1) {
                     internalBuilder.setLength(internalBuilder.length() - 1);
                 }

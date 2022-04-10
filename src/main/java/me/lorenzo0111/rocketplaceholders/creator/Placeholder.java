@@ -167,7 +167,6 @@ public class Placeholder {
         FileConfiguration config = this.getConfig();
 
         if (file == null || config == null) {
-            System.out.println(file == null ? "File is null" : "Config is null");
             return false;
         }
 
@@ -231,8 +230,6 @@ public class Placeholder {
 
         File placeholdersDir = RocketPlaceholders.getInstance()
                 .getPlaceholdersDir();
-
-        System.out.println(placeholdersDir == null ? "Placeholders dir is null" : "Placeholders dir is not null");
 
         File file = new File(placeholdersDir, key+".yml");
         if (!file.exists()) return null;

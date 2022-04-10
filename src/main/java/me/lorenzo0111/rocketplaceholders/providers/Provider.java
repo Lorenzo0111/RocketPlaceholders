@@ -73,6 +73,11 @@ public abstract class Provider {
             return null;
         }
 
+        String userText = RocketPlaceholders.getApi().getUserStorage().getText(placeholder,onlinePlayer.getUniqueId());
+        if (userText != null) {
+            return this.parse(placeholder,player,userText);
+        }
+
         if (!placeholder.hasConditionNodes()) {
             return this.parse(placeholder,player,placeholder.getText());
         }

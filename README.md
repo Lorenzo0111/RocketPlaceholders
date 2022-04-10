@@ -8,7 +8,7 @@
 [RocketPlaceholders][spigot] is a minecraft plugin to add custom placeholders with conditions to PlaceholderAPI!
 ## Usage
 
-You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplaceholders/starting)
+You can read the plugin wiki [here](https://wiki.lorenzo0111.me/rocketplaceholders/starting)
 
 ## Support
 
@@ -29,7 +29,7 @@ You can read the plugin wiki [here](https://docs.rocketplugins.space/rocketplace
 
 [issues]: https://github.com/Lorenzo0111/RocketPlaceholders/issues
 
-[discord]: https://bit.ly/RocketServer_DS
+[discord]: https://discord.io/RocketPlugins
 
 [spigot]: https://www.spigotmc.org/resources/rocketplaceholders-custom-placeholders.82678/
 

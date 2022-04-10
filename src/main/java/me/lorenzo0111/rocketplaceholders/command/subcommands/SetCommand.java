@@ -24,11 +24,14 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 public class SetCommand extends SubCommand {
@@ -42,6 +45,7 @@ public class SetCommand extends SubCommand {
         return "set";
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void perform(CommandSender sender, String[] args) {
         if (!sender.hasPermission("rocketplaceholders.command.set")) {
@@ -50,7 +54,7 @@ public class SetCommand extends SubCommand {
         }
 
         if (args.length < 3) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Try to use &8/rocketplaceholders set (Placeholder) (New Text)!"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Try to use &8/rocketplaceholders set (Placeholder) [--user Username] (New Text)!"));
             return;
         }
 
@@ -61,12 +65,25 @@ public class SetCommand extends SubCommand {
             return;
         }
 
+        OfflinePlayer user = null;
+        if (args.length >= 5 && args[2].equalsIgnoreCase("--user")) {
+            user = Bukkit.getOfflinePlayer(args[3]);
+        }
+
         StringBuilder builder = new StringBuilder();
-        for (int i = 2; i < args.length; i++) {
+        for (int i = user != null ? 4 : 2; i < args.length; i++) {
             builder.append(args[i]).append(" ");
         }
 
         builder.deleteCharAt(builder.length() - 1);
+
+
+        if (user != null) {
+            RocketPlaceholders.getApi().getUserStorage().setText(placeholder,user.getUniqueId(), builder.toString());
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + builder + "&7 for &e" + user.getName() + "&7!"));
+            return;
+        }
+
         if (!placeholder.setText(builder.toString())) {
             DatabaseManager databaseManager = this.getCommand().getPlugin().getLoader().getDatabaseManager();
             if (databaseManager == null || !databaseManager.isMain()) {

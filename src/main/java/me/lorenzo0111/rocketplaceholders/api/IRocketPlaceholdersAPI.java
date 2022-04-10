@@ -29,7 +29,10 @@ import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.providers.CustomProvider;
 import me.lorenzo0111.rocketplaceholders.providers.Provider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 /**
  * API of RocketPlaceholders
@@ -91,4 +94,19 @@ public interface IRocketPlaceholdersAPI {
      * @param editor The new editor
      */
     void setWebEditor(IWebPanelHandler editor);
+
+    /**
+     * @return The web editor handler
+     */
+    IWebPanelHandler getWebEditor();
+
+    /**
+     * @return A storage that contains per-user text
+     */
+    @NotNull ITextStorage<UUID> getUserStorage();
+
+    /**
+     * @param storage A storage that contains per-user text
+     */
+    void setUserStorage(@NotNull ITextStorage<UUID> storage);
 }

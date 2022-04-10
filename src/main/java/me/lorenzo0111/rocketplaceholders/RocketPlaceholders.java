@@ -28,15 +28,12 @@ import io.github.slimjar.app.builder.ApplicationBuilder;
 import io.github.slimjar.resolver.data.Repository;
 import io.github.slimjar.resolver.mirrors.SimpleMirrorSelector;
 import me.lorenzo0111.rocketplaceholders.api.IRocketPlaceholdersAPI;
-import me.lorenzo0111.rocketplaceholders.api.IWebPanelHandler;
-import me.lorenzo0111.rocketplaceholders.api.WebEdit;
 import me.lorenzo0111.rocketplaceholders.api.impl.RocketPlaceholdersAPI;
-import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
-import me.lorenzo0111.rocketplaceholders.storage.Storage;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
+import me.lorenzo0111.rocketplaceholders.storage.user.UserStorage;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import me.lorenzo0111.rocketplaceholders.utilities.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.web.WebPanelHandler;
@@ -52,17 +49,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public final class RocketPlaceholders extends JavaPlugin {
 
+    private static RocketPlaceholders instance;
+    private static IRocketPlaceholdersAPI api;
+
     private StorageManager storageManager;
     private PluginLoader loader;
-    private static RocketPlaceholders instance;
-    private IWebPanelHandler web;
     private File placeholdersDir;
-    private static IRocketPlaceholdersAPI api;
 
     @Override
     public void onLoad() {
@@ -112,10 +107,12 @@ public final class RocketPlaceholders extends JavaPlugin {
         }
 
         try {
-            this.web = new WebPanelHandler(this);
+            api.setWebEditor(new WebPanelHandler(this));
         } catch (MalformedURLException e) {
             this.getLogger().warning("Unable to setup WebEditor. Aborting..");
         }
+
+        api.setUserStorage(new UserStorage(new File(this.getDataFolder(), "data.yml")));
 
         final UpdateChecker checker = new UpdateChecker(this, 82678, "https://bit.ly/RocketPlaceholders");
         checker.sendUpdateCheck(Bukkit.getConsoleSender());
@@ -131,6 +128,7 @@ public final class RocketPlaceholders extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
+        api.getUserStorage().save();
         getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
     }
 
@@ -143,6 +141,10 @@ public final class RocketPlaceholders extends JavaPlugin {
 
     public PluginLoader getLoader() {
         return this.loader;
+    }
+
+    public File getPlaceholdersDir() {
+        return placeholdersDir;
     }
 
     public void debug(String text) {
@@ -163,17 +165,5 @@ public final class RocketPlaceholders extends JavaPlugin {
      */
     public static RocketPlaceholders getInstance() {
         return instance;
-    }
-
-    public IWebPanelHandler getWeb() {
-        return web;
-    }
-
-    public void setWeb(IWebPanelHandler web) {
-        this.web = web;
-    }
-
-    public File getPlaceholdersDir() {
-        return placeholdersDir;
     }
 }
