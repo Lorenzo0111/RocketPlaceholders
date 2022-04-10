@@ -151,43 +151,6 @@ public final class RocketPlaceholders extends JavaPlugin {
         }
     }
 
-    public void importEdit(@NotNull WebEdit edit) {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-            Storage storage = api.getPlaceholdersManager().getStorageManager().getInternalPlaceholders();
-
-            List<String> remove = edit.getRemove();
-            storage.getMap()
-                    .entrySet()
-                    .removeIf((entry) -> remove.contains(entry.getKey()) && entry.getValue().getFile().delete());
-
-            Map<String, String> rename = edit.getRename();
-            for (Map.Entry<String,String> entry : rename.entrySet()) {
-                for (Placeholder placeholder : storage.getMap().values()) {
-                    if (!placeholder.getIdentifier().equals(entry.getKey())) continue;
-
-                    placeholder.edit("placeholder", entry.getValue());
-                    api.getPlaceholdersManager()
-                            .getConfigManager()
-                            .reload(entry.getKey(), placeholder);
-                    break;
-                }
-            }
-
-            List<Placeholder> edits = edit.getEdited();
-            for (Placeholder placeholder : edits) {
-                if (storage.contains(placeholder.getIdentifier())) {
-                    storage.getMap().remove(placeholder.getIdentifier());
-                }
-
-                try {
-                    placeholder.serialize(new File(getPlaceholdersDir(), placeholder.getIdentifier().toLowerCase() + ".yml"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     @NotNull
     public static IRocketPlaceholdersAPI getApi() {
         if (api == null) throw new IllegalStateException("API has not been initialized.");

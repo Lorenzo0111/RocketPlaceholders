@@ -30,8 +30,10 @@ import com.google.gson.JsonSyntaxException;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.api.IWebPanelHandler;
 import me.lorenzo0111.rocketplaceholders.api.WebEdit;
+import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidResponseException;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,6 +42,8 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 public class WebPanelHandler implements IWebPanelHandler {
     private final RocketPlaceholders plugin;
@@ -115,6 +119,44 @@ public class WebPanelHandler implements IWebPanelHandler {
         } catch (IOException | JsonSyntaxException e) {
             throw new InvalidResponseException(e);
         }
+    }
+
+    @Override
+    public void applyEdit(WebEdit edit) {
+        Bukkit.getScheduler().runTaskAsynchronously(RocketPlaceholders.getInstance(), () -> {
+            Storage storage = RocketPlaceholders.getApi().getPlaceholdersManager().getStorageManager().getInternalPlaceholders();
+
+            List<String> remove = edit.getRemove();
+            storage.getMap()
+                    .entrySet()
+                    .removeIf((entry) -> remove.contains(entry.getKey()) && entry.getValue().getFile().delete());
+
+            Map<String, String> rename = edit.getRename();
+            for (Map.Entry<String,String> entry : rename.entrySet()) {
+                for (Placeholder placeholder : storage.getMap().values()) {
+                    if (!placeholder.getIdentifier().equals(entry.getKey())) continue;
+
+                    placeholder.edit("placeholder", entry.getValue());
+                    RocketPlaceholders.getApi().getPlaceholdersManager()
+                            .getConfigManager()
+                            .reload(entry.getKey(), placeholder);
+                    break;
+                }
+            }
+
+            List<Placeholder> edits = edit.getEdited();
+            for (Placeholder placeholder : edits) {
+                if (storage.contains(placeholder.getIdentifier())) {
+                    storage.getMap().remove(placeholder.getIdentifier());
+                }
+
+                try {
+                    placeholder.serialize(new File(plugin.getPlaceholdersDir(), placeholder.getIdentifier().toLowerCase() + ".yml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private @NotNull HttpsURLConnection createConnection(@NotNull URL url, String method) throws IOException {

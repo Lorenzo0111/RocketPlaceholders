@@ -51,7 +51,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
     compileOnly("org.jetbrains:annotations:23.0.0")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
@@ -102,6 +102,7 @@ javadoc {
             'https://docs.oracle.com/en/java/javase/16/docs/api/',
             'https://papermc.io/javadocs/paper/1.16/'
     )
+    options.addStringOption('Xdoclint:none', '-quiet')
     source = sourceSets.main.allJava
     include("**/api/*.java")
     include("**/creator/*.java")

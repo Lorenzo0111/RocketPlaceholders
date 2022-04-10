@@ -51,4 +51,10 @@ public interface IWebPanelHandler {
      * @throws InvalidResponseException if the response is invalid
      */
     @NotNull WebEdit load(String code) throws InvalidResponseException;
+
+    /**
+     * Applies the changes of the web edit
+     * @param edit The {@link WebEdit} instance that contains the changes to apply
+     */
+    void applyEdit(WebEdit edit);
 }
