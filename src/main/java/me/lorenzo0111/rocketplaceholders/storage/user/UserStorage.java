@@ -79,8 +79,8 @@ public class UserStorage implements ITextStorage<UUID> {
     public @Nullable String getText(Placeholder placeholder, UUID owner) {
         return storage.stream()
                 .filter(userText -> userText.getUser().equals(owner) && userText.getPlaceholder().equals(placeholder))
-                .findFirst()
                 .map(UserText::getText)
+                .findFirst()
                 .orElse(null);
     }
 
