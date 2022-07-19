@@ -76,7 +76,7 @@ public class SetCommand extends SubCommand {
         }
 
         builder.deleteCharAt(builder.length() - 1);
-
+        builder = new StringBuilder(ChatColor.translateAlternateColorCodes('&', builder.toString()));
 
         if (user != null) {
             RocketPlaceholders.getApi().getUserStorage().setText(placeholder,user.getUniqueId(), builder.toString());

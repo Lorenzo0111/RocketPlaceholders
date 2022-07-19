@@ -2,7 +2,7 @@ placeholder: "test" # The placeholder will be %rp_test% ( PlaceholderAPI ) or {r
 text: "This is an example"
 conditions:
   permissionExample:
-    type: PERMISSION # LIST: https://rocketplaceholders.jd.rocketplugins.space/me/lorenzo0111/rocketplaceholders/creator/conditions/RequirementType.html
+    type: PERMISSION # LIST: https://to.lorenzo0111.me/conditions
     value: "rocketplaceholder.example"
     text: "Example text with a permission condition"
   itemExample:

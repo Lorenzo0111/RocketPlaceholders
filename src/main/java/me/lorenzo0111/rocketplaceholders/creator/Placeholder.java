@@ -31,6 +31,7 @@ import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.utilities.HexParser;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -171,7 +172,7 @@ public class Placeholder {
         }
 
         try {
-            config.set(path, value);
+            config.set("placeholders." + identifier + "." + path, value);
             config.save(file);
         } catch (IOException e) {
             e.printStackTrace();
@@ -182,9 +183,11 @@ public class Placeholder {
 
     public void serialize(@NotNull File file) throws IOException {
         if (!file.exists() && file.createNewFile()) RocketPlaceholders.getInstance().debug("Created file " + file.getName());
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
         if (settings == null) settings = new PlaceholderSettings();
         settings.key(file.getName());
+
+        ConfigurationSection config = configuration.createSection("placeholders." + identifier);
 
         config.set("placeholder", identifier);
         config.set("text", text);
@@ -205,7 +208,7 @@ public class Placeholder {
             }
         }
 
-        config.save(file);
+        configuration.save(file);
     }
 
 

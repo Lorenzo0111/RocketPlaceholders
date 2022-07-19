@@ -30,10 +30,10 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
-import me.lorenzo0111.rocketplaceholders.legacy.LegacyMover;
+import me.lorenzo0111.rocketplaceholders.legacy.FileMover;
+import me.lorenzo0111.rocketplaceholders.legacy.PlaceholderSplitter;
 import me.lorenzo0111.rocketplaceholders.utilities.HexParser;
 import org.apache.commons.io.FilenameUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -76,26 +76,39 @@ public class ConfigManager {
             }
         }
 
-        if (plugin.getConfig().getConfigurationSection("placeholders") != null)
-            new LegacyMover(plugin,dir).move();
+        FileMover mover = new FileMover(plugin,dir);
+        if (mover.shouldMigrate())
+            mover.migrate();
 
         File[] files = dir.listFiles(new PlaceholderFilter());
 
         Objects.requireNonNull(files, "An error has occurred while loading placeholders files.");
 
         for (File file : files) {
-            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+            PlaceholderSplitter splitter = new PlaceholderSplitter(file);
+            if (splitter.shouldMigrate())
+                splitter.migrate();
 
-            ConfigurationSection conditions = config.getConfigurationSection("conditions");
+            FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
-            final boolean parseJS = config.getBoolean("parsejs");
+            for (String key : configuration.getConfigurationSection("placeholders").getKeys(false)) {
+                ConfigurationSection config = configuration.getConfigurationSection("placeholders." + key);
+                if (config == null || !config.getString("placeholder", "").equalsIgnoreCase(key)) {
+                    plugin.getLogger().severe("Placeholder key must much with the identifier. Skipping " + key);
+                    continue;
+                }
 
-            List<ConditionNode> nodes = null;
-            if (conditions != null) {
-                nodes = new ArrayList<>(scanConditions(conditions));
+                ConfigurationSection conditions = config.getConfigurationSection("conditions");
+
+                final boolean parseJS = config.getBoolean("parsejs");
+
+                List<ConditionNode> nodes = null;
+                if (conditions != null) {
+                    nodes = new ArrayList<>(scanConditions(conditions));
+                }
+
+                storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), HexParser.text(config.getString("text", "")),nodes,parseJS);
             }
-
-            storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), HexParser.text(config.getString("text", "")),nodes,parseJS);
         }
 
         plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
