@@ -68,6 +68,11 @@ public class PapiHook extends PlaceholderExpansion {
     }
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
         return provider.provide(player,params);
     }

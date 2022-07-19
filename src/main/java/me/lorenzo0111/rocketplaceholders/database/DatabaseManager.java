@@ -140,7 +140,7 @@ public class DatabaseManager {
     public CompletableFuture<Multimap<String, ConditionNode>> getNodes() {
         CompletableFuture<Multimap<String,ConditionNode>> completableFuture = new CompletableFuture<>();
 
-        CompletableFuture<List<RawNode>> map =  database.queryForList("SELECT * FROM rp_nodes;", (set, i) -> {
+        CompletableFuture<List<RawNode>> map =  database.queryForListOrElseGet("SELECT * FROM rp_nodes;", (set, i) -> {
             List<String> itemLore = new ArrayList<>();
             Material material = null;
             if (set.getString("item_lore") != null) {
@@ -155,7 +155,7 @@ public class DatabaseManager {
 
             final Requirement requirement = Requirements.createRequirement(RequirementType.valueOf(set.getString("type")),set.getString("value"), material,set.getString("item_name"),itemLore);
             return new RawNode(set.getString("identifier"), new ConditionNode(requirement, set.getString("text")));
-        });
+        }, ArrayList::new);
 
         map.whenComplete((list, error) -> {
             if (error != null) {
