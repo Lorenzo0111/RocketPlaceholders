@@ -26,7 +26,9 @@ package me.lorenzo0111.rocketplaceholders.creator;
 
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
+import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
+import me.lorenzo0111.rocketplaceholders.exceptions.SaveException;
 import me.lorenzo0111.rocketplaceholders.storage.PlaceholderSettings;
 import me.lorenzo0111.rocketplaceholders.utilities.HexParser;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
@@ -155,6 +157,31 @@ public class Placeholder {
         if (this.settings.key() == null) return false;
 
         return this.edit("text", text);
+    }
+
+    /**
+     * Set the text and save it into the database if necessary
+     * @param text The text to set
+     * @throws SaveException If an error occurred while saving the text
+     */
+    public void saveText(String text) throws SaveException {
+        if (!this.setText(text)) {
+            DatabaseManager databaseManager = RocketPlaceholders.getInstance().getLoader().getDatabaseManager();
+            if (databaseManager == null || !databaseManager.isMain()) {
+                String reason = "Could not find a reason for the error.";
+                if (databaseManager == null) {
+                    if (this.getSettings().key() == null) {
+                        reason = "The file is not loaded!";
+                    }
+                } else {
+                    reason = "This is not the main server for the database.";
+                }
+
+                throw new SaveException(reason);
+            }
+
+            databaseManager.removeAll().thenAccept(v -> databaseManager.sync());
+        }
     }
 
     /**

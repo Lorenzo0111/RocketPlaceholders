@@ -35,6 +35,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -99,7 +100,7 @@ public class Requirements {
                     throw new InvalidConditionException("You cannot use this condition without Vault plugin.");
                 }
 
-                return new HasGroupCondition(value);
+                return new HasGroupCondition(Arrays.asList(value.split("\\|\\|")));
             case TEXT:
                 if (value == null) {
                     throw new InvalidConditionException("Value cannot be null. Please insert two valid strings as 'value' in the config.");

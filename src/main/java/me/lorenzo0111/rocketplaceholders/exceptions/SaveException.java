@@ -22,45 +22,15 @@
  * SOFTWARE.
  */
 
-package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
+package me.lorenzo0111.rocketplaceholders.exceptions;
 
-import com.google.common.base.Joiner;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
-import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
-import net.milkbowl.vault.permission.Permission;
-import org.bukkit.entity.Player;
+public class SaveException extends RuntimeException {
 
-import java.util.List;
-
-public class HasGroupCondition extends Requirement {
-    private final List<String> groups;
-
-    public HasGroupCondition(List<String> groups) {
-        this.groups = groups;
-        this.getDatabaseInfo().put("value", Joiner.on("||").join(groups));
+    public SaveException(String reason) {
+        super(reason);
     }
 
-    @Override
-    public boolean apply(Player player) {
-        if (!plugin.getLoader().getVault().hooked())
-            return false;
-
-        Permission permission = plugin.getLoader().getVault().permissions();
-
-        boolean inGroup = true;
-
-        for (String group : groups) {
-            if (!permission.playerInGroup(player, group)) {
-                inGroup = false;
-                break;
-            }
-        }
-
-        return permission != null && inGroup;
-    }
-
-    @Override
-    public RequirementType getType() {
-        return RequirementType.GROUP;
+    public String getReason() {
+        return this.getMessage();
     }
 }

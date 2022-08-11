@@ -29,6 +29,7 @@ import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.database.DatabaseManager;
+import me.lorenzo0111.rocketplaceholders.exceptions.SaveException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -80,29 +81,14 @@ public class SetCommand extends SubCommand {
 
         if (user != null) {
             RocketPlaceholders.getApi().getUserStorage().setText(placeholder,user.getUniqueId(), builder.toString());
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + builder + "&7 for &e" + user.getName() + "&7!"));
-            return;
-        }
-
-        if (!placeholder.setText(builder.toString())) {
-            DatabaseManager databaseManager = this.getCommand().getPlugin().getLoader().getDatabaseManager();
-            if (databaseManager == null || !databaseManager.isMain()) {
+        } else {
+            try {
+                placeholder.saveText(builder.toString());
+            } catch (SaveException e) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cAn error has occurred when editing this value. Please try again later!"));
-
-                String reason = "Could not find a reason for the error.";
-                if (databaseManager == null) {
-                    if (placeholder.getSettings().key() == null) {
-                        reason = "The file is not loaded!";
-                    }
-                } else {
-                    reason = "This is not the main server for the database.";
-                }
-
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cReason: " + reason));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cReason: " + e.getReason()));
                 return;
             }
-
-            databaseManager.removeAll().thenAccept(v -> databaseManager.sync());
         }
 
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + builder + "&7!"));

@@ -24,12 +24,15 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
+import me.lorenzo0111.rocketplaceholders.exceptions.SaveException;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import javax.script.ScriptException;
@@ -48,6 +51,7 @@ public class SetJSCommand extends SubCommand {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void perform(CommandSender sender, String[] args) {
         if (!sender.hasPermission("rocketplaceholders.command.setjs")) {
             this.sendPermissionsError(sender);
@@ -66,8 +70,13 @@ public class SetJSCommand extends SubCommand {
             return;
         }
 
+        OfflinePlayer user = null;
+        if (args.length >= 5 && args[2].equalsIgnoreCase("--user")) {
+            user = Bukkit.getOfflinePlayer(args[3]);
+        }
+
         StringBuilder builder = new StringBuilder();
-        for (int i = 2; i < args.length; i++) {
+        for (int i = user != null ? 4 : 2; i < args.length; i++) {
             builder.append(args[i]).append(" ");
         }
 
@@ -78,7 +87,20 @@ public class SetJSCommand extends SubCommand {
         try {
             String text = engine.parse(builder.toString());
             if (text != null) {
-                placeholder.setText(text);
+
+                if (user != null) {
+                    RocketPlaceholders.getApi().getUserStorage().setText(placeholder,user.getUniqueId(),text);
+                } else {
+                    try {
+                        placeholder.saveText(text);
+                    } catch (SaveException e) {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cAn error has occurred when editing this value. Please try again later!"));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cReason: " + e.getReason()));
+                        return;
+                    }
+                }
+
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + text + "&7!"));
             }
         } catch (ScriptException e) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Error while parsing the javascript expression!"));
