@@ -94,7 +94,7 @@ public class ConfigManager {
             for (String key : configuration.getConfigurationSection("placeholders").getKeys(false)) {
                 ConfigurationSection config = configuration.getConfigurationSection("placeholders." + key);
                 if (config == null || !config.getString("placeholder", "").equalsIgnoreCase(key)) {
-                    plugin.getLogger().severe("Placeholder key must much with the identifier. Skipping " + key);
+                    plugin.getLogger().severe("Placeholder key must match with the identifier. Skipping " + key);
                     continue;
                 }
 

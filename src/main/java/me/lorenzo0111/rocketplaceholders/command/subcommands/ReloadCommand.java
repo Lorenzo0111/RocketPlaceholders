@@ -24,6 +24,7 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import org.bukkit.ChatColor;
@@ -51,6 +52,7 @@ public class ReloadCommand extends SubCommand {
         this.getCommand().getPlugin().reloadConfig();
         this.getCommand().getChecker().sendUpdateCheck(sender);
 
+        RocketPlaceholders.getApi().getUserStorage().save();
         this.getCommand().getPlugin().getLoader().loadDatabase();
 
         if (this.getCommand().getPlugin().getLoader().getDatabaseManager() != null && !this.getCommand().getPlugin().getConfig().getBoolean("mysql.enabled")) {
