@@ -36,6 +36,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -279,6 +280,10 @@ public class Placeholder {
      */
     public String getText() {
         return this.text;
+    }
+
+    public @Nullable String getTextFor(Player player) {
+        return RocketPlaceholders.getApi().getUserStorage().getText(this,player.getUniqueId());
     }
 
     /**
