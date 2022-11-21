@@ -73,6 +73,8 @@ public class UserStorage implements ITextStorage<UUID> {
             user.setText(text);
             storage.add(user);
         }
+
+        RocketPlaceholders.getInstance().debug("Created new UserText: " + user);
     }
 
     @Override

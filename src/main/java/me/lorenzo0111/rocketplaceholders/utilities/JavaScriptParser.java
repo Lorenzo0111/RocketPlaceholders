@@ -83,6 +83,8 @@ public class JavaScriptParser<T> {
     @SuppressWarnings("unchecked")
     @Nullable
     public T parse(String str) throws ScriptException {
+        RocketPlaceholders.getInstance().debug("Parsing expression: " + str);
+
         this.bind("Server", Bukkit.getServer());
         this.applyBinding(engine);
 
@@ -91,6 +93,7 @@ public class JavaScriptParser<T> {
         this.bindings.clear();
         engine.getBindings().clear();
 
+        RocketPlaceholders.getInstance().debug("Expression returned: " + result);
         return result;
     }
 

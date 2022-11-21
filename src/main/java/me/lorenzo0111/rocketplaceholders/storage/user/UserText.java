@@ -79,4 +79,13 @@ public class UserText implements ConfigurationSerializable {
 
         return map;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "placeholder=" + placeholder +
+                ", user=" + user +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }
