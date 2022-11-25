@@ -24,8 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.storage.user;
 
-import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
-import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,18 +32,18 @@ import java.util.Map;
 import java.util.UUID;
 
 public class UserText implements ConfigurationSerializable {
-    private final Placeholder placeholder;
+    private final String identifier;
     private final UUID user;
     private String text;
 
-    public UserText(Placeholder placeholder, UUID user) {
-        this.placeholder = placeholder;
+    public UserText(String identifier, UUID user) {
+        this.identifier = identifier;
         this.user = user;
     }
 
     @SuppressWarnings("unused")
     public UserText(Map<String,Object> data) {
-        this.placeholder = RocketPlaceholders.getApi().getPlaceholder(data.get("placeholder").toString());
+        this.identifier = data.get("placeholder").toString();
         this.user = UUID.fromString(data.get("user").toString());
 
         if (data.containsKey("text")) {
@@ -61,8 +59,8 @@ public class UserText implements ConfigurationSerializable {
         this.text = text;
     }
 
-    public Placeholder getPlaceholder() {
-        return placeholder;
+    public String getPlaceholder() {
+        return identifier;
     }
 
     public UUID getUser() {
@@ -73,7 +71,7 @@ public class UserText implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String,Object> map = new HashMap<>();
-        map.put("placeholder", placeholder.getIdentifier());
+        map.put("placeholder", identifier);
         map.put("user", user.toString());
         map.put("text", text);
 
@@ -83,7 +81,7 @@ public class UserText implements ConfigurationSerializable {
     @Override
     public String toString() {
         return "{" +
-                "placeholder=" + placeholder +
+                "identifier=" + identifier +
                 ", user=" + user +
                 ", text='" + text + '\'' +
                 '}';

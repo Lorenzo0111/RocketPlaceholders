@@ -63,9 +63,9 @@ public class UserStorage implements ITextStorage<UUID> {
     @Override
     public void setText(Placeholder placeholder, UUID owner,@Nullable String text) {
         UserText user = storage.stream()
-                .filter(userText -> userText.getUser().equals(owner) && userText.getPlaceholder().equals(placeholder))
+                .filter(userText -> userText.getUser().equals(owner) && userText.getPlaceholder().equals(placeholder.getIdentifier()))
                 .findFirst()
-                .orElse(new UserText(placeholder,owner));
+                .orElse(new UserText(placeholder.getIdentifier(),owner));
 
         storage.remove(user);
 
@@ -80,7 +80,7 @@ public class UserStorage implements ITextStorage<UUID> {
     @Override
     public @Nullable String getText(Placeholder placeholder, UUID owner) {
         return storage.stream()
-                .filter(userText -> userText.getUser().equals(owner) && userText.getPlaceholder().equals(placeholder))
+                .filter(userText -> userText.getUser().equals(owner) && userText.getPlaceholder().equals(placeholder.getIdentifier()))
                 .map(UserText::getText)
                 .findFirst()
                 .orElse(null);
