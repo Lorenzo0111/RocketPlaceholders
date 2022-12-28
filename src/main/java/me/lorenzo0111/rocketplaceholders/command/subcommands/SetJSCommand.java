@@ -81,10 +81,10 @@ public class SetJSCommand extends SubCommand {
         }
 
         builder.deleteCharAt(builder.length() - 1);
-        engine.bind("Player", sender);
-        engine.bind("Server", Bukkit.getServer());
-        engine.bind("Placeholder", placeholder);
         try {
+            engine.bind("Player", user != null ? user : sender);
+            engine.bind("Server", Bukkit.getServer());
+            engine.bind("Placeholder", placeholder);
             String text = engine.parse(builder.toString());
             if (text != null) {
 
