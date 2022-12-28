@@ -80,35 +80,31 @@ public class SetJSCommand extends SubCommand {
             builder.append(args[i]).append(" ");
         }
 
-        int runner = user != null ? 2 : 1;
-
         builder.deleteCharAt(builder.length() - 1);
-        for (int i = 0; i < runner; i++) {
-            try {
-                engine.bind("Player", user != null ? user : sender);
-                engine.bind("Server", Bukkit.getServer());
-                engine.bind("Placeholder", placeholder);
-                String text = engine.parse(builder.toString());
-                if (text != null) {
+        try {
+            engine.bind("Player", user != null ? user : sender);
+            engine.bind("Server", Bukkit.getServer());
+            engine.bind("Placeholder", placeholder);
+            String text = engine.parse(builder.toString());
+            if (text != null) {
 
-                    if (user != null) {
-                        RocketPlaceholders.getApi().getUserStorage().setText(placeholder,user.getUniqueId(),text);
-                    } else {
-                        try {
-                            placeholder.saveText(text);
-                        } catch (SaveException e) {
-                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cAn error has occurred when editing this value. Please try again later!"));
-                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cReason: " + e.getReason()));
-                            return;
-                        }
+                if (user != null) {
+                    RocketPlaceholders.getApi().getUserStorage().setText(placeholder,user.getUniqueId(),text);
+                } else {
+                    try {
+                        placeholder.saveText(text);
+                    } catch (SaveException e) {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cAn error has occurred when editing this value. Please try again later!"));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &cReason: " + e.getReason()));
+                        return;
                     }
-
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + text + "&7!"));
                 }
-            } catch (ScriptException e) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Error while parsing the javascript expression!"));
-                this.getCommand().getPlugin().debug(e.getMessage());
+
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + text + "&7!"));
             }
+        } catch (ScriptException e) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Error while parsing the javascript expression!"));
+            this.getCommand().getPlugin().debug(e.getMessage());
         }
     }
 }
