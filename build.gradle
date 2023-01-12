@@ -53,7 +53,7 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.2")
-    compileOnly('org.jetbrains:annotations:23.1.0')
+    compileOnly('org.jetbrains:annotations:24.0.0')
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT") {
         exclude module: 'spigot'
