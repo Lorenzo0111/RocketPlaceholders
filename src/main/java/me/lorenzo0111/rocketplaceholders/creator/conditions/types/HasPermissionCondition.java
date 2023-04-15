@@ -46,6 +46,10 @@ public class HasPermissionCondition extends Requirement {
         return RequirementType.PERMISSION;
     }
 
+    public static HasPermissionCondition create(String value) {
+        return new HasPermissionCondition(value);
+    }
+
     @Override
     public String toString() {
         return "{" +

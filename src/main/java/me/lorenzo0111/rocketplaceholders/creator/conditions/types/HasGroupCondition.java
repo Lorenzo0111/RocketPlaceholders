@@ -27,9 +27,12 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 import com.google.common.base.Joiner;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HasGroupCondition extends Requirement {
@@ -57,6 +60,18 @@ public class HasGroupCondition extends Requirement {
         }
 
         return permission != null && inGroup;
+    }
+
+    public static HasGroupCondition create(String value) throws InvalidConditionException {
+        if (value == null) {
+            throw new InvalidConditionException("Group cannot be null. Please try to set a valid permission as 'value' in the config.");
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+            throw new InvalidConditionException("You cannot use this condition without Vault plugin.");
+        }
+
+        return new HasGroupCondition(Arrays.asList(value.split("\\|\\|")));
     }
 
     @Override

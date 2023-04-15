@@ -57,61 +57,17 @@ public class Requirements {
     public static Requirement createRequirement(RequirementType type, @Nullable String value, @Nullable Material material, @Nullable String itemName,@Nullable List<String> itemLore) throws InvalidConditionException {
         switch (type) {
             case ITEM:
-                if (material == null) {
-                    throw new InvalidConditionException("Material cannot be null");
-                }
-
-                ItemStack item = new ItemStack(material);
-                ItemMeta meta = item.getItemMeta();
-
-                if (meta != null) {
-                    meta.setDisplayName(translateColors(itemName));
-                    meta.setLore(translateColors(itemLore));
-                    item.setItemMeta(meta);
-                }
-
-                return new HasItemCondition(item);
+                return HasItemCondition.create(material,itemName,itemLore);
             case JAVASCRIPT:
-                if (value == null) {
-                    throw new InvalidConditionException("Expression cannot be null, try to set a correct 'value' in the config");
-                }
-
-                return new JSCondition(value);
+                return JSCondition.create(value);
             case MONEY:
-                if (value == null) {
-                    throw new InvalidConditionException("Value cannot be null. Please insert a valid number as 'value' in the config.");
-                }
-
-                long amount = Long.parseLong(value);
-
-                return new HasMoneyCondition(amount);
+                return HasMoneyCondition.create(value);
             case PERMISSION:
-                if (value == null) {
-                    throw new InvalidConditionException("Permission cannot be null. Please try to set a valid permission as 'value' in the config.");
-                }
-
-                return new HasPermissionCondition(value);
+                return HasPermissionCondition.create(value);
             case GROUP:
-                if (value == null) {
-                    throw new InvalidConditionException("Group cannot be null. Please try to set a valid permission as 'value' in the config.");
-                }
-
-                if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-                    throw new InvalidConditionException("You cannot use this condition without Vault plugin.");
-                }
-
-                return new HasGroupCondition(Arrays.asList(value.split("\\|\\|")));
+                return HasGroupCondition.create(value);
             case TEXT:
-                if (value == null) {
-                    throw new InvalidConditionException("Value cannot be null. Please insert two valid strings as 'value' in the config.");
-                }
-
-                String[] strings = value.split("%%");
-                if (strings.length != 2) {
-                    throw new InvalidConditionException("Invalid value. Please read https://docs.rocketplugins.space/rocektplugins/rocketplaceholders/configure/conditions/text-condition");
-                }
-
-                return new TextCondition(strings[0],strings[1]);
+                return TextCondition.create(value);
             default:
                 return null;
         }
@@ -146,7 +102,7 @@ public class Requirements {
      * @return Colorized text
      */
     @Nullable
-    private static String translateColors(String text) {
+    public static String translateColors(String text) {
         if (text == null) {
             return null;
         }
@@ -159,7 +115,7 @@ public class Requirements {
      * @return List of colorized texts
      */
     @Nullable
-    private static List<String> translateColors(List<String> text) {
+    public static List<String> translateColors(List<String> text) {
         if (text == null) {
             return null;
         }

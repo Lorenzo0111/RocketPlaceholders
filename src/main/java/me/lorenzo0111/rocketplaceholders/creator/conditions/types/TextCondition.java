@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.providers.ProviderUtils;
 import org.bukkit.entity.Player;
 
@@ -47,6 +48,19 @@ public class TextCondition extends Requirement {
         String two = ProviderUtils.setPlaceholders(plugin,this.two,player);
 
         return one.equals(two);
+    }
+
+    public static TextCondition create(String value) {
+        if (value == null) {
+            throw new InvalidConditionException("Value cannot be null. Please insert two valid strings as 'value' in the config.");
+        }
+
+        String[] strings = value.split("%%");
+        if (strings.length != 2) {
+            throw new InvalidConditionException("Invalid value. Please read https://docs.rocketplugins.space/rocektplugins/rocketplaceholders/configure/conditions/text-condition");
+        }
+
+        return new TextCondition(strings[0],strings[1]);
     }
 
     @Override

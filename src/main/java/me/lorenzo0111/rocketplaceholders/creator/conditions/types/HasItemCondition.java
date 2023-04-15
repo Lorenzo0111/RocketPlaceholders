@@ -26,10 +26,17 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class HasItemCondition extends Requirement {
@@ -53,6 +60,23 @@ public class HasItemCondition extends Requirement {
     @Override
     public boolean apply(Player player) {
         return player.getInventory().containsAtLeast(item,item.getAmount()) || hasInArmor(player,item);
+    }
+
+    public static HasItemCondition create(Material material, String itemName, List<String> itemLore) throws InvalidConditionException {
+        if (material == null) {
+            throw new InvalidConditionException("Material cannot be null");
+        }
+
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta != null) {
+            meta.setDisplayName(Requirements.translateColors(itemName));
+            meta.setLore(Requirements.translateColors(itemLore));
+            item.setItemMeta(meta);
+        }
+
+        return new HasItemCondition(item);
     }
 
     @Override

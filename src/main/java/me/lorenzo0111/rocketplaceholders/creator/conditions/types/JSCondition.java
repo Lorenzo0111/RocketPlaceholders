@@ -26,6 +26,7 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
+import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.entity.Player;
 
@@ -39,13 +40,13 @@ public class JSCondition extends Requirement {
         engine = new JavaScriptParser<>();
 
         this.expression = expression;
-        this.getDatabaseInfo().put("value",expression);
+        this.getDatabaseInfo().put("value", expression);
     }
 
     @Override
     public boolean apply(Player player) {
         try {
-            engine.bind("Player",player);
+            engine.bind("Player", player);
             Boolean result = engine.parse(expression);
             if (result == null) {
                 plugin.getLogger().severe("Expression '" + expression + "' has to return a boolean. Returning as false..");
@@ -60,6 +61,14 @@ public class JSCondition extends Requirement {
         }
 
         return false;
+    }
+
+    public static JSCondition create(String value) {
+        if (value == null) {
+            throw new InvalidConditionException("Expression cannot be null, try to set a correct 'value' in the config");
+        }
+
+        return new JSCondition(value);
     }
 
     @Override
