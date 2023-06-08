@@ -65,7 +65,7 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.1")
     implementation('com.github.cryptomorin:XSeries:9.3.0')
     implementation('net.kyori:adventure-api:4.12.0')
-    implementation('net.kyori:adventure-text-serializer-legacy:4.12.0')
+    implementation('net.kyori:adventure-text-serializer-legacy:4.14.0')
     implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
         exclude module: "annotations"
     }
