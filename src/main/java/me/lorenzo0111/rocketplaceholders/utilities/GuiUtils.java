@@ -66,7 +66,7 @@ public final class GuiUtils {
         gui.setItem(21,left);
         gui.setItem(23,right);
 
-        gui.getFiller().fillBottom(ItemBuilder.from(Material.GLASS_PANE).name(Component.text("§r")).asGuiItem());
+        gui.getFiller().fillBottom(ItemBuilder.from(XMaterial.GLASS_PANE.parseMaterial()).name(Component.text("§r")).asGuiItem());
     }
 
     public static PaginatedGui createConditionsGui(Placeholder placeholder) {
