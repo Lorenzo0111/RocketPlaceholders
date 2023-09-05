@@ -53,27 +53,19 @@ public abstract class Provider {
 
     @Nullable
     public String provide(@Nullable OfflinePlayer player, String identifier) {
-        if (player == null) {
-            return null;
-        }
-
-        if (!player.isOnline()) {
-            return null;
-        }
-
-        final Player onlinePlayer = player.getPlayer();
-
-        if (onlinePlayer == null) {
-            return null;
-        }
-
         final Placeholder placeholder = manager.get(identifier);
 
         if (placeholder == null) {
             return null;
         }
 
-        String userText = RocketPlaceholders.getApi().getUserStorage().getText(placeholder,onlinePlayer.getUniqueId());
+        if (player == null || !player.isOnline()) {
+            return placeholder.getText();
+        }
+
+        Player onlinePlayer = player.getPlayer();
+
+        String userText = RocketPlaceholders.getApi().getUserStorage().getText(placeholder,player.getUniqueId());
         if (userText != null) {
             return this.parse(placeholder,player,userText);
         }

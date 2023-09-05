@@ -28,8 +28,10 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.providers.Provider;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PapiHook extends PlaceholderExpansion {
     private final Provider provider;
@@ -70,6 +72,11 @@ public class PapiHook extends PlaceholderExpansion {
     @Override
     public boolean persist() {
         return true;
+    }
+
+    @Override
+    public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
+        return provider.provide(player,params);
     }
 
     @Override
