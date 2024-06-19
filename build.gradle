@@ -28,12 +28,12 @@ plugins {
     id 'java'
     id 'maven-publish'
     id "com.github.johnrengelman.shadow" version "8.1.1"
-    id "net.kyori.indra.license-header" version "3.1.2"
+    id "net.kyori.indra.license-header" version "3.1.3"
     id "io.github.slimjar" version "1.3.0"
 }
 
 group = 'me.lorenzo0111'
-version = '2.3'
+version = '2.3.1'
 description = 'RocketPlaceholders'
 
 ext {
@@ -51,9 +51,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.3")
-    compileOnly('org.jetbrains:annotations:24.0.1')
+    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly('org.jetbrains:annotations:24.1.0')
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT") {
         exclude module: 'spigot'
@@ -61,28 +61,26 @@ dependencies {
 
     implementation("io.github.slimjar:slimjar:1.2.8")
     implementation("com.github.glyart:mystral:1.4.6-SNAPSHOT")
-    implementation("dev.triumphteam:triumph-gui:3.2")
+    implementation("dev.triumphteam:triumph-gui:3.2.2")
     implementation("org.bstats:bstats-bukkit:3.0.2")
-    implementation('com.github.cryptomorin:XSeries:9.4.0')
-    implementation('net.kyori:adventure-api:4.14.0')
-    implementation('net.kyori:adventure-text-serializer-legacy:4.14.0')
+    implementation('com.github.cryptomorin:XSeries:11.0.0')
+    implementation('net.kyori:adventure-api:4.17.0')
+    implementation('net.kyori:adventure-text-serializer-legacy:4.17.0')
     implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
         exclude module: "annotations"
     }
 
-    slim("mysql:mysql-connector-java:8.0.33")
-    slim("commons-io:commons-io:2.13.0")
+    slim("com.mysql:mysql-connector-j:8.4.0")
+    slim("commons-io:commons-io:2.16.1")
 }
 
 shadowJar {
     relocate("com.glyart.mystral", "${libsBase}mystral")
     relocate("org.checkerframework", "${libsBase}checkerframework")
     relocate("com.zaxxer.hikari", "${libsBase}hikari")
-    relocate("com.google.gson", "${libsBase}gson")
     relocate("org.bstats", "${libsBase}bstats")
     relocate("dev.triumphteam.gui", "${libsBase}gui")
-    relocate("net.kyori.adventure", "${libsBase}adventure")
-    relocate("net.kyori.examination", "${libsBase}examination")
+    relocate("net.kyori", "${libsBase}kyori")
     relocate("com.cryptomorin.xseries", "${libsBase}xseries")
     relocate("io.github.slimjar", "${libsBase}slimjar")
     relocate("com.haroldstudios.hexitextlib", "${libsBase}hex")
@@ -91,7 +89,6 @@ shadowJar {
 }
 
 slimJar {
-    relocate("com.mysql", "${libsBase}mysql")
     relocate("org.apache.commons.io","${libsBase}io")
 }
 
