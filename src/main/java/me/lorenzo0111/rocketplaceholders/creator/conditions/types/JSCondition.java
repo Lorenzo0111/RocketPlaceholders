@@ -27,6 +27,7 @@ package me.lorenzo0111.rocketplaceholders.creator.conditions.types;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
+import me.lorenzo0111.rocketplaceholders.providers.ProviderUtils;
 import me.lorenzo0111.rocketplaceholders.utilities.JavaScriptParser;
 import org.bukkit.entity.Player;
 
@@ -47,7 +48,7 @@ public class JSCondition extends Requirement {
     public boolean apply(Player player) {
         try {
             engine.bind("Player", player);
-            Boolean result = engine.parse(expression);
+            Boolean result = engine.parse(ProviderUtils.setPlaceholders(plugin, expression, player));
             if (result == null) {
                 plugin.getLogger().severe("Expression '" + expression + "' has to return a boolean. Returning as false..");
                 return false;

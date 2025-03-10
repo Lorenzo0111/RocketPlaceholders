@@ -1,7 +1,0 @@
-language: java
-jdk: [openjdk16]
-dist: xenial
-os: linux
-install: skip
-script:
-  - ./gradlew shadowJar

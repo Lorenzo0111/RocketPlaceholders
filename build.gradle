@@ -27,13 +27,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     id 'maven-publish'
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "com.gradleup.shadow" version "8.3.6"
     id "net.kyori.indra.license-header" version "3.1.3"
     id "io.github.slimjar" version "1.3.0"
 }
 
 group = 'me.lorenzo0111'
-version = '2.3.1'
+version = '2.3.2'
 description = 'RocketPlaceholders'
 
 ext {
@@ -51,9 +51,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly('org.jetbrains:annotations:24.1.0')
+    compileOnly('org.jetbrains:annotations:26.0.2')
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT") {
         exclude module: 'spigot'
@@ -62,16 +62,16 @@ dependencies {
     implementation("io.github.slimjar:slimjar:1.2.8")
     implementation("com.github.glyart:mystral:1.4.6-SNAPSHOT")
     implementation("dev.triumphteam:triumph-gui:3.2.2")
-    implementation("org.bstats:bstats-bukkit:3.0.2")
-    implementation('com.github.cryptomorin:XSeries:11.0.0')
-    implementation('net.kyori:adventure-api:4.17.0')
-    implementation('net.kyori:adventure-text-serializer-legacy:4.17.0')
+    implementation("org.bstats:bstats-bukkit:3.1.0")
+    implementation('com.github.cryptomorin:XSeries:13.0.0')
+    implementation('net.kyori:adventure-api:4.19.0')
+    implementation('net.kyori:adventure-text-serializer-legacy:4.19.0')
     implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
         exclude module: "annotations"
     }
 
-    slim("com.mysql:mysql-connector-j:8.4.0")
-    slim("commons-io:commons-io:2.16.1")
+    slim("com.mysql:mysql-connector-j:9.2.0")
+    slim("commons-io:commons-io:2.18.0")
 }
 
 shadowJar {
@@ -94,9 +94,9 @@ slimJar {
 
 javadoc {
     options.links(
-            'https://javadoc.io/static/org.jetbrains/annotations/21.0.1/',
+            'https://javadoc.io/static/org.jetbrains/annotations/26.0.2/',
             'https://docs.oracle.com/en/java/javase/16/docs/api/',
-            'https://jd.papermc.io/paper/1.19/'
+            'https://jd.papermc.io/paper/1.21.4/'
     )
     options.addStringOption('Xdoclint:none', '-quiet')
     source = sourceSets.main.allJava
