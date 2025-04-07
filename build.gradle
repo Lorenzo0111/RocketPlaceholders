@@ -64,7 +64,7 @@ dependencies {
     implementation("dev.triumphteam:triumph-gui:3.2.2")
     implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation('com.github.cryptomorin:XSeries:13.0.0')
-    implementation('net.kyori:adventure-api:4.19.0')
+    implementation('net.kyori:adventure-api:4.20.0')
     implementation('net.kyori:adventure-text-serializer-legacy:4.19.0')
     implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
         exclude module: "annotations"
