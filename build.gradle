@@ -71,7 +71,7 @@ dependencies {
     }
 
     slim("com.mysql:mysql-connector-j:9.2.0")
-    slim("commons-io:commons-io:2.18.0")
+    slim("commons-io:commons-io:2.19.0")
 }
 
 shadowJar {
