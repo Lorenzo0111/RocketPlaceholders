@@ -80,11 +80,24 @@ public class ConfigManager {
         if (mover.shouldMigrate())
             mover.migrate();
 
-        File[] files = dir.listFiles(new PlaceholderFilter());
+        this.loadFolder(dir);
 
-        Objects.requireNonNull(files, "An error has occurred while loading placeholders files.");
+        plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
+    }
+
+    public void loadFolder(File folder) {
+        File[] files = folder.listFiles(new PlaceholderFilter());
+        if (files == null) {
+            plugin.getLogger().warning("No placeholder files found in " + folder.getAbsolutePath());
+            return;
+        }
 
         for (File file : files) {
+            if (file.isDirectory()) {
+                loadFolder(file);
+                continue;
+            }
+
             PlaceholderSplitter splitter = new PlaceholderSplitter(file);
             if (splitter.shouldMigrate())
                 splitter.migrate();
@@ -110,8 +123,6 @@ public class ConfigManager {
                 storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), HexParser.text(config.getString("text", "")),nodes,parseJS);
             }
         }
-
-        plugin.getLogger().info("Loaded " + storageManager.getInternalPlaceholders().getMap().size() + " placeholders!");
     }
 
     public static List<ConditionNode> scanConditions(ConfigurationSection section) throws InvalidConditionException {

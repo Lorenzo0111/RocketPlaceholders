@@ -69,8 +69,6 @@ public class RocketPlaceholdersCommand implements CommandExecutor, TabCompleter 
 
     @Override
     public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &7Running &e" + plugin.getDescription().getName() + " &ev" + plugin.getDescription().getVersion() + " &7by &eLorenzo0111&7!"));
-
         if (!sender.hasPermission("rocketplaceholders.command")) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix") + "&r &cYou do not have the permission to execute this command."));
             return true;
