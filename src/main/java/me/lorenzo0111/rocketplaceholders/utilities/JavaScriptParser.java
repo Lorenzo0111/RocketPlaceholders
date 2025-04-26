@@ -65,13 +65,7 @@ public class JavaScriptParser<T> {
             RocketPlaceholders.getInstance()
                     .getLogger()
                     .info("Hooked into " + provider.getPlugin().getName() + " for JavaScript support.");
-            return;
         }
-
-        JavaPlugin plugin = RocketPlaceholders.getInstance();
-        plugin.getLogger().severe("JavaScript engine not found. Consider installing JShader from the same author of this plugin.");
-        plugin.getLogger().severe("Download it from: https://git.io/Jnq1M");
-        plugin.getLogger().severe("JavaScript expression will cause errors, do not report it before trying the shader.");
     }
 
     /**
@@ -83,6 +77,14 @@ public class JavaScriptParser<T> {
     @SuppressWarnings("unchecked")
     @Nullable
     public T parse(String str) throws ScriptException {
+        if (engine == null) {
+            JavaPlugin plugin = RocketPlaceholders.getInstance();
+            plugin.getLogger().severe("JavaScript engine not found. Consider installing JShader from the same author of this plugin.");
+            plugin.getLogger().severe("Download it from: https://git.io/Jnq1M");
+            plugin.getLogger().severe("JavaScript expression will cause errors, do not report it before trying the shader.");
+            return null;
+        }
+
         RocketPlaceholders.getInstance().debug("Parsing expression: " + str);
 
         this.bind("Server", Bukkit.getServer());

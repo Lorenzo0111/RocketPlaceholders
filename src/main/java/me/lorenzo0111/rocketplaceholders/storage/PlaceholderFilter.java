@@ -31,7 +31,8 @@ public class PlaceholderFilter implements FileFilter {
 
     @Override
     public boolean accept(File pathname) {
-        return pathname.isFile() && pathname.getName().endsWith(".yml");
+        return (pathname.isFile() && pathname.getName().endsWith(".yml")) ||
+                pathname.isDirectory();
     }
 
 }
