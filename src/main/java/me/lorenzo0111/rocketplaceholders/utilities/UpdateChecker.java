@@ -24,10 +24,9 @@
 
 package me.lorenzo0111.rocketplaceholders.utilities;
 
-import org.bukkit.Bukkit;
+import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,11 +36,11 @@ import java.util.Scanner;
 public class UpdateChecker {
 
     private boolean updateAvailable;
-    private final JavaPlugin plugin;
+    private final RocketPlaceholders plugin;
     private final int resourceId;
     private final String url;
 
-    public UpdateChecker(JavaPlugin plugin, int resourceId, String url) {
+    public UpdateChecker(RocketPlaceholders plugin, int resourceId, String url) {
         this.plugin = plugin;
         this.resourceId = resourceId;
         this.url = url;
@@ -54,7 +53,7 @@ public class UpdateChecker {
     }
 
     private void fetch() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        plugin.getLoader().getFoliaLib().getScheduler().runAsync((task) -> {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId).openStream(); Scanner scanner = new Scanner(inputStream)) {
                 if (scanner.hasNext()) {
                     String version = scanner.next();

@@ -79,7 +79,7 @@ public class GuiCommand extends SubCommand {
 
         for (Placeholder placeholder : placeholders) {
             gui.addItem( ItemBuilder
-                    .from(Objects.requireNonNull(XMaterial.TARGET.parseMaterial()))
+                    .from(Objects.requireNonNull(XMaterial.TARGET.get()))
                     .name(Component.text(String.format("§8§l» §7%s",placeholder.getIdentifier())))
                     .lore(Component.text("§7Click to edit this placeholder"))
                     .asGuiItem( e -> {

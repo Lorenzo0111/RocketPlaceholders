@@ -24,6 +24,7 @@
 
 package me.lorenzo0111.rocketplaceholders.utilities;
 
+import com.tcoded.folialib.FoliaLib;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
@@ -49,15 +50,21 @@ public class PluginLoader {
 
     private final RocketPlaceholders plugin;
     private final PlaceholdersManager placeholdersManager;
-    private final UpdateChecker updateChecker;
+    private final FoliaLib foliaLib;
+    private UpdateChecker updateChecker;
     private VaultHook vault;
     private DatabaseManager databaseManager;
     private HookType hookType = HookType.NULL;
 
-    public PluginLoader(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager, UpdateChecker updateChecker) {
+    public PluginLoader(RocketPlaceholders plugin, PlaceholdersManager placeholdersManager) {
         this.plugin = plugin;
         this.placeholdersManager = placeholdersManager;
-        this.updateChecker = updateChecker;
+        this.foliaLib = new FoliaLib(plugin);
+    }
+
+    public void loadChecker() {
+        this.updateChecker = new UpdateChecker(plugin, 82678, "https://bit.ly/RocketPlaceholders");
+        updateChecker.sendUpdateCheck(Bukkit.getConsoleSender());
     }
 
     public void loadMetrics() {
@@ -151,5 +158,9 @@ public class PluginLoader {
 
     public HookType getHookType() {
         return hookType;
+    }
+
+    public FoliaLib getFoliaLib() {
+        return foliaLib;
     }
 }

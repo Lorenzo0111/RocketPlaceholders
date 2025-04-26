@@ -33,15 +33,17 @@ public class ConversationUtil {
     public static void createConversation(RocketPlaceholders plugin, Conversation conversation) {
         conversation.setPlugin(plugin);
 
-        ConversationFactory factory = new ConversationFactory(plugin)
-                .withPrefix(context -> ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix", "") + " "))
-                .withEscapeSequence("cancel")
-                .withTimeout(60)
-                .withModality(true)
-                .withFirstPrompt(conversation)
-                .withLocalEcho(false);
+        plugin.getLoader().getFoliaLib().getScheduler().runAtEntity(conversation.getAuthor(), (task) -> {
+            ConversationFactory factory = new ConversationFactory(plugin)
+                    .withPrefix(context -> ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix", "") + " "))
+                    .withEscapeSequence("cancel")
+                    .withTimeout(60)
+                    .withModality(true)
+                    .withFirstPrompt(conversation)
+                    .withLocalEcho(false);
 
-        factory.buildConversation(conversation.getAuthor()).begin();
+            factory.buildConversation(conversation.getAuthor()).begin();
+        });
     }
 
 }

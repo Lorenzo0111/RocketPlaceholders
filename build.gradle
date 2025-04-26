@@ -42,12 +42,12 @@ ext {
 
 repositories {
     mavenCentral()
-    maven { url "https://jitpack.io" }
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "https://repo.codemc.org/repository/maven-public" }
     maven { url "https://repo.lucko.me/" }
     maven { url "https://dl.lorenzo0111.me/releases/" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -72,6 +72,7 @@ dependencies {
 
     slim("com.mysql:mysql-connector-j:9.2.0")
     slim("commons-io:commons-io:2.19.0")
+    slim("com.github.TechnicallyCoded:FoliaLib:8b091d0e96")
 }
 
 shadowJar {
@@ -90,6 +91,7 @@ shadowJar {
 
 slimJar {
     relocate("org.apache.commons.io","${libsBase}io")
+    relocate("com.tcoded.folialib", "${libsBase}folialib")
 }
 
 javadoc {

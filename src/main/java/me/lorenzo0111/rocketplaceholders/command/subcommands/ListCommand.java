@@ -29,7 +29,6 @@ import me.lorenzo0111.rocketplaceholders.command.SubCommand;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 
@@ -52,38 +51,33 @@ public class ListCommand extends SubCommand {
         }
 
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                final Map<String, Placeholder> internalPlaceholders = ListCommand.this.getCommand().getPlaceholdersManager().getStorageManager().getInternalPlaceholders().getMap();
-                final Map<String, Placeholder> externalPlaceholders = ListCommand.this.getCommand().getPlaceholdersManager().getStorageManager().getExternalPlaceholders().getMap();
+        this.getCommand().getPlugin().getLoader().getFoliaLib().getScheduler().runAsync((task) -> {
+            final Map<String, Placeholder> internalPlaceholders = ListCommand.this.getCommand().getPlaceholdersManager().getStorageManager().getInternalPlaceholders().getMap();
+            final Map<String, Placeholder> externalPlaceholders = ListCommand.this.getCommand().getPlaceholdersManager().getStorageManager().getExternalPlaceholders().getMap();
 
-                StringBuilder internalBuilder = new StringBuilder("(");
-                internalPlaceholders.forEach((identifier,placeholder) -> internalBuilder.append(identifier).append(","));
+            StringBuilder internalBuilder = new StringBuilder("(");
+            internalPlaceholders.forEach((identifier, placeholder) -> internalBuilder.append(identifier).append(","));
 
-                if (internalBuilder.length() > 1) {
-                    internalBuilder.setLength(internalBuilder.length() - 1);
-                }
-
-                internalBuilder.append(")");
-
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ListCommand.this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Internal placeholders: &e" + internalBuilder.toString()));
-
-                StringBuilder externalBuilder = new StringBuilder("(");
-                externalPlaceholders.forEach((identifier,placeholder) -> externalBuilder.append(identifier).append(","));
-
-
-                if (externalBuilder.length() > 1) {
-                    externalBuilder.setLength(externalBuilder.length() - 1);
-                }
-
-                externalBuilder.append(")");
-
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ListCommand.this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7External placeholders: &e" + externalBuilder.toString()));
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ListCommand.this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Use &8/rocketplaceholders info (Placeholder) &7for more information."));
+            if (internalBuilder.length() > 1) {
+                internalBuilder.setLength(internalBuilder.length() - 1);
             }
-        }.runTaskAsynchronously(this.getCommand().getPlugin());
+
+            internalBuilder.append(")");
+
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ListCommand.this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Internal placeholders: &e" + internalBuilder.toString()));
+
+            StringBuilder externalBuilder = new StringBuilder("(");
+            externalPlaceholders.forEach((identifier, placeholder) -> externalBuilder.append(identifier).append(","));
 
 
+            if (externalBuilder.length() > 1) {
+                externalBuilder.setLength(externalBuilder.length() - 1);
+            }
+
+            externalBuilder.append(")");
+
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ListCommand.this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7External placeholders: &e" + externalBuilder.toString()));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ListCommand.this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Use &8/rocketplaceholders info (Placeholder) &7for more information."));
+        });
     }
 }

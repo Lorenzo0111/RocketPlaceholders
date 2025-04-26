@@ -9,6 +9,7 @@ softdepend:
   - MVdWPlaceholderAPI
   - JShader
 description: Create custom placeholders with PlaceholderAPI
+folia-supported: true
 commands:
   rocketplaceholders:
     description: RocketPlaceholders main command!
