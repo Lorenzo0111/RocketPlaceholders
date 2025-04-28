@@ -28,14 +28,12 @@ import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirement;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.RequirementType;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.Requirements;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,7 +84,7 @@ public class HasItemCondition extends Requirement {
 
     private boolean hasInArmor(@NotNull Player player, ItemStack item) {
         for (ItemStack armor : player.getInventory().getArmorContents()) {
-            if (armor.isSimilar(item)) {
+            if (armor != null && armor.isSimilar(item)) {
                 return true;
             }
         }

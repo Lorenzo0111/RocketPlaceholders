@@ -33,6 +33,11 @@ public class ConversationUtil {
     public static void createConversation(RocketPlaceholders plugin, Conversation conversation) {
         conversation.setPlugin(plugin);
 
+        if (plugin.getLoader().getFoliaLib().isFolia()) {
+            conversation.getAuthor().sendMessage(plugin.getConfig().getString("prefix") + ChatColor.RED + "Folia servers do not support conversations yet.");
+            return;
+        }
+
         plugin.getLoader().getFoliaLib().getScheduler().runAtEntity(conversation.getAuthor(), (task) -> {
             ConversationFactory factory = new ConversationFactory(plugin)
                     .withPrefix(context -> ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix", "") + " "))
