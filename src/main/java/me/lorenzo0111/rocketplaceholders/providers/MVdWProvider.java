@@ -29,7 +29,6 @@ import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 public class MVdWProvider extends Provider {
@@ -40,7 +39,7 @@ public class MVdWProvider extends Provider {
     }
 
     public void reload() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> manager.getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, String.format("rp_%s",s), (event) -> this.provide(event.getOfflinePlayer(),event.getPlaceholder()))));
+        plugin.getLoader().getFoliaLib().getScheduler().runAsync((task) -> manager.getAll().forEach((s, placeholder) -> PlaceholderAPI.registerPlaceholder(plugin, String.format("rp_%s",s), (event) -> this.provide(event.getOfflinePlayer(),event.getPlaceholder()))));
     }
 
     @Override

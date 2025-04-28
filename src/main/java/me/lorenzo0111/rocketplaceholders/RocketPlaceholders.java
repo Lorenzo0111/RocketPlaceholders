@@ -35,7 +35,6 @@ import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
 import me.lorenzo0111.rocketplaceholders.storage.user.UserStorage;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
-import me.lorenzo0111.rocketplaceholders.utilities.UpdateChecker;
 import me.lorenzo0111.rocketplaceholders.web.WebPanelHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
@@ -114,10 +113,8 @@ public final class RocketPlaceholders extends JavaPlugin {
 
         api.setUserStorage(new UserStorage(new File(this.getDataFolder(), "data.yml")));
 
-        final UpdateChecker checker = new UpdateChecker(this, 82678, "https://bit.ly/RocketPlaceholders");
-        checker.sendUpdateCheck(Bukkit.getConsoleSender());
-
-        this.loader = new PluginLoader(this, placeholdersManager, checker);
+        this.loader = new PluginLoader(this, placeholdersManager);
+        this.loader.loadChecker();
         this.loader.loadDatabase();
         this.loader.setupHooks();
         this.loader.registerEvents();
@@ -127,7 +124,7 @@ public final class RocketPlaceholders extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getScheduler().cancelTasks(this);
+        loader.getFoliaLib().getScheduler().cancelAllTasks();
         api.getUserStorage().save();
         getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
     }

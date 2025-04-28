@@ -33,7 +33,6 @@ import me.lorenzo0111.rocketplaceholders.api.WebEdit;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidResponseException;
 import me.lorenzo0111.rocketplaceholders.storage.Storage;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -123,7 +122,7 @@ public class WebPanelHandler implements IWebPanelHandler {
 
     @Override
     public void applyEdit(WebEdit edit) {
-        Bukkit.getScheduler().runTaskAsynchronously(RocketPlaceholders.getInstance(), () -> {
+        plugin.getLoader().getFoliaLib().getScheduler().runAsync((task) -> {
             Storage storage = RocketPlaceholders.getApi().getPlaceholdersManager().getStorageManager().getInternalPlaceholders();
 
             List<String> remove = edit.getRemove();
