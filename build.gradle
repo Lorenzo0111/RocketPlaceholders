@@ -33,7 +33,7 @@ plugins {
 }
 
 group = 'me.lorenzo0111'
-version = '2.3.3-SNAPSHOT'
+version = '2.3.3'
 description = 'RocketPlaceholders'
 
 ext {
