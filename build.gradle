@@ -33,7 +33,7 @@ plugins {
 }
 
 group = 'me.lorenzo0111'
-version = '2.3.3'
+version = '2.4-SNAPSHOT'
 description = 'RocketPlaceholders'
 
 ext {
@@ -64,13 +64,13 @@ dependencies {
     implementation("dev.triumphteam:triumph-gui:3.2.2")
     implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation('com.github.cryptomorin:XSeries:13.2.0')
-    implementation('net.kyori:adventure-api:4.20.0')
-    implementation('net.kyori:adventure-text-serializer-legacy:4.20.0')
+    implementation('net.kyori:adventure-api:4.21.0')
+    implementation('net.kyori:adventure-text-serializer-legacy:4.21.0')
     implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
         exclude module: "annotations"
     }
 
-    slim("com.mysql:mysql-connector-j:9.2.0")
+    slim("com.mysql:mysql-connector-j:9.3.0")
     slim("commons-io:commons-io:2.19.0")
     slim("com.github.TechnicallyCoded:FoliaLib:8b091d0e96")
 }

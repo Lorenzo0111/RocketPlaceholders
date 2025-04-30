@@ -65,6 +65,12 @@ public abstract class Provider {
 
         Player onlinePlayer = player.getPlayer();
 
+        String cachedText = RocketPlaceholders.getApi().getCacheStorage().getText(placeholder,player.getUniqueId());
+        if (cachedText != null) {
+            plugin.debug("Returning cached text for " + placeholder.getIdentifier());
+            return cachedText;
+        }
+
         String userText = RocketPlaceholders.getApi().getUserStorage().getText(placeholder,player.getUniqueId());
         if (userText != null) {
             return this.parse(placeholder,player,userText);
@@ -79,7 +85,9 @@ public abstract class Provider {
             if (node.getRequirement().apply(onlinePlayer)) {
                 plugin.debug("Applied: " + node.getRequirement());
                 try {
-                    return this.parse(placeholder,player,node.getText());
+                    String result = this.parse(placeholder,player,node.getText());
+                    RocketPlaceholders.getApi().getCacheStorage().setText(placeholder,player.getUniqueId(), result);
+                    return result;
                 } catch (InvalidConditionException e) {
                     plugin.getLogger().severe(String.format("An error has occurred while parsing placeholder %s: %s", placeholder.getIdentifier(), e.getMessage()));
                     return null;

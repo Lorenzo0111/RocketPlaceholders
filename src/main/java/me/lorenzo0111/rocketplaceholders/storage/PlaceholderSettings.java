@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 public class PlaceholderSettings {
     private boolean parseJs = false;
     private String key = null;
+    private long cacheDuration = -1;
 
     public PlaceholderSettings key(String key) {
         this.key = key;
@@ -47,5 +48,14 @@ public class PlaceholderSettings {
 
     public boolean parseJs() {
         return parseJs;
+    }
+
+    public PlaceholderSettings cacheDuration(long cacheDuration) {
+        this.cacheDuration = cacheDuration;
+        return this;
+    }
+
+    public long cacheDuration() {
+        return cacheDuration;
     }
 }

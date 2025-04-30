@@ -46,6 +46,7 @@ public class RocketPlaceholdersAPI implements IRocketPlaceholdersAPI {
     private final List<PapiHook> providers = new ArrayList<>();
     private IWebPanelHandler webPanelHandler;
     private ITextStorage<UUID> userStorage;
+    private ITextStorage<UUID> cacheStorage;
 
     public RocketPlaceholdersAPI(PlaceholdersManager placeholdersManager) {
         this.placeholdersManager = placeholdersManager;
@@ -124,5 +125,18 @@ public class RocketPlaceholdersAPI implements IRocketPlaceholdersAPI {
     public void setUserStorage(@NotNull ITextStorage<UUID> storage) {
         this.userStorage = storage;
         this.userStorage.load();
+    }
+
+    @Override
+    public @NotNull ITextStorage<UUID> getCacheStorage() {
+        if (cacheStorage == null) throw new IllegalStateException("Cache storage is not set!");
+
+        return cacheStorage;
+    }
+
+    @Override
+    public void setCacheStorage(@NotNull ITextStorage<UUID> storage) {
+        this.cacheStorage = storage;
+        this.cacheStorage.load();
     }
 }

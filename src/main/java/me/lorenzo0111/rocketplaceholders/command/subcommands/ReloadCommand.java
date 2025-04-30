@@ -53,6 +53,7 @@ public class ReloadCommand extends SubCommand {
         this.getCommand().getChecker().sendUpdateCheck(sender);
 
         RocketPlaceholders.getApi().getUserStorage().save();
+        RocketPlaceholders.getApi().getCacheStorage().save();
         this.getCommand().getPlugin().getLoader().loadDatabase();
 
         if (this.getCommand().getPlugin().getLoader().getDatabaseManager() != null && !this.getCommand().getPlugin().getConfig().getBoolean("mysql.enabled")) {
