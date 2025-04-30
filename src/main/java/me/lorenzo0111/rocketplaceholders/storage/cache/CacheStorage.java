@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CacheStorage extends VolatileUserStorage {
-    private final Map<UUID, Map<Placeholder, Long>> lastUpdate = new HashMap<>();
+    private final Map<UUID, Map<String, Long>> lastUpdate = new HashMap<>();
 
     @Override
     public void setText(Placeholder placeholder, UUID owner, @Nullable String text) {
@@ -44,7 +44,7 @@ public class CacheStorage extends VolatileUserStorage {
         super.setText(placeholder, owner, text);
 
         if (text == null) return;
-        lastUpdate.computeIfAbsent(owner, k -> new HashMap<>()).put(placeholder, System.currentTimeMillis());
+        lastUpdate.computeIfAbsent(owner, k -> new HashMap<>()).put(placeholder.getIdentifier(), System.currentTimeMillis());
     }
 
     @Override
@@ -52,15 +52,17 @@ public class CacheStorage extends VolatileUserStorage {
         long cacheDuration = placeholder.getSettings().cacheDuration();
         if (cacheDuration <= 0) return null;
 
-        Map<Placeholder, Long> userCache = lastUpdate.get(owner);
-        if (userCache == null || !userCache.containsKey(placeholder)) return null;
+        Map<String, Long> userCache = lastUpdate.get(owner);
+        if (userCache == null || !userCache.containsKey(placeholder.getIdentifier())) return null;
 
-        long lastUpdateTime = userCache.get(placeholder);
+        long lastUpdateTime = userCache.get(placeholder.getIdentifier());
         if (lastUpdateTime + cacheDuration > System.currentTimeMillis()) {
             return super.getText(placeholder, owner);
         }
 
-        userCache.remove(placeholder);
+        userCache.remove(placeholder.getIdentifier());
+        super.setText(placeholder, owner, null);
+
         RocketPlaceholders.getInstance().debug("Cache expired for " + placeholder.getIdentifier() + " of " + owner);
 
         return null;
