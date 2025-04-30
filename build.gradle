@@ -70,7 +70,7 @@ dependencies {
         exclude module: "annotations"
     }
 
-    slim("com.mysql:mysql-connector-j:9.2.0")
+    slim("com.mysql:mysql-connector-j:9.3.0")
     slim("commons-io:commons-io:2.19.0")
     slim("com.github.TechnicallyCoded:FoliaLib:8b091d0e96")
 }
