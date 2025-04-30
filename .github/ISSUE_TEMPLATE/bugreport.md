@@ -10,4 +10,4 @@ assignees: ""
 
 **Explain your issue.**
 
-**Are there any errors in the console? Use: link.rocketplugins.space/paste**
+**Are there any errors in the console?**

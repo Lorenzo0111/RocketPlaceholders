@@ -57,7 +57,7 @@ public class TextCondition extends Requirement {
 
         String[] strings = value.split("%%");
         if (strings.length != 2) {
-            throw new InvalidConditionException("Invalid value. Please read https://docs.rocketplugins.space/rocektplugins/rocketplaceholders/configure/conditions/text-condition");
+            throw new InvalidConditionException("Invalid value. Please insert two valid strings as 'value' in the config with the format 'string1%%string2'.");
         }
 
         return new TextCondition(strings[0],strings[1]);

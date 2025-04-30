@@ -44,7 +44,7 @@ public class Debugger {
     }
 
     public void debug() {
-        this.log("-----------[ RocketPlugins Debugger ]-----------");
+        this.log("-----------[ RocketPlaceholders Debugger ]-----------");
 
         this.log("Server Information:");
         this.logData("Server Version", Bukkit.getServer().getBukkitVersion());
@@ -64,13 +64,7 @@ public class Debugger {
 
         this.logData("Vault", plugin.getLoader().getVault().hooked() ? "true" : "false");
 
-        /*
-        *
-        * Do you want to add an hook? Open an issue on github or make a pull request
-        *
-        */
-
-        this.log("-----------[ RocketPlugins Debugger ]-----------");
+        this.log("-----------[ RocketPlaceholders Debugger ]-----------");
     }
 
     private void logData(String prefix, String message) {

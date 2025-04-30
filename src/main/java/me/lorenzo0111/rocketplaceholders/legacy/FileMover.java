@@ -55,7 +55,7 @@ public class FileMover implements Migrator {
 
             Set<String> keys = allSection.getKeys(false);
 
-            plugin.getConfig().options().header("All comments have been lost because of the migration.\n If you need help read our documentation at https://docs.rocketplugins.space \n\n Configuration generated with RocketPlaceholders v" + plugin.getDescription().getVersion());
+            plugin.getConfig().options().header("All comments have been lost because of the migration.\n If you need help read our documentation at https://wiki.lorenzo0111.me \n\n Configuration generated with RocketPlaceholders v" + plugin.getDescription().getVersion());
             plugin.getConfig().options().copyHeader(true);
             if (keys.isEmpty()) {
                 this.delete(plugin,plugin.getConfig());
@@ -88,7 +88,7 @@ public class FileMover implements Migrator {
                 config.options().header("Thanks for using RocketPlaceholders v"+plugin.getDescription().getVersion()+".\n" +
                         "\nWe have changed our configuration system to store all placeholders in a better method.\n" +
                         "We want to keep our plugins easy-to-use so we have automatically migrated the placeholder in his file and you don't need to do anything.\n\n" +
-                        "If you need support you can contact us on discord: https://discord.io/RocketPlugins");
+                        "If you need support you can contact us on discord: https://to.lorenzo0111.me/discord");
 
                 config.save(file);
             }

@@ -51,8 +51,8 @@ public class WebPanelHandler implements IWebPanelHandler {
 
     public WebPanelHandler(RocketPlaceholders plugin) throws MalformedURLException {
         this.plugin = plugin;
-        this.add = new URL("https://editor.rocketplugins.space/new");
-        this.get = "https://editor.rocketplugins.space/raw/";
+        this.add = new URL("https://editor.lorenzo0111.me/new");
+        this.get = "https://editor.lorenzo0111.me/raw/";
     }
 
     @Override
