@@ -2,6 +2,7 @@ placeholders:
   test:
     placeholder: "test" # The placeholder will be %rp_test% ( PlaceholderAPI ) or {rp_test} ( MVdWPlaceholderAPI )
     text: "This is an example"
+    cache: -1 # Cache duration in milliseconds. -1 means no cache
     conditions:
       permissionExample:
         type: PERMISSION # LIST: https://to.lorenzo0111.me/conditions

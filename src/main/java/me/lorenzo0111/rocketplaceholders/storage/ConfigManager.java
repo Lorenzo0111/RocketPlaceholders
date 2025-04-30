@@ -66,7 +66,7 @@ public class ConfigManager {
             File example = new File(dir, "example.yml");
 
             if (!example.exists()) {
-                try (InputStream in = RocketPlaceholders.class.getClassLoader().getResourceAsStream( "example.yml" )) {
+                try (InputStream in = RocketPlaceholders.class.getClassLoader().getResourceAsStream("example.yml")) {
                     Objects.requireNonNull(in);
 
                     Files.copy(in, example.toPath());
@@ -76,7 +76,7 @@ public class ConfigManager {
             }
         }
 
-        FileMover mover = new FileMover(plugin,dir);
+        FileMover mover = new FileMover(plugin, dir);
         if (mover.shouldMigrate())
             mover.migrate();
 
@@ -120,7 +120,14 @@ public class ConfigManager {
                     nodes = new ArrayList<>(scanConditions(conditions));
                 }
 
-                storageManager.getInternalPlaceholders().build(FilenameUtils.getBaseName(file.getName()), config.getString("placeholder", "null"), HexParser.text(config.getString("text", "")),nodes,parseJS);
+                storageManager.getInternalPlaceholders().build(
+                        FilenameUtils.getBaseName(file.getName()),
+                        config.getString("placeholder", "null"),
+                        HexParser.text(config.getString("text", "")),
+                        nodes,
+                        parseJS,
+                        config.getLong("cache", -1)
+                );
             }
         }
     }
@@ -131,10 +138,10 @@ public class ConfigManager {
         for (String condition : section.getKeys(false)) {
             ConfigurationSection conditionSection = section.getConfigurationSection(condition);
 
-            if (conditionSection !=  null) {
+            if (conditionSection != null) {
                 Requirement requirement = Requirements.parseRequirement(conditionSection);
                 if (requirement != null) {
-                    nodes.add(new ConditionNode(requirement,conditionSection.getString("text")));
+                    nodes.add(new ConditionNode(requirement, conditionSection.getString("text")));
                 }
             }
 
@@ -162,9 +169,16 @@ public class ConfigManager {
             final List<ConditionNode> nodes = new ArrayList<>(scanConditions(conditions));
 
             storageManager.getInternalPlaceholders()
-                            .getMap()
-                            .remove(oldIdentifier == null ? placeholder.getIdentifier() : oldIdentifier);
-            storageManager.getInternalPlaceholders().build(placeholder.getFile().getName(), config.getString("placeholder", "null"), HexParser.text(config.getString("text", "")),nodes.isEmpty() ? null : nodes,parseJS);
+                    .getMap()
+                    .remove(oldIdentifier == null ? placeholder.getIdentifier() : oldIdentifier);
+            storageManager.getInternalPlaceholders().build(
+                    placeholder.getFile().getName(),
+                    config.getString("placeholder", "null"),
+                    HexParser.text(config.getString("text", "")),
+                    nodes.isEmpty() ? null : nodes,
+                    parseJS,
+                    config.getLong("cache", -1)
+            );
         }
     }
 

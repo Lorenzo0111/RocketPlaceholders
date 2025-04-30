@@ -27,45 +27,21 @@ package me.lorenzo0111.rocketplaceholders.storage.user;
 import me.lorenzo0111.rocketplaceholders.RocketPlaceholders;
 import me.lorenzo0111.rocketplaceholders.api.ITextStorage;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class UserStorage implements ITextStorage<UUID> {
-    private final List<UserText> storage = new ArrayList<>();
-    private final File file;
-
-    public UserStorage(@NotNull File file) {
-        this.file = file;
-
-        ConfigurationSerialization.registerClass(UserText.class);
-
-        if (!file.exists()) {
-            try {
-                if (file.createNewFile()) {
-                    return;
-                }
-            } catch (IOException ignored) {}
-
-            RocketPlaceholders.getInstance().getLogger().severe("An error has occurred while creating the user storage file!");
-        }
-    }
+public class VolatileUserStorage implements ITextStorage<UUID> {
+    protected final List<UserText> storage = new ArrayList<>();
 
     @Override
-    public void setText(Placeholder placeholder, UUID owner,@Nullable String text) {
+    public void setText(Placeholder placeholder, UUID owner, @Nullable String text) {
         UserText user = storage.stream()
                 .filter(userText -> userText.getUser().equals(owner) && userText.getPlaceholder().equals(placeholder.getIdentifier()))
                 .findFirst()
-                .orElse(new UserText(placeholder.getIdentifier(),owner));
+                .orElse(new UserText(placeholder.getIdentifier(), owner));
 
         storage.remove(user);
 
@@ -88,26 +64,7 @@ public class UserStorage implements ITextStorage<UUID> {
 
     @Override
     public boolean persistent() {
-        return true;
-    }
-
-    @Override
-    public void save() {
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set("storage", storage);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            RocketPlaceholders.getInstance().getLogger().severe("An error has occurred while saving the user storage file: " + e.getMessage());
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void load() {
-        ConfigurationSection config = YamlConfiguration.loadConfiguration(file);
-        this.storage.clear();
-        this.storage.addAll((List<UserText>) config.getList("storage", new ArrayList<>()));
+        return false;
     }
 
 }

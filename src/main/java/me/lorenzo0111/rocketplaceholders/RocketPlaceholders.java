@@ -33,7 +33,8 @@ import me.lorenzo0111.rocketplaceholders.creator.PlaceholdersManager;
 import me.lorenzo0111.rocketplaceholders.exceptions.InvalidConditionException;
 import me.lorenzo0111.rocketplaceholders.storage.ConfigManager;
 import me.lorenzo0111.rocketplaceholders.storage.StorageManager;
-import me.lorenzo0111.rocketplaceholders.storage.user.UserStorage;
+import me.lorenzo0111.rocketplaceholders.storage.cache.CacheStorage;
+import me.lorenzo0111.rocketplaceholders.storage.user.PersistentUserStorage;
 import me.lorenzo0111.rocketplaceholders.utilities.PluginLoader;
 import me.lorenzo0111.rocketplaceholders.web.WebPanelHandler;
 import org.bukkit.Bukkit;
@@ -111,7 +112,8 @@ public final class RocketPlaceholders extends JavaPlugin {
             this.getLogger().warning("Unable to setup WebEditor. Aborting..");
         }
 
-        api.setUserStorage(new UserStorage(new File(this.getDataFolder(), "data.yml")));
+        api.setUserStorage(new PersistentUserStorage(new File(this.getDataFolder(), "data.yml")));
+        api.setCacheStorage(new CacheStorage());
 
         this.loader = new PluginLoader(this, placeholdersManager);
         this.loader.loadChecker();
@@ -126,6 +128,7 @@ public final class RocketPlaceholders extends JavaPlugin {
     public void onDisable() {
         loader.getFoliaLib().getScheduler().cancelAllTasks();
         api.getUserStorage().save();
+        api.getCacheStorage().save();
         getLogger().info("Plugin disabled! Thanks for using " + this.getDescription().getName() + " v." + this.getDescription().getVersion());
     }
 

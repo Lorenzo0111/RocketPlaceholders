@@ -109,4 +109,19 @@ public interface IRocketPlaceholdersAPI {
      * @param storage A storage that contains per-user text
      */
     void setUserStorage(@NotNull ITextStorage<UUID> storage);
+
+    /**
+     * <b>Warning:</b> Cache storage is only used for condition nodes.
+     * Data is not cached for normal placeholders.
+     * @return A storage that contains per-user text cache
+     */
+    @NotNull ITextStorage<UUID> getCacheStorage();
+
+    /**
+     * <b>Warning:</b> Cache storage is only used for condition nodes.
+     * Data is not cached for normal placeholders.
+     * Set the cache storage.
+     * @param storage A storage that contains per-user text cache
+     */
+    void setCacheStorage(@NotNull ITextStorage<UUID> storage);
 }

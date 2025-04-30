@@ -46,7 +46,7 @@ public class Storage {
     }
 
     public void add(@NotNull Placeholder placeholder) {
-        this.add(placeholder.getIdentifier(),placeholder);
+        this.add(placeholder.getIdentifier(), placeholder);
     }
 
     @Deprecated
@@ -54,12 +54,27 @@ public class Storage {
         this.placeholders.put(identifier, new Placeholder(identifier, RocketPlaceholders.getInstance(), text));
     }
 
-    public void build(@Nullable String key, @NotNull String identifier, @NotNull String text,@Nullable List<ConditionNode> nodes) {
-        this.build(key,identifier,text,nodes,false);
+    public void build(@Nullable String key, @NotNull String identifier, @NotNull String text, @Nullable List<ConditionNode> nodes) {
+        this.build(key, identifier, text, nodes, false);
     }
 
-    public void build(@Nullable String key, @NotNull String identifier, @NotNull String text,@Nullable List<ConditionNode> nodes, boolean parseJS) {
-        this.placeholders.put(identifier, new Placeholder(identifier, RocketPlaceholders.getInstance(), text, nodes, new PlaceholderSettings().parseJs(parseJS).key(key)));
+    public void build(@Nullable String key, @NotNull String identifier, @NotNull String text, @Nullable List<ConditionNode> nodes, boolean parseJS) {
+        this.build(key, identifier, text, nodes, parseJS, -1);
+    }
+
+    public void build(@Nullable String key, @NotNull String identifier, @NotNull String text, @Nullable List<ConditionNode> nodes, boolean parseJS, long cacheDuration) {
+        this.placeholders.put(identifier,
+                new Placeholder(
+                        identifier,
+                        RocketPlaceholders.getInstance(),
+                        text,
+                        nodes,
+                        new PlaceholderSettings()
+                                .parseJs(parseJS)
+                                .key(key)
+                                .cacheDuration(cacheDuration)
+                )
+        );
     }
 
     public void clear() {
