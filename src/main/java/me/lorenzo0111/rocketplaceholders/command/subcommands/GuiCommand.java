@@ -24,7 +24,6 @@
 
 package me.lorenzo0111.rocketplaceholders.command.subcommands;
 
-import com.cryptomorin.xseries.XMaterial;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import me.lorenzo0111.rocketplaceholders.command.RocketPlaceholdersCommand;
@@ -33,7 +32,6 @@ import me.lorenzo0111.rocketplaceholders.conversation.ConversationUtil;
 import me.lorenzo0111.rocketplaceholders.conversation.conversations.TextConversation;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.utilities.GuiUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -43,6 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("deprecation")
 public class GuiCommand extends SubCommand {
 
     public GuiCommand(RocketPlaceholdersCommand command) {
@@ -78,45 +77,43 @@ public class GuiCommand extends SubCommand {
                 .collect(Collectors.toList());
 
         for (Placeholder placeholder : placeholders) {
-            gui.addItem( ItemBuilder
-                    .from(Objects.requireNonNull(XMaterial.TARGET.get()))
-                    .name(Component.text(String.format("§8§l» §7%s",placeholder.getIdentifier())))
-                    .lore(Component.text("§7Click to edit this placeholder"))
-                    .asGuiItem( e -> {
-
+            gui.addItem(ItemBuilder.from(Material.BOOK)
+                    .setName(String.format("§8§l» §7%s", placeholder.getIdentifier()))
+                    .setLore("§7Click to edit this placeholder")
+                    .asGuiItem(e -> {
                         PaginatedGui settingsGui = GuiUtils.createGui(placeholder.getIdentifier() + " &8&l» &7Settings");
 
-                        settingsGui.setItem(2,ItemBuilder.from(Objects.requireNonNull(XMaterial.TORCH.parseItem()))
-                                .name(Component.text("§8§l» §7Information"))
-                                .lore(Component.text("§8Identifier: §7" + placeholder.getIdentifier()),
-                                        Component.text("§8Text: §7" + placeholder.getText()),
-                                        placeholder.hasConditionNodes() ? Component.text("§8Conditions: §7" + Objects.requireNonNull(placeholder.getConditionNodes()).size()) : Component.empty(),
-                                        Component.text("§7§oClick to edit the text."))
+                        settingsGui.setItem(2, ItemBuilder.from(Material.TORCH)
+                                .setName("§8§l» §7Information")
+                                .setLore("§8Identifier: §7" + placeholder.getIdentifier(),
+                                        "§8Text: §7" + placeholder.getText(),
+                                        placeholder.hasConditionNodes() ?
+                                                "§8Conditions: §7" + Objects.requireNonNull(placeholder.getConditionNodes()).size() :
+                                                "Component.empty()",
+                                        "§7§oClick to edit the text.")
                                 .asGuiItem(event -> {
                                     event.setCancelled(true);
                                     gui.close(event.getWhoClicked());
                                     ConversationUtil.createConversation(this.getCommand().getPlugin(), new TextConversation((Player) event.getWhoClicked(), placeholder));
                                 }));
 
-                        Material material = placeholder.hasConditionNodes() ? XMaterial.CHEST.parseMaterial() : XMaterial.BARRIER.parseMaterial();
+                        Material material = placeholder.hasConditionNodes() ? Material.CHEST : Material.BARRIER;
 
                         Objects.requireNonNull(material);
 
                         settingsGui.setItem(6, ItemBuilder.from(material)
-                                .name(Component.text("§8§l» §7Conditions"))
-                                .lore(placeholder.hasConditionNodes() ? Component.text("§7Click to view") : Component.text("§7There isn't any condition."))
+                                .setName("§8§l» §7Conditions")
+                                .setLore(placeholder.hasConditionNodes() ? "§7Click to view" : "§7There isn't any condition.")
                                 .asGuiItem(event -> {
                                     event.setCancelled(true);
 
                                     if (placeholder.hasConditionNodes()) {
-
                                         GuiUtils.createConditionsGui(placeholder).open(player);
-
                                     }
                                 }));
 
-                        settingsGui.setItem(22,ItemBuilder.from(Material.ARROW)
-                                .name(Component.text("§8§l» §7Back"))
+                        settingsGui.setItem(22, ItemBuilder.from(Material.ARROW)
+                                .setName("§8§l» §7Back")
                                 .asGuiItem(event -> {
                                     event.setCancelled(true);
                                     event.getWhoClicked().closeInventory();

@@ -24,49 +24,43 @@
 
 package me.lorenzo0111.rocketplaceholders.utilities;
 
-import com.cryptomorin.xseries.XMaterial;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.InteractionModifier;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import me.lorenzo0111.rocketplaceholders.creator.Placeholder;
 import me.lorenzo0111.rocketplaceholders.creator.conditions.ConditionNode;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.EnumSet;
 import java.util.Objects;
 
+@SuppressWarnings("deprecation")
 public final class GuiUtils {
 
     public static PaginatedGui createGui(String title) {
         final String prefix = "&8&l» &7";
-        final PaginatedGui gui = new PaginatedGui(3, 17, ChatColor.translateAlternateColorCodes('&',prefix + title), EnumSet.noneOf(InteractionModifier.class));
+        final PaginatedGui gui = new PaginatedGui(3, 17, ChatColor.translateAlternateColorCodes('&', prefix + title), EnumSet.noneOf(InteractionModifier.class));
         gui.setDefaultClickAction(a -> a.setCancelled(true));
         return gui;
     }
 
     public static void setPageItems(PaginatedGui gui) {
-        ItemStack item = Objects.requireNonNull(XMaterial.ARROW.parseItem(), "Arrow does not exists.");
-
-        GuiItem left = ItemBuilder.from(item)
-                .name(Component.text("§8§l» §7Previous"))
+        GuiItem left = ItemBuilder.from(Material.ARROW)
+                .setName("§8§l» §7Previous")
                 .asGuiItem(e -> {
                     e.setCancelled(true);
                     gui.previous();
                 });
-        GuiItem right = ItemBuilder.from(item)
-                .name(Component.text("§8§l» §7Next"))
+        GuiItem right = ItemBuilder.from(Material.ARROW)
+                .setName("§8§l» §7Next")
                 .asGuiItem(e -> {
                     e.setCancelled(true);
                     gui.next();
                 });
-        gui.setItem(21,left);
-        gui.setItem(23,right);
-
-        gui.getFiller().fillBottom(ItemBuilder.from(XMaterial.GLASS_PANE.parseMaterial()).name(Component.text("§r")).asGuiItem());
+        gui.setItem(21, left);
+        gui.setItem(23, right);
     }
 
     public static PaginatedGui createConditionsGui(Placeholder placeholder) {
@@ -77,11 +71,10 @@ public final class GuiUtils {
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         for (ConditionNode node : Objects.requireNonNull(placeholder.getConditionNodes())) {
-
-            gui.addItem(ItemBuilder.from(Objects.requireNonNull(XMaterial.ITEM_FRAME.parseItem()))
-                    .name(Component.text("§8§l» §7" + node.getRequirement().getType().name()))
-                    .lore(Component.text("§8Type: §7" + node.getRequirement().getType().name()),
-                            Component.text("§8Text: §7" + node.getText()))
+            gui.addItem(ItemBuilder.from(Material.ITEM_FRAME)
+                    .setName("§8§l» §7" + node.getRequirement().getType().name())
+                    .setLore("§8Type: §7" + node.getRequirement().getType().name(),
+                            "§8Text: §7" + node.getText())
                     .asGuiItem());
 
         }

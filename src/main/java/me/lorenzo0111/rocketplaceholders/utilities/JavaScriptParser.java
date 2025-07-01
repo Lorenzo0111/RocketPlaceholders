@@ -42,20 +42,10 @@ import java.util.Objects;
  */
 public class JavaScriptParser<T> {
     private static ScriptEngineManager engine;
-    private final Map<String,Object> bindings;
+    private final Map<String, Object> bindings;
 
     public JavaScriptParser() {
         this.bindings = new HashMap<>();
-        boolean exists = new ScriptEngineManager().getEngineByName("JavaScript") != null;
-
-        if (exists) {
-            engine = new ScriptEngineManager();
-            return;
-        }
-
-        if (engine != null) {
-            return;
-        }
 
         ServicesManager manager = Bukkit.getServicesManager();
         if (manager.isProvidedFor(ScriptEngineManager.class)) {
@@ -65,7 +55,12 @@ public class JavaScriptParser<T> {
             RocketPlaceholders.getInstance()
                     .getLogger()
                     .info("Hooked into " + provider.getPlugin().getName() + " for JavaScript support.");
+            return;
         }
+
+
+        if (new ScriptEngineManager().getEngineByName("JavaScript") != null)
+            engine = new ScriptEngineManager();
     }
 
     /**
@@ -100,7 +95,7 @@ public class JavaScriptParser<T> {
     }
 
     public void bind(String key, Object value) {
-        this.bindings.put(key,value);
+        this.bindings.put(key, value);
     }
 
     private void applyBinding(final ScriptEngineManager engine) {
