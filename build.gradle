@@ -63,9 +63,6 @@ dependencies {
     implementation("com.github.glyart:mystral:1.4.6-SNAPSHOT")
     implementation("dev.triumphteam:triumph-gui:3.2.2")
     implementation("org.bstats:bstats-bukkit:3.1.0")
-    implementation("com.github.l1m0n3:HexiTextLib:b9e30055b7") {
-        exclude module: "annotations"
-    }
 
     slim("com.mysql:mysql-connector-j:9.3.0")
     slim("commons-io:commons-io:2.19.0")
@@ -79,7 +76,6 @@ shadowJar {
     relocate("org.bstats", "${libsBase}bstats")
     relocate("dev.triumphteam.gui", "${libsBase}gui")
     relocate("io.github.slimjar", "${libsBase}slimjar")
-    relocate("com.haroldstudios.hexitextlib", "${libsBase}hex")
 
     archiveFileName = "${project.name}-${project.version}.jar"
 }
