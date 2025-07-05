@@ -19,6 +19,9 @@ debug: false
 #Enable Update Message on Join. Default: true
 update-message: true
 
+# Setting this to true will disable the console feedback for the "rp set" command
+disable-console-feedback: false
+
 mysql:
   # If this is not enabled will be used local placeholders
   enabled: false

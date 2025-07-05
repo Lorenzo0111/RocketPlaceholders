@@ -34,6 +34,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import javax.script.ScriptException;
 
@@ -89,7 +90,7 @@ public class SetJSCommand extends SubCommand {
             if (text != null) {
 
                 if (user != null) {
-                    RocketPlaceholders.getApi().getUserStorage().setText(placeholder,user.getUniqueId(),text);
+                    RocketPlaceholders.getApi().getUserStorage().setText(placeholder, user.getUniqueId(), text);
                 } else {
                     try {
                         placeholder.saveText(text);
@@ -100,7 +101,8 @@ public class SetJSCommand extends SubCommand {
                     }
                 }
 
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + text + "&7!"));
+                if (sender instanceof Player || !command.getPlugin().getConfig().getBoolean("disable-console-feedback"))
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7The placeholder &e" + placeholder.getIdentifier() + "&7's text has been set to &e" + text + "&7!"));
             }
         } catch (ScriptException e) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.getCommand().getPlugin().getConfig().getString("prefix") + "&r &7Error while parsing the javascript expression!"));
